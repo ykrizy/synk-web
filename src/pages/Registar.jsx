@@ -1,0 +1,327 @@
+import { useState } from 'react'
+import { Link } from 'react-router-dom'
+import useMeta from '@/hooks/useMeta'
+import Reveal from '@/components/ui/Reveal'
+
+const AUTOMATION_TYPES = ['RPA', 'Integrações', 'IA / LLMs', 'Marketing Automation', 'BI & Data', 'Custom Dev', 'Outro']
+const SPECIALIST_SKILLS = ['RPA (UiPath, AA)', 'Make / Zapier / n8n', 'Python Automation', 'IA Aplicada', 'Power BI', 'HubSpot / Marketing', 'Cloud & DevOps', 'Outro']
+const COUNTRIES = ['Portugal', 'Espanha', 'Brasil', 'Outro']
+const COMPANY_SIZES = ['1–10', '11–50', '51–200', '200+']
+const EXPERIENCE_YEARS = ['< 1 ano', '1–3 anos', '3–5 anos', '5–10 anos', '10+ anos']
+
+function CheckboxGroup({ options, selected, onToggle }) {
+  return (
+    <div className="grid grid-cols-2 gap-2">
+      {options.map(opt => (
+        <label key={opt} className="checkbox-item">
+          <input
+            type="checkbox"
+            checked={selected.includes(opt)}
+            onChange={() => onToggle(opt)}
+          />
+          <span>{opt}</span>
+        </label>
+      ))}
+    </div>
+  )
+}
+
+function EmpresaForm({ onSuccess }) {
+  const [automationTypes, setAutomationTypes] = useState([])
+  const toggle = (val) => setAutomationTypes(prev => prev.includes(val) ? prev.filter(x => x !== val) : [...prev, val])
+
+  return (
+    <form onSubmit={e => { e.preventDefault(); onSuccess() }} className="space-y-5">
+      <div className="grid sm:grid-cols-2 gap-5">
+        <div>
+          <label className="block text-sm font-medium mb-2" style={{ color: '#94a3b8' }}>Nome da empresa *</label>
+          <input type="text" required className="form-input" placeholder="Empresa Lda." />
+        </div>
+        <div>
+          <label className="block text-sm font-medium mb-2" style={{ color: '#94a3b8' }}>Nome do responsável *</label>
+          <input type="text" required className="form-input" placeholder="João Silva" />
+        </div>
+      </div>
+      <div className="grid sm:grid-cols-2 gap-5">
+        <div>
+          <label className="block text-sm font-medium mb-2" style={{ color: '#94a3b8' }}>Email profissional *</label>
+          <input type="email" required className="form-input" placeholder="joao@empresa.pt" />
+        </div>
+        <div>
+          <label className="block text-sm font-medium mb-2" style={{ color: '#94a3b8' }}>Telefone</label>
+          <input type="tel" className="form-input" placeholder="+351 900 000 000" />
+        </div>
+      </div>
+      <div className="grid sm:grid-cols-2 gap-5">
+        <div>
+          <label className="block text-sm font-medium mb-2" style={{ color: '#94a3b8' }}>País</label>
+          <select className="form-input w-full">
+            {COUNTRIES.map(c => <option key={c}>{c}</option>)}
+          </select>
+        </div>
+        <div>
+          <label className="block text-sm font-medium mb-2" style={{ color: '#94a3b8' }}>Nº de funcionários</label>
+          <select className="form-input w-full">
+            {COMPANY_SIZES.map(s => <option key={s}>{s}</option>)}
+          </select>
+        </div>
+      </div>
+      <div>
+        <label className="block text-sm font-medium mb-3" style={{ color: '#94a3b8' }}>Que tipo de automação precisas?</label>
+        <CheckboxGroup options={AUTOMATION_TYPES} selected={automationTypes} onToggle={toggle} />
+      </div>
+      <button type="submit" className="btn-primary btn-primary-lg w-full justify-center" style={{ marginTop: '8px' }}>
+        Criar Conta Gratuita →
+      </button>
+      <p className="text-xs text-center" style={{ color: '#64748b' }}>
+        Ao registares-te, aceitas os{' '}
+        <Link to="#" style={{ color: '#6366f1', textDecoration: 'none' }}>Termos de Serviço</Link>
+        {' '}e a{' '}
+        <Link to="#" style={{ color: '#6366f1', textDecoration: 'none' }}>Política de Privacidade</Link>.
+      </p>
+    </form>
+  )
+}
+
+function EspecialistaForm({ onSuccess }) {
+  const [skills, setSkills] = useState([])
+  const toggle = (val) => setSkills(prev => prev.includes(val) ? prev.filter(x => x !== val) : [...prev, val])
+
+  return (
+    <form onSubmit={e => { e.preventDefault(); onSuccess() }} className="space-y-5">
+      <div className="grid sm:grid-cols-2 gap-5">
+        <div>
+          <label className="block text-sm font-medium mb-2" style={{ color: '#94a3b8' }}>Nome completo *</label>
+          <input type="text" required className="form-input" placeholder="Ricardo Fernandes" />
+        </div>
+        <div>
+          <label className="block text-sm font-medium mb-2" style={{ color: '#94a3b8' }}>Email *</label>
+          <input type="email" required className="form-input" placeholder="ricardo@email.com" />
+        </div>
+      </div>
+      <div className="grid sm:grid-cols-2 gap-5">
+        <div>
+          <label className="block text-sm font-medium mb-2" style={{ color: '#94a3b8' }}>Telefone</label>
+          <input type="tel" className="form-input" placeholder="+351 900 000 000" />
+        </div>
+        <div>
+          <label className="block text-sm font-medium mb-2" style={{ color: '#94a3b8' }}>LinkedIn</label>
+          <input type="url" className="form-input" placeholder="linkedin.com/in/teu-perfil" />
+        </div>
+      </div>
+      <div className="grid sm:grid-cols-2 gap-5">
+        <div>
+          <label className="block text-sm font-medium mb-2" style={{ color: '#94a3b8' }}>País</label>
+          <select className="form-input w-full">
+            {COUNTRIES.map(c => <option key={c}>{c}</option>)}
+          </select>
+        </div>
+        <div>
+          <label className="block text-sm font-medium mb-2" style={{ color: '#94a3b8' }}>Anos de experiência</label>
+          <select className="form-input w-full">
+            {EXPERIENCE_YEARS.map(y => <option key={y}>{y}</option>)}
+          </select>
+        </div>
+      </div>
+      <div>
+        <label className="block text-sm font-medium mb-3" style={{ color: '#94a3b8' }}>Especialidades principais</label>
+        <CheckboxGroup options={SPECIALIST_SKILLS} selected={skills} onToggle={toggle} />
+      </div>
+      <div>
+        <label className="block text-sm font-medium mb-2" style={{ color: '#94a3b8' }}>Portfolio / GitHub (opcional)</label>
+        <input type="url" className="form-input" placeholder="github.com/teu-perfil" />
+      </div>
+      <button type="submit" className="btn-primary btn-primary-lg w-full justify-center" style={{ marginTop: '8px' }}>
+        Submeter Candidatura →
+      </button>
+      <p className="text-xs text-center" style={{ color: '#64748b' }}>
+        Ao registares-te, aceitas os{' '}
+        <Link to="#" style={{ color: '#6366f1', textDecoration: 'none' }}>Termos de Serviço</Link>
+        {' '}e a{' '}
+        <Link to="#" style={{ color: '#6366f1', textDecoration: 'none' }}>Política de Privacidade</Link>.
+      </p>
+    </form>
+  )
+}
+
+function SuccessMessage({ type, onReset }) {
+  const isEmpresa = type === 'empresa'
+  return (
+    <div className="text-center py-16">
+      <div className="text-6xl mb-6">🎉</div>
+      <h2 className="text-2xl font-extrabold mb-4" style={{ color: '#f1f5f9', letterSpacing: '-0.02em' }}>
+        {isEmpresa ? 'Conta criada com sucesso!' : 'Candidatura submetida!'}
+      </h2>
+      <p className="text-lg mb-8" style={{ color: '#94a3b8' }}>
+        {isEmpresa
+          ? 'Bem-vindo à Synk. Podes já publicar o teu primeiro projeto.'
+          : 'Analisamos o teu perfil em 24 horas úteis e entramos em contacto.'}
+      </p>
+      <div className="flex flex-wrap gap-4 justify-center">
+        {isEmpresa ? (
+          <>
+            <Link to="/para-empresas" className="btn-primary btn-primary-lg">Publicar primeiro projeto →</Link>
+            <button onClick={onReset} className="btn-ghost" style={{ fontSize: '15px', padding: '14px 24px' }}>Voltar</button>
+          </>
+        ) : (
+          <>
+            <Link to="/para-especialistas" className="btn-primary btn-primary-lg">Explorar projetos →</Link>
+            <button onClick={onReset} className="btn-ghost" style={{ fontSize: '15px', padding: '14px 24px' }}>Voltar</button>
+          </>
+        )}
+      </div>
+    </div>
+  )
+}
+
+export default function Registar() {
+  useMeta({
+    title: 'Começa hoje',
+    description: 'Regista-te na Synk como empresa ou especialista. Rápido, grátis e sem compromisso.',
+  })
+
+  const [selected, setSelected] = useState(null) // null | 'empresa' | 'especialista'
+  const [success, setSuccess] = useState(false)
+
+  const reset = () => { setSelected(null); setSuccess(false) }
+
+  return (
+    <section
+      className="min-h-screen pt-20 pb-24 relative"
+      style={{ background: 'radial-gradient(ellipse at 50% 0%, #1a1f2e 0%, #0f1117 60%)' }}
+    >
+      {/* Grid bg */}
+      <div
+        className="absolute inset-0 opacity-5"
+        style={{
+          backgroundImage: `linear-gradient(#6366f1 1px, transparent 1px), linear-gradient(90deg, #6366f1 1px, transparent 1px)`,
+          backgroundSize: '60px 60px',
+        }}
+      />
+
+      <div className="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Header */}
+        <Reveal>
+          <div className="text-center mb-12 pt-8">
+            <h1 className="text-4xl sm:text-5xl font-extrabold mb-4 tracking-tight" style={{ color: '#f1f5f9', letterSpacing: '-0.03em' }}>
+              Como preferes{' '}
+              <span className="text-gradient">começar?</span>
+            </h1>
+            <p className="text-lg" style={{ color: '#94a3b8' }}>
+              Escolhe o teu caminho e começa em minutos.
+            </p>
+          </div>
+        </Reveal>
+
+        {success ? (
+          <Reveal>
+            <div
+              className="max-w-2xl mx-auto rounded-2xl p-8"
+              style={{ background: '#1a1f2e', border: '1px solid #1e2436' }}
+            >
+              <SuccessMessage type={selected} onReset={reset} />
+            </div>
+          </Reveal>
+        ) : selected === null ? (
+          /* Split selection */
+          <Reveal delay={100}>
+            <div className="grid md:grid-cols-2 gap-6">
+              {/* Empresa card */}
+              <button
+                onClick={() => setSelected('empresa')}
+                className="card p-8 text-left transition-all"
+                style={{ background: '#1a1f2e', border: '1px solid #1e2436', borderRadius: '16px', cursor: 'pointer' }}
+                onMouseEnter={e => { e.currentTarget.style.borderColor = '#6366f1'; e.currentTarget.style.boxShadow = '0 0 30px rgba(99,102,241,0.15)' }}
+                onMouseLeave={e => { e.currentTarget.style.borderColor = '#1e2436'; e.currentTarget.style.boxShadow = 'none' }}
+              >
+                <div className="text-5xl mb-5">🏢</div>
+                <h2 className="text-xl font-extrabold mb-2" style={{ color: '#f1f5f9' }}>Sou uma Empresa</h2>
+                <p className="text-sm mb-6" style={{ color: '#94a3b8' }}>
+                  Quero contratar especialistas para automatizar processos
+                </p>
+                <ul className="space-y-2 mb-6">
+                  {['Grátis', 'Propostas em 48h', 'Escrow incluído'].map((item, i) => (
+                    <li key={i} className="flex items-center gap-2 text-sm" style={{ color: '#94a3b8' }}>
+                      <span style={{ color: '#10b981' }}>✓</span> {item}
+                    </li>
+                  ))}
+                </ul>
+                <span className="btn-primary" style={{ display: 'inline-flex' }}>
+                  Registar como Empresa →
+                </span>
+              </button>
+
+              {/* Especialista card */}
+              <button
+                onClick={() => setSelected('especialista')}
+                className="text-left transition-all"
+                style={{
+                  background: '#1a1f2e',
+                  border: '1px solid rgba(139,92,246,0.4)',
+                  borderRadius: '16px',
+                  padding: '32px',
+                  cursor: 'pointer',
+                  boxShadow: '0 0 30px rgba(139,92,246,0.1)',
+                }}
+                onMouseEnter={e => { e.currentTarget.style.borderColor = '#8b5cf6'; e.currentTarget.style.boxShadow = '0 0 40px rgba(139,92,246,0.2)' }}
+                onMouseLeave={e => { e.currentTarget.style.borderColor = 'rgba(139,92,246,0.4)'; e.currentTarget.style.boxShadow = '0 0 30px rgba(139,92,246,0.1)' }}
+              >
+                <div className="text-5xl mb-5">🧑‍💻</div>
+                <h2 className="text-xl font-extrabold mb-2" style={{ color: '#f1f5f9' }}>Sou Especialista</h2>
+                <p className="text-sm mb-6" style={{ color: '#94a3b8' }}>
+                  Quero aceder a projetos de automação qualificados
+                </p>
+                <ul className="space-y-2 mb-6">
+                  {['Perfil gratuito', 'Pagamento garantido', 'Verificação em 24h'].map((item, i) => (
+                    <li key={i} className="flex items-center gap-2 text-sm" style={{ color: '#94a3b8' }}>
+                      <span style={{ color: '#8b5cf6' }}>✓</span> {item}
+                    </li>
+                  ))}
+                </ul>
+                <span className="btn-outline" style={{ display: 'inline-flex' }}>
+                  Criar Perfil de Especialista →
+                </span>
+              </button>
+            </div>
+          </Reveal>
+        ) : (
+          /* Form */
+          <Reveal>
+            <div className="max-w-2xl mx-auto">
+              {/* Back button */}
+              <button
+                onClick={reset}
+                className="flex items-center gap-2 mb-8 text-sm"
+                style={{ color: '#94a3b8', background: 'none', border: 'none', cursor: 'pointer' }}
+              >
+                ← Voltar à seleção
+              </button>
+
+              <div
+                className="rounded-2xl p-8"
+                style={{ background: '#1a1f2e', border: `1px solid ${selected === 'empresa' ? '#6366f1' : '#8b5cf6'}44` }}
+              >
+                <div className="flex items-center gap-3 mb-8">
+                  <span className="text-3xl">{selected === 'empresa' ? '🏢' : '🧑‍💻'}</span>
+                  <div>
+                    <h2 className="text-xl font-extrabold" style={{ color: '#f1f5f9' }}>
+                      {selected === 'empresa' ? 'Registar como Empresa' : 'Criar Perfil de Especialista'}
+                    </h2>
+                    <p className="text-sm" style={{ color: '#64748b' }}>
+                      {selected === 'empresa' ? 'Leva menos de 2 minutos' : 'Verificação em 24h úteis'}
+                    </p>
+                  </div>
+                </div>
+
+                {selected === 'empresa'
+                  ? <EmpresaForm onSuccess={() => setSuccess(true)} />
+                  : <EspecialistaForm onSuccess={() => setSuccess(true)} />
+                }
+              </div>
+            </div>
+          </Reveal>
+        )}
+      </div>
+    </section>
+  )
+}

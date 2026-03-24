@@ -1,0 +1,1192 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Synk — Jornada do Cliente</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0f1117;--card:#1a1f2e;--border:#1e2436;
+  --white:#f1f5f9;--mid:#94a3b8;--dim:#64748b;
+  --purple:#6366f1;--violet:#8b5cf6;--cyan:#06b6d4;--green:#10b981;--amber:#f59e0b;
+}
+html{scroll-behavior:smooth}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--white);min-height:100vh;overflow-x:hidden}
+
+/* ── NAVBAR ── */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 40px;height:60px;
+  background:rgba(15,17,23,.85);backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--border);transition:all .3s;
+}
+.nav-logo{font-size:20px;font-weight:800;background:linear-gradient(135deg,var(--purple),var(--violet),var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;letter-spacing:-0.5px}
+.nav-links{display:flex;gap:6px}
+.nav-links a{
+  font-size:12px;font-weight:500;color:var(--dim);text-decoration:none;
+  padding:6px 12px;border-radius:6px;transition:.2s;cursor:pointer
+}
+.nav-links a:hover{color:var(--white);background:var(--card)}
+
+/* ── HERO ── */
+.hero{
+  min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  text-align:center;padding:80px 24px 60px;position:relative;overflow:hidden;
+}
+.hero::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse 80% 60% at 50% 40%,rgba(99,102,241,.12) 0%,transparent 70%);
+  pointer-events:none;
+}
+.hero-tag{
+  display:inline-flex;align-items:center;gap:8px;
+  background:var(--card);border:1px solid var(--border);
+  border-radius:20px;padding:6px 16px;font-size:12px;font-weight:600;
+  color:var(--purple);letter-spacing:2px;text-transform:uppercase;margin-bottom:24px;
+}
+.hero h1{
+  font-size:clamp(36px,6vw,72px);font-weight:800;letter-spacing:-2px;line-height:1.1;
+  background:linear-gradient(135deg,var(--white) 0%,var(--mid) 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  margin-bottom:16px;
+}
+.hero h1 span{
+  background:linear-gradient(135deg,var(--purple),var(--violet),var(--cyan));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.hero-sub{font-size:18px;color:var(--mid);max-width:580px;line-height:1.7;margin-bottom:48px}
+.hero-pills{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-bottom:48px}
+.phase-pill-hero{
+  display:flex;align-items:center;gap:8px;
+  padding:8px 16px;border-radius:20px;font-size:13px;font-weight:600;
+  background:var(--card);border:1px solid var(--border);
+  cursor:pointer;transition:.25s;color:var(--mid);
+}
+.phase-pill-hero:hover{transform:translateY(-2px);color:var(--white)}
+.phase-pill-hero .dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.hero-cta{
+  display:inline-flex;align-items:center;gap:8px;
+  background:linear-gradient(135deg,var(--purple),var(--violet));
+  color:#fff;font-size:15px;font-weight:600;padding:14px 28px;border-radius:10px;
+  cursor:pointer;border:none;transition:.2s;
+}
+.hero-cta:hover{opacity:.9;transform:translateY(-1px)}
+
+/* ── SECTION COMMON ── */
+section{padding:80px 40px;max-width:1200px;margin:0 auto}
+.section-label{font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--purple);margin-bottom:8px}
+.section-title{font-size:32px;font-weight:800;letter-spacing:-0.5px;margin-bottom:8px}
+.section-sub{font-size:15px;color:var(--mid);margin-bottom:40px}
+hr.divider{border:none;border-top:1px solid var(--border);margin-bottom:40px}
+
+/* ── PHASE SELECTOR (sticky) ── */
+.phase-nav-wrap{
+  position:sticky;top:60px;z-index:50;
+  background:rgba(15,17,23,.95);backdrop-filter:blur(10px);
+  border-bottom:1px solid var(--border);padding:0 40px;
+}
+.phase-nav{
+  max-width:1200px;margin:0 auto;
+  display:flex;align-items:stretch;gap:0;overflow-x:auto;
+}
+.phase-nav::-webkit-scrollbar{height:3px}
+.phase-nav::-webkit-scrollbar-track{background:transparent}
+.phase-nav::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
+.phase-btn{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:4px;padding:14px 20px;cursor:pointer;
+  border:none;background:transparent;color:var(--dim);
+  font-family:'Inter',sans-serif;font-size:12px;font-weight:600;
+  border-bottom:2px solid transparent;transition:.2s;white-space:nowrap;
+  letter-spacing:0.5px;
+}
+.phase-btn .pnum{font-size:10px;font-weight:700;letter-spacing:2px;opacity:.6}
+.phase-btn:hover{color:var(--white);background:rgba(255,255,255,.03)}
+.phase-btn.active{color:var(--white);border-bottom-color:var(--phase-color,var(--purple))}
+.phase-btn.active .pnum{opacity:1;color:var(--phase-color,var(--purple))}
+
+/* ── JOURNEY SECTION ── */
+#journey{padding-top:40px}
+.journey-wrapper{max-width:1200px;margin:0 auto;padding:0 40px}
+.phase-content{display:none;animation:fadeUp .4s ease}
+.phase-content.active{display:block}
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+
+.phase-header{
+  display:flex;align-items:center;gap:16px;margin-bottom:32px;padding:24px 28px;
+  background:var(--card);border:1px solid var(--border);border-radius:14px;
+  border-left:4px solid var(--phase-color,var(--purple));
+}
+.phase-num-badge{
+  font-size:11px;font-weight:700;letter-spacing:2px;
+  color:var(--phase-color,var(--purple));background:rgba(99,102,241,.1);
+  padding:4px 10px;border-radius:6px;white-space:nowrap;
+}
+.phase-title-big{font-size:28px;font-weight:800;flex:1}
+.phase-desc{font-size:14px;color:var(--mid);line-height:1.7;max-width:600px}
+
+/* ── TOUCHPOINTS ── */
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:20px}
+@media(max-width:768px){.grid-2{grid-template-columns:1fr}}
+.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:20px}
+@media(max-width:900px){.grid-3{grid-template-columns:1fr 1fr}}
+@media(max-width:600px){.grid-3{grid-template-columns:1fr}}
+
+.card{background:var(--card);border:1px solid var(--border);border-radius:12px;overflow:hidden;transition:.2s}
+.card:hover{border-color:var(--phase-color,var(--border))}
+.card-header{
+  padding:14px 18px;display:flex;align-items:center;gap:10px;
+  border-bottom:1px solid var(--border);
+}
+.card-header-icon{
+  width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;
+  font-size:16px;flex-shrink:0;
+}
+.card-header h3{font-size:13px;font-weight:700;color:var(--white)}
+.card-body{padding:16px 18px}
+
+/* Touchpoint item */
+.tp-list{list-style:none;display:flex;flex-direction:column;gap:10px}
+.tp-item{display:flex;flex-direction:column;gap:0}
+.tp-row{
+  display:flex;align-items:flex-start;gap:10px;padding:10px 14px;
+  border-radius:8px;background:rgba(255,255,255,.02);border:1px solid var(--border);
+  transition:.2s;cursor:default;
+}
+.tp-row.has-detail{cursor:pointer}
+.tp-row.has-detail:hover{background:rgba(255,255,255,.04);border-color:var(--phase-color,var(--border))}
+.tp-num{
+  font-size:11px;font-weight:700;color:var(--phase-color,var(--purple));
+  background:rgba(99,102,241,.12);padding:2px 7px;border-radius:4px;
+  flex-shrink:0;margin-top:1px;
+}
+.tp-text{flex:1}
+.tp-title{font-size:13px;font-weight:600;color:var(--white)}
+.tp-desc{font-size:12px;color:var(--dim);margin-top:2px;line-height:1.5}
+.tp-badge{
+  display:inline-flex;align-items:center;gap:4px;
+  font-size:10px;font-weight:600;letter-spacing:.5px;
+  color:var(--amber);background:rgba(245,158,11,.1);
+  padding:2px 8px;border-radius:4px;margin-top:4px;
+}
+.learn-more-btn{
+  display:inline-flex;align-items:center;gap:4px;margin-top:6px;
+  font-size:11px;font-weight:600;color:var(--phase-color,var(--purple));
+  background:none;border:none;cursor:pointer;font-family:'Inter',sans-serif;padding:0;
+  transition:.15s;
+}
+.learn-more-btn:hover{opacity:.75}
+.learn-more-btn .arrow{transition:transform .2s}
+.learn-more-btn.open .arrow{transform:rotate(180deg)}
+
+.detail-panel{
+  display:none;margin-top:6px;padding:14px 16px;
+  background:rgba(99,102,241,.06);border:1px solid rgba(99,102,241,.2);
+  border-radius:8px;font-size:13px;color:var(--mid);line-height:1.7;
+}
+.detail-panel.open{display:block;animation:fadeUp .25s ease}
+.detail-panel h4{font-size:12px;font-weight:700;color:var(--white);margin-bottom:8px;text-transform:uppercase;letter-spacing:1px}
+.detail-panel p{margin-bottom:10px}
+.detail-panel p:last-child{margin-bottom:0}
+.detail-panel ul{padding-left:0;list-style:none;display:flex;flex-direction:column;gap:6px;margin-top:8px}
+.detail-panel ul li{display:flex;gap:8px;align-items:flex-start}
+.detail-panel ul li::before{content:'→';color:var(--phase-color,var(--purple));flex-shrink:0;font-weight:700}
+
+/* ── STATE + GOAL CARDS ── */
+.state-goal-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px}
+@media(max-width:640px){.state-goal-grid{grid-template-columns:1fr}}
+.state-card,.goal-card{
+  background:var(--card);border:1px solid var(--border);border-radius:12px;overflow:hidden;
+}
+.state-card-header,.goal-card-header{
+  padding:10px 18px;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;
+  color:#fff;
+}
+.state-card-body,.goal-card-body{padding:16px 18px;display:flex;flex-direction:column;gap:10px}
+.emotion-item,.goal-item{display:flex;align-items:flex-start;gap:10px;font-size:13px;color:var(--mid);line-height:1.5}
+.emotion-emoji{font-size:18px;flex-shrink:0;margin-top:-1px}
+.goal-check{
+  width:18px;height:18px;border-radius:5px;display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;font-size:10px;font-weight:700;color:#fff;margin-top:1px;
+}
+
+/* ── MAPA COMPLETO ── */
+#mapa{background:rgba(26,31,46,.5);border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:80px 40px}
+.mapa-inner{max-width:1200px;margin:0 auto}
+.mapa-table{width:100%;border-collapse:collapse;margin-top:32px}
+.mapa-table th{
+  padding:12px 16px;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;
+  color:#fff;text-align:left;
+}
+.mapa-table td{
+  padding:10px 16px;font-size:12px;color:var(--mid);
+  border-top:1px solid var(--border);vertical-align:top;
+}
+.mapa-table tr:hover td{background:rgba(255,255,255,.02)}
+.phase-th{border-radius:8px 8px 0 0;font-size:12px;padding:10px 16px}
+.tp-cell-item{
+  display:flex;align-items:flex-start;gap:6px;padding:4px 0;font-size:12px;
+}
+.tp-cell-dot{width:5px;height:5px;border-radius:50%;flex-shrink:0;margin-top:5px}
+
+/* ── KPIs ── */
+#kpis{padding:80px 40px}
+.kpis-inner{max-width:1200px;margin:0 auto}
+.kpi-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:16px}
+@media(max-width:900px){.kpi-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:500px){.kpi-grid{grid-template-columns:1fr}}
+.kpi-card{background:var(--card);border:1px solid var(--border);border-radius:12px;overflow:hidden}
+.kpi-card-header{padding:10px 16px;font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#fff}
+.kpi-card-body{padding:14px 16px;display:flex;flex-direction:column;gap:10px}
+.kpi-item{display:flex;flex-direction:column;gap:3px}
+.kpi-metric{font-size:12px;font-weight:600;color:var(--white)}
+.kpi-label{font-size:11px;color:var(--dim);line-height:1.4}
+
+/* ── CONCLUSOES ── */
+#conclusoes{padding:80px 40px;background:rgba(26,31,46,.3);border-top:1px solid var(--border)}
+.conclusoes-inner{max-width:1200px;margin:0 auto}
+.concl-grid{display:grid;grid-template-columns:1fr 2fr;gap:40px;align-items:start}
+@media(max-width:768px){.concl-grid{grid-template-columns:1fr}}
+.concl-left h2{font-size:28px;font-weight:800;line-height:1.2;margin-bottom:16px}
+.concl-left p{font-size:14px;color:var(--mid);line-height:1.7}
+.concl-list{display:flex;flex-direction:column;gap:14px}
+.concl-item{
+  display:flex;align-items:flex-start;gap:16px;padding:18px 20px;
+  background:var(--card);border:1px solid var(--border);border-radius:12px;
+  border-left:4px solid var(--c,var(--purple));transition:.2s;
+}
+.concl-item:hover{background:rgba(26,31,46,.8)}
+.concl-num{font-size:18px;font-weight:800;color:var(--c,var(--purple));flex-shrink:0;line-height:1;padding-top:2px}
+.concl-text{font-size:13px;color:var(--mid);line-height:1.65}
+.concl-text strong{color:var(--white);font-weight:600}
+
+/* ── FOOTER ── */
+footer{
+  padding:32px 40px;border-top:1px solid var(--border);
+  display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;
+  max-width:1200px;margin:0 auto;
+}
+footer .fl{font-size:13px;font-weight:700;background:linear-gradient(135deg,var(--purple),var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+footer .fr{font-size:12px;color:var(--dim);text-align:right}
+
+/* ── MODAL ── */
+.modal-overlay{
+  display:none;position:fixed;inset:0;z-index:200;
+  background:rgba(0,0,0,.7);backdrop-filter:blur(6px);
+  align-items:center;justify-content:center;padding:24px;
+}
+.modal-overlay.open{display:flex}
+.modal{
+  background:var(--card);border:1px solid var(--border);border-radius:16px;
+  max-width:600px;width:100%;max-height:85vh;overflow-y:auto;
+  animation:fadeUp .3s ease;
+}
+.modal-header{
+  padding:20px 24px;border-bottom:1px solid var(--border);
+  display:flex;align-items:center;justify-content:space-between;
+  position:sticky;top:0;background:var(--card);z-index:1;
+}
+.modal-header h3{font-size:16px;font-weight:700}
+.modal-close{
+  background:none;border:none;color:var(--dim);cursor:pointer;
+  font-size:20px;padding:4px 8px;border-radius:6px;transition:.15s;font-family:inherit;
+}
+.modal-close:hover{background:var(--border);color:var(--white)}
+.modal-body{padding:24px}
+.modal-body h4{font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--phase-color,var(--purple));margin-bottom:12px}
+.modal-body p{font-size:14px;color:var(--mid);line-height:1.75;margin-bottom:14px}
+.modal-body p:last-child{margin-bottom:0}
+.modal-body ul{list-style:none;display:flex;flex-direction:column;gap:8px;margin:12px 0}
+.modal-body ul li{display:flex;gap:10px;align-items:flex-start;font-size:14px;color:var(--mid)}
+.modal-body ul li .arrow{color:var(--phase-color,var(--purple));font-weight:700;flex-shrink:0}
+.modal-diagram{
+  display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap;
+  margin:20px 0;padding:20px;background:rgba(99,102,241,.06);
+  border:1px solid rgba(99,102,241,.2);border-radius:10px;
+}
+.diag-box{
+  background:var(--bg);border:1px solid var(--border);border-radius:8px;
+  padding:10px 14px;text-align:center;font-size:12px;color:var(--white);
+  font-weight:600;min-width:100px;
+}
+.diag-box small{display:block;font-size:10px;color:var(--dim);font-weight:400;margin-top:2px}
+.diag-arrow{font-size:18px;color:var(--dim);flex-shrink:0}
+.highlight-box{
+  background:rgba(16,185,129,.08);border:1px solid rgba(16,185,129,.25);
+  border-radius:8px;padding:12px 16px;margin-top:14px;
+  font-size:13px;color:var(--green);font-weight:500;
+}
+
+/* ── PROGRESS BAR ── */
+.read-progress{position:fixed;top:0;left:0;height:3px;width:0%;z-index:999;background:linear-gradient(90deg,var(--purple),var(--violet),var(--cyan));transition:width .08s linear;pointer-events:none}
+
+/* ── HERO STATS ── */
+.hero-stats{display:flex;gap:0;justify-content:center;flex-wrap:wrap;margin-top:40px;background:var(--card);border:1px solid var(--border);border-radius:14px;overflow:hidden}
+.hero-stat{display:flex;flex-direction:column;align-items:center;gap:6px;padding:20px 32px;flex:1;min-width:110px;border-right:1px solid var(--border)}
+.hero-stat:last-child{border-right:none}
+.hero-stat-num{font-size:32px;font-weight:800;background:linear-gradient(135deg,var(--purple),var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1;min-width:2ch;text-align:center}
+.hero-stat-label{font-size:11px;color:var(--dim);font-weight:600;letter-spacing:1px;text-transform:uppercase;text-align:center}
+
+/* ── FUNIL ── */
+.funil-wrap{padding:64px 40px 0;max-width:1200px;margin:0 auto}
+.funil-header{text-align:center;margin-bottom:36px}
+.funil-steps{display:flex;align-items:stretch;justify-content:center;gap:0}
+.funil-step{
+  display:flex;flex-direction:column;align-items:center;gap:10px;
+  padding:24px 12px 20px;flex:1;max-width:200px;
+  background:var(--card);border:1px solid var(--border);
+  transition:.2s;position:relative;text-align:center;
+}
+.funil-step:first-child{border-radius:12px 0 0 12px}
+.funil-step:last-child{border-radius:0 12px 12px 0;border-right:1px solid var(--border)}
+.funil-step:not(:last-child){border-right:none}
+.funil-step:hover{z-index:1;transform:translateY(-3px);border-color:var(--step-color);border-right:1px solid var(--step-color)}
+.funil-step:hover + .funil-step{border-left:1px solid var(--border)}
+.funil-top-bar{height:4px;width:100%;border-radius:2px;background:var(--step-color);margin-bottom:4px;position:absolute;top:0;left:0;right:0}
+.funil-step-icon{font-size:26px}
+.funil-step-phase{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--step-color)}
+.funil-step-pct{font-size:28px;font-weight:800;color:var(--white);line-height:1}
+.funil-step-pct-label{font-size:11px;color:var(--dim);line-height:1.4}
+.funil-conv{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0 6px;flex-shrink:0}
+.funil-conv-arrow{font-size:18px;color:var(--dim)}
+.funil-conv-rate{font-size:10px;font-weight:700;color:var(--green);background:rgba(16,185,129,.1);border:1px solid rgba(16,185,129,.2);border-radius:4px;padding:2px 6px;white-space:nowrap;margin-top:4px}
+
+/* ── SCROLL INDICATOR ── */
+.scroll-down{
+  display:flex;flex-direction:column;align-items:center;gap:6px;margin-top:8px;
+  color:var(--dim);font-size:11px;font-weight:500;letter-spacing:1px;text-transform:uppercase;cursor:pointer;
+  animation:bob 2s ease-in-out infinite;
+}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(6px)}}
+.scroll-down svg{width:20px;height:20px;stroke:var(--dim)}
+</style>
+</head>
+<body>
+
+<!-- PROGRESS BAR -->
+<div class="read-progress" id="readProgress"></div>
+
+<!-- NAVBAR -->
+<nav>
+  <div class="nav-logo">Synk</div>
+  <div class="nav-links">
+    <a onclick="goTo('#journey')">Jornada</a>
+    <a onclick="goTo('#mapa')">Mapa Completo</a>
+    <a onclick="goTo('#kpis')">KPIs</a>
+    <a onclick="goTo('#conclusoes')">Conclusões</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-tag">📍 Proposta de Valor · Modelo de Negócio</div>
+  <h1>Jornada do <span>Cliente</span></h1>
+  <p class="hero-sub">Mapeamento interativo dos touchpoints da Synk — do primeiro contacto à fidelização — com explicações aprofundadas de cada conceito.</p>
+  <div class="hero-pills" id="heroPills"></div>
+  <button class="hero-cta" onclick="goTo('#journey')">Explorar a Jornada →</button>
+  <div class="hero-stats">
+    <div class="hero-stat"><div class="hero-stat-num" data-target="5" data-suffix="">0</div><div class="hero-stat-label">Fases</div></div>
+    <div class="hero-stat"><div class="hero-stat-num" data-target="35" data-suffix="+">0</div><div class="hero-stat-label">Touchpoints</div></div>
+    <div class="hero-stat"><div class="hero-stat-num" data-target="2" data-suffix="">0</div><div class="hero-stat-label">Perfis</div></div>
+    <div class="hero-stat"><div class="hero-stat-num" data-target="15" data-suffix="%">0</div><div class="hero-stat-label">Comissão</div></div>
+  </div>
+  <div class="scroll-down" onclick="goTo('#journey')" style="margin-top:32px">
+    <span>Scroll</span>
+    <svg fill="none" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+  </div>
+</div>
+
+<!-- FUNIL DE CONVERSÃO -->
+<div class="funil-wrap">
+  <div class="funil-header">
+    <div class="section-label" style="text-align:center">Funil de Conversão</div>
+    <h2 class="section-title" style="text-align:center">Do Desconhecido ao Promotor</h2>
+    <p class="section-sub" style="text-align:center;max-width:540px;margin:0 auto 0">Como os visitantes progridem ao longo da jornada e as taxas de conversão entre fases.</p>
+  </div>
+  <div class="funil-steps">
+
+    <div class="funil-step" style="--step-color:#6366f1">
+      <div class="funil-top-bar"></div>
+      <div class="funil-step-icon">🔍</div>
+      <div class="funil-step-phase">Descoberta</div>
+      <div class="funil-step-pct" data-target="100" data-suffix="%">0%</div>
+      <div class="funil-step-pct-label">Visitantes que chegam ao site</div>
+    </div>
+
+    <div class="funil-conv">
+      <div class="funil-conv-arrow">→</div>
+      <div class="funil-conv-rate">25%</div>
+    </div>
+
+    <div class="funil-step" style="--step-color:#06b6d4">
+      <div class="funil-top-bar"></div>
+      <div class="funil-step-icon">🤔</div>
+      <div class="funil-step-phase">Consideração</div>
+      <div class="funil-step-pct" data-target="25" data-suffix="%">0%</div>
+      <div class="funil-step-pct-label">Exploram o site em detalhe</div>
+    </div>
+
+    <div class="funil-conv">
+      <div class="funil-conv-arrow">→</div>
+      <div class="funil-conv-rate">60%</div>
+    </div>
+
+    <div class="funil-step" style="--step-color:#10b981">
+      <div class="funil-top-bar"></div>
+      <div class="funil-step-icon">⚡</div>
+      <div class="funil-step-phase">Decisão</div>
+      <div class="funil-step-pct" data-target="15" data-suffix="%">0%</div>
+      <div class="funil-step-pct-label">Avançam para registar projeto</div>
+    </div>
+
+    <div class="funil-conv">
+      <div class="funil-conv-arrow">→</div>
+      <div class="funil-conv-rate">80%</div>
+    </div>
+
+    <div class="funil-step" style="--step-color:#8b5cf6">
+      <div class="funil-top-bar"></div>
+      <div class="funil-step-icon">🚀</div>
+      <div class="funil-step-phase">Compra & Uso</div>
+      <div class="funil-step-pct" data-target="12" data-suffix="%">0%</div>
+      <div class="funil-step-pct-label">Completam o 1.º projeto</div>
+    </div>
+
+    <div class="funil-conv">
+      <div class="funil-conv-arrow">→</div>
+      <div class="funil-conv-rate">40%</div>
+    </div>
+
+    <div class="funil-step" style="--step-color:#f59e0b">
+      <div class="funil-top-bar"></div>
+      <div class="funil-step-icon">❤️</div>
+      <div class="funil-step-phase">Fidelização</div>
+      <div class="funil-step-pct" data-target="5" data-suffix="%">0%</div>
+      <div class="funil-step-pct-label">Tornam-se clientes recorrentes</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- PHASE NAV (sticky) -->
+<div class="phase-nav-wrap" id="phaseNav">
+  <div class="phase-nav" id="phaseNavInner"></div>
+</div>
+
+<!-- JOURNEY -->
+<div id="journey" style="padding:0">
+  <div class="journey-wrapper" id="journeyWrapper" style="padding-top:32px;padding-bottom:80px"></div>
+</div>
+
+<!-- MAPA COMPLETO -->
+<div id="mapa">
+  <div class="mapa-inner">
+    <div class="section-label">Mapa Completo</div>
+    <h2 class="section-title">Todos os Touchpoints por Fase</h2>
+    <p class="section-sub">Visão consolidada de cada ponto de contacto ao longo da jornada.</p>
+    <div style="overflow-x:auto">
+      <table class="mapa-table" id="mapaTable"></table>
+    </div>
+  </div>
+</div>
+
+<!-- KPIs -->
+<div id="kpis">
+  <div class="kpis-inner">
+    <div class="section-label">Métricas</div>
+    <h2 class="section-title">KPIs por Fase da Jornada</h2>
+    <p class="section-sub">Como medimos o sucesso em cada etapa.</p>
+    <div class="kpi-grid" id="kpiGrid"></div>
+  </div>
+</div>
+
+<!-- CONCLUSOES -->
+<div id="conclusoes">
+  <div class="conclusoes-inner">
+    <div class="concl-grid">
+      <div class="concl-left">
+        <div class="section-label">Conclusões</div>
+        <h2 style="font-size:26px;font-weight:800;line-height:1.3;margin-bottom:16px">O que aprendemos com esta análise</h2>
+        <p class="section-sub" style="margin-bottom:0">5 takeaways estratégicos para a Synk crescer de forma sustentável.</p>
+        <div style="margin-top:32px;padding:20px;background:var(--card);border:1px solid var(--border);border-radius:12px;">
+          <div style="font-size:11px;font-weight:700;letter-spacing:2px;color:var(--dim);margin-bottom:12px;text-transform:uppercase">Grupo</div>
+          <div style="font-size:14px;font-weight:600;color:var(--white);margin-bottom:4px">MogWartz</div>
+          <div style="font-size:12px;color:var(--dim);line-height:1.6">Khalid Shah · Daniel Pinto<br>Cristiano Pereira</div>
+        </div>
+      </div>
+      <div class="concl-list" id="conclusoesList"></div>
+    </div>
+  </div>
+</div>
+
+<div style="max-width:1200px;margin:0 auto">
+  <footer>
+    <div class="fl">Synk — Business Automation Marketplace</div>
+    <div class="fr">Jornada do Cliente · 2026<br>Proposta de Valor · Modelo de Negócio</div>
+  </footer>
+</div>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modalOverlay" onclick="closeModal(event)">
+  <div class="modal" id="modalBox">
+    <div class="modal-header">
+      <h3 id="modalTitle"></h3>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+    <div class="modal-body" id="modalBody"></div>
+  </div>
+</div>
+
+<script>
+// ══════════════════════════════════════════════════════════════════════════════
+// DATA
+// ══════════════════════════════════════════════════════════════════════════════
+const phases = [
+  {
+    id:'descoberta', num:'01', name:'Descoberta',
+    color:'#6366f1', colorBg:'rgba(99,102,241,.1)',
+    desc:'A empresa ainda não conhece a Synk. Toma consciência da sua dor com processos manuais e começa a pesquisar soluções. O primeiro contacto pode acontecer de várias formas.',
+    touchpoints:[
+      {
+        icon:'🔍', title:'Pesquisa no Google',
+        desc:'A empresa pesquisa termos como "automatizar processos empresa" ou "freelancer RPA Portugal".',
+        detail:{
+          title:'Como funciona a pesquisa orgânica',
+          content:`<p>Quando um gestor sente que a sua equipa perde tempo em tarefas repetitivas, a primeira reação é procurar soluções no Google. A Synk pode aparecer nestes resultados de duas formas:</p><ul><li><span class="arrow">→</span> <strong>SEO orgânico</strong> — artigos do blog que respondem às pesquisas do utilizador (ex: "como automatizar faturação"). Não tem custo por clique.</li><li><span class="arrow">→</span> <strong>Google Ads</strong> — anúncios pagos que aparecem no topo para palavras-chave específicas como "freelancer automação Portugal". Custo por clique, mas resultado imediato.</li></ul><p>A vantagem é que quem chega por pesquisa já tem uma intenção clara — está ativamente à procura de uma solução.</p>`
+        }
+      },
+      {
+        icon:'💼', title:'LinkedIn Orgânico',
+        desc:'Posts educativos, artigos e casos de sucesso publicados pela Synk no LinkedIn.',
+        detail:{
+          title:'Estratégia de conteúdo no LinkedIn',
+          content:`<p>O LinkedIn é a rede social onde os decisores de PMEs (gerentes, COOs, diretores) passam mais tempo em contexto profissional. A Synk publica conteúdo que educa e cria consciência do problema, sem fazer publicidade direta.</p><p>Exemplos de posts eficazes:</p><ul><li><span class="arrow">→</span> "3 processos que qualquer PME consegue automatizar esta semana"</li><li><span class="arrow">→</span> "Caso real: como uma empresa de logística poupou 15h/semana com automação"</li><li><span class="arrow">→</span> "RPA vs. Zapier: qual é o certo para a tua empresa?"</li></ul><p>O objetivo não é vender — é que o decisor pense "isto faz sentido para mim" e siga a página da Synk. Mais tarde, quando estiver pronto, vai lembrar-se da marca.</p>`
+        }
+      },
+      {
+        icon:'▶️', title:'YouTube — Vídeos educativos',
+        desc:'Vídeos sobre automação para PMEs, demonstrações de ferramentas e histórias de sucesso.',
+        detail:{
+          title:'YouTube como canal de awareness',
+          content:`<p>O YouTube é o segundo maior motor de pesquisa do mundo. Quando alguém pesquisa "como usar Make para automatizar email" ou "tutorial Zapier para empresas", vídeos da Synk podem aparecer.</p><p>Tipos de conteúdo vídeo que funcionam:</p><ul><li><span class="arrow">→</span> Tutoriais de ferramentas populares (Make, n8n, UiPath)</li><li><span class="arrow">→</span> "Antes vs. Depois" de automatização de um processo real</li><li><span class="arrow">→</span> Entrevistas com especialistas da plataforma</li><li><span class="arrow">→</span> Webinars gravados sobre automação empresarial</li></ul><p>A vantagem do YouTube é que o conteúdo tem uma vida longa — um vídeo publicado hoje pode gerar visitas durante anos.</p>`
+        }
+      },
+      {
+        icon:'📢', title:'Google Ads / LinkedIn Ads',
+        desc:'Campanhas pagas segmentadas para decisores de PMEs nos dois canais principais.',
+        detail:{
+          title:'Publicidade paga segmentada',
+          content:`<p>Os anúncios pagos permitem à Synk chegar exatamente ao perfil certo, com a mensagem certa, no momento certo.</p><p><strong>Google Ads:</strong> Aparece quando alguém pesquisa ativamente uma solução. Palavras-chave como "contratar especialista automação", "plataforma freelance RPA".</p><p><strong>LinkedIn Ads:</strong> Permite segmentar por cargo (ex: CEO, COO, Gestor de Operações), dimensão de empresa (5–200 funcionários) e setor. Ideal para B2B porque chega diretamente aos decisores.</p><p>O custo é mais alto que o orgânico, mas o resultado é imediato — útil nos primeiros meses quando a Synk ainda não tem visibilidade orgânica.</p>`
+        }
+      },
+      {
+        icon:'🤝', title:'Word of Mouth',
+        desc:'Referência de parceiros, clientes satisfeitos ou colegas de negócios.',
+        desc_extra:'canal mais valioso',
+        detail:{
+          title:'Por que o word of mouth é o canal mais poderoso',
+          content:`<p>Quando alguém de confiança recomenda uma plataforma, o nível de ceticismo é muito mais baixo do que com um anúncio. A empresa que ouve a recomendação já chega com predisposição positiva.</p><p>Para a Synk, o word of mouth acontece naturalmente quando:</p><ul><li><span class="arrow">→</span> Uma empresa fica satisfeita com o resultado de um projeto e conta a colegas</li><li><span class="arrow">→</span> Um especialista recomenda a plataforma a outros freelancers</li><li><span class="arrow">→</span> Um caso de sucesso é partilhado nas redes sociais pelo próprio cliente</li></ul><p>Na fase de fidelização, a Synk tem um <strong>programa de referral estruturado</strong> para incentivar ativamente este canal.</p>`
+        }
+      },
+      {
+        icon:'📰', title:'Media Digital',
+        desc:'Artigos em ECO.pt, Jornal de Negócios, newsletters de tech e podcasts de empreendedorismo.',
+        detail:null
+      },
+      {
+        icon:'📸', title:'Instagram / Facebook',
+        desc:'Conteúdo educativo, storytelling de resultados e cases de sucesso em formato visual.',
+        detail:null
+      }
+    ],
+    emotions:[
+      {e:'😤', t:'Frustrado com processos manuais e repetitivos'},
+      {e:'💡', t:'Começa a perceber que pode existir uma solução'},
+      {e:'🔍', t:'Em modo de pesquisa ativa — procura informação'},
+      {e:'❓', t:'Ainda não conhece a Synk especificamente'},
+    ],
+    goals:[
+      'Criar awareness — ser encontrado quando o cliente procura',
+      'Posicionar como referência em automação para PMEs',
+      'Captar atenção com conteúdo genuinamente útil',
+      'Gerar tráfego qualificado para o site',
+    ]
+  },
+  {
+    id:'consideracao', num:'02', name:'Consideração',
+    color:'#8b5cf6', colorBg:'rgba(139,92,246,.1)',
+    desc:'A empresa já conhece a Synk e está a avaliá-la como opção. Compara com alternativas (Upwork, consultoras), lê testemunhos e tenta perceber se vale a pena.',
+    touchpoints:[
+      {
+        icon:'🌐', title:'Landing Page da Synk',
+        desc:'O primeiro impacto visual — proposta de valor, hero section e CTAs principais.',
+        detail:{
+          title:'O papel crítico da Landing Page',
+          content:`<p>A landing page é o "aperto de mão" da Synk com o visitante. Tem cerca de 8 segundos para captar a atenção antes de o utilizador sair. Por isso, os primeiros elementos que vê têm de responder imediatamente às três perguntas que qualquer visitante tem:</p><ul><li><span class="arrow">→</span> <strong>"O que é isto?"</strong> — Headline clara: "O marketplace de automação empresarial para PMEs"</li><li><span class="arrow">→</span> <strong>"Para quem é?"</strong> — "Empresas que perdem tempo em processos manuais"</li><li><span class="arrow">→</span> <strong>"Porque devia confiar?"</strong> — Métricas, logos de clientes, badge de segurança Escrow</li></ul><p>Só depois de responder a estas três perguntas é que o visitante desce para saber mais.</p>`
+        }
+      },
+      {
+        icon:'⚙️', title:'Página "Como Funciona"',
+        desc:'Explicação passo a passo do processo: publicar projeto → propostas → contratar → pagar.',
+        detail:null
+      },
+      {
+        icon:'🏢', title:'Página "Para Empresas"',
+        desc:'Benefícios específicos para o lado empresa: ROI, casos de uso, calculadora de poupança.',
+        detail:{
+          title:'Calculadora de ROI — porquê é importante',
+          content:`<p>Uma das maiores barreiras à conversão é a empresa não conseguir quantificar o benefício da automação. A calculadora de ROI resolve isso tornando o valor concreto e pessoal.</p><p>Funciona assim: a empresa introduz o número de horas semanais gastas em tarefas manuais e o custo hora da equipa. A calculadora mostra:</p><ul><li><span class="arrow">→</span> Custo anual do problema (ex: 10h × €20/h × 52 semanas = €10.400/ano)</li><li><span class="arrow">→</span> Custo estimado de automação (ex: projeto de €3.000)</li><li><span class="arrow">→</span> Payback: "Pagas o projeto em 3 meses e poupas €7.400 no 1º ano"</li></ul><p>Quando a empresa vê o número concreto, a decisão fica muito mais fácil.</p>`
+        }
+      },
+      {
+        icon:'⭐', title:'Testemunhos e Case Studies',
+        desc:'Reviews reais de empresas que já usaram a Synk com resultados mensuráveis.',
+        detail:{
+          title:'Porque a prova social é decisiva nesta fase',
+          content:`<p>Na fase de Consideração, o visitante ainda não confia totalmente. A forma mais eficaz de construir confiança não é dizer "somos bons" — é mostrar que outros como ele já tentaram e correu bem.</p><p>O que torna um testemunho eficaz:</p><ul><li><span class="arrow">→</span> <strong>Específico</strong> — "Poupei 15 horas por semana" é melhor que "adorei a plataforma"</li><li><span class="arrow">→</span> <strong>Credível</strong> — Nome real, empresa real, foto, cargo</li><li><span class="arrow">→</span> <strong>Identificável</strong> — A empresa leitora deve pensar "isto é parecido com o meu caso"</li></ul><p>Case studies mais longos (com problema → solução → resultado) são ainda mais poderosos para projetos de maior valor.</p>`
+        }
+      },
+      {
+        icon:'⚖️', title:'Comparação com Concorrentes',
+        desc:'A empresa compara a Synk com Upwork, Fiverr e consultoras locais em preço e qualidade.',
+        detail:{
+          title:'Posicionamento vs. concorrência',
+          content:`<p>Quando um potencial cliente está em modo de comparação, procura diferenças reais. A Synk tem vantagens claras face às alternativas:</p><p><strong>vs. Upwork / Fiverr:</strong></p><ul><li><span class="arrow">→</span> Vertical puro de automação — não é um mercado genérico com milhões de perfis</li><li><span class="arrow">→</span> Especialistas verificados — não qualquer um pode registar-se</li><li><span class="arrow">→</span> Foco em PMEs ibéricas — língua e fuso horário compatíveis</li></ul><p><strong>vs. Consultoras:</strong></p><ul><li><span class="arrow">→</span> 3–10× mais barato para projetos menores</li><li><span class="arrow">→</span> Muito mais rápido (48h vs. semanas para arrancar)</li><li><span class="arrow">→</span> Transparência de preços e sistema de avaliações públicas</li></ul>`
+        }
+      },
+      {
+        icon:'🤖', title:'Chatbot de IA',
+        desc:'Assistente inteligente que ajuda a identificar necessidades e sugere especialistas adequados.',
+        detail:{
+          title:'Como funciona o Chatbot de IA da Synk',
+          content:`<p>Muitas empresas chegam ao site da Synk com um problema vago: "quero automatizar qualquer coisa mas não sei bem o quê." O chatbot de IA resolve esta ambiguidade fazendo as perguntas certas.</p><div class="modal-diagram"><div class="diag-box">Visitante com dúvida<small>O que preciso?</small></div><div class="diag-arrow">→</div><div class="diag-box">Chatbot pergunta<small>Que processo? Que ferramentas? Orçamento?</small></div><div class="diag-arrow">→</div><div class="diag-box">Sugestão personalizada<small>Tipo de especialista + exemplos</small></div></div><p>Por exemplo, o chatbot pode perguntar: "Que processo queres automatizar?", "Quantas horas por semana gastas nisso?", "Já usas alguma ferramenta (Excel, CRM, ERP)?". Com base nas respostas, sugere o tipo certo de especialista e pode até mostrar projetos similares já concluídos na plataforma.</p><div class="highlight-box">✓ Resultado: O visitante passa de confuso para confiante em 5 minutos, com um caminho claro para publicar o projeto.</div>`
+        }
+      },
+      {
+        icon:'📝', title:'Blog da Synk — Conteúdo SEO',
+        desc:'Artigos otimizados para Google que educam sobre automação e trazem tráfego qualificado.',
+        detail:{
+          title:'O que é o Blog SEO e porque é um touchpoint de Consideração',
+          content:`<p>O blog SEO da Synk é uma secção do site com artigos escritos para dois objetivos simultâneos: aparecer no Google quando alguém pesquisa temas de automação, <strong>e</strong> educar o visitante até estar pronto para publicar um projeto.</p><p><strong>SEO (Search Engine Optimization)</strong> é o conjunto de técnicas que fazem um site aparecer mais alto nos resultados do Google. Um artigo bem otimizado pode gerar visitas gratuitas durante anos.</p><p>Exemplos de artigos que a Synk poderia publicar:</p><ul><li><span class="arrow">→</span> "Como automatizar a faturação em PMEs portuguesas" → aparece quando alguém pesquisa este tema</li><li><span class="arrow">→</span> "RPA vs. Make vs. Zapier: qual escolher?" → educa o leitor sobre opções</li><li><span class="arrow">→</span> "Quanto custa implementar automação numa pequena empresa?" → responde à dúvida de preço</li></ul><p>O visitante que chega pelo blog já está em <strong>modo de Consideração</strong> — leu o artigo, ganhou confiança na Synk como fonte de referência, e está mais próximo de publicar um projeto.</p><div class="highlight-box">✓ Diferença para a Descoberta: no blog, o leitor já sabe que a automação pode resolver o seu problema. Está a avaliar como e com quem.</div>`
+        }
+      }
+    ],
+    emotions:[
+      {e:'🤔', t:'Avalia a Synk comparando com alternativas'},
+      {e:'👀', t:'Lê testemunhos com ceticismo mas interesse real'},
+      {e:'📊', t:'Compara preços e modelos de funcionamento'},
+      {e:'🤷', t:'Ainda tem dúvidas sobre a qualidade dos especialistas'},
+    ],
+    goals:[
+      'Demonstrar valor único vs. plataformas genéricas',
+      'Construir credibilidade com prova social concreta',
+      'Educar sobre o modelo e as vantagens do Escrow',
+      'Manter o visitante engajado e reduzir bounce rate',
+    ]
+  },
+  {
+    id:'decisao', num:'03', name:'Decisão',
+    color:'#06b6d4', colorBg:'rgba(6,182,212,.1)',
+    desc:'A empresa decidiu que quer usar a Synk. Agora está a avaliar os últimos detalhes antes de se registar: preços, garantias, e se existe risco financeiro.',
+    touchpoints:[
+      {
+        icon:'💶', title:'Página de Preços — Transparência total',
+        desc:'Modelo claro: registo gratuito para empresas, comissão de 15% sobre projetos concluídos.',
+        detail:{
+          title:'Porque a transparência de preços é decisiva',
+          content:`<p>Nas plataformas de freelancing, a falta de clareza sobre preços é uma das maiores razões de abandono. A empresa quer saber exatamente quanto vai custar antes de se comprometer.</p><p>O modelo da Synk é simples e justo:</p><ul><li><span class="arrow">→</span> <strong>Para empresas:</strong> Registo gratuito. Publicar projetos é gratuito. Só paga o valor acordado com o especialista.</li><li><span class="arrow">→</span> <strong>Para especialistas:</strong> Registo gratuito. 15% de comissão sobre o valor do projeto — só quando recebem.</li><li><span class="arrow">→</span> <strong>Sem surpresas:</strong> Não há taxas de subscrição, taxas de plataforma escondidas, nem taxas de sucesso adicionais.</li></ul><div class="highlight-box">✓ Comparação: Upwork cobra até 20%, Fiverr cobra 20% fixo + taxas ao comprador. A Synk cobra 15% apenas ao especialista, sem custos para a empresa.</div>`
+        }
+      },
+      {
+        icon:'❓', title:'FAQ — Resposta às dúvidas de risco',
+        desc:'Secção de perguntas frequentes que elimina as últimas objeções antes do registo.',
+        detail:null
+      },
+      {
+        icon:'💬', title:'Suporte em tempo real (Chat)',
+        desc:'Chat ao vivo com a equipa Synk para responder a dúvidas específicas antes de registar.',
+        detail:null
+      },
+      {
+        icon:'🔒', title:'Garantia Escrow — Fator decisivo',
+        desc:'O sistema de pagamento protegido que elimina o risco financeiro para a empresa.',
+        detail:{
+          title:'O que é o Escrow e como protege a empresa',
+          content:`<p>O <strong>Escrow</strong> é um mecanismo de pagamento onde um intermediário de confiança retém o dinheiro até que ambas as partes cumpram os termos do acordo. É o padrão de segurança em marketplaces profissionais como Upwork e Airbnb.</p><div class="modal-diagram"><div class="diag-box">Empresa<small>Deposita o valor</small></div><div class="diag-arrow">→</div><div class="diag-box" style="background:rgba(99,102,241,.2);border-color:#6366f1">Synk (Escrow)<small>Retém em segurança</small></div><div class="diag-arrow">→</div><div class="diag-box">Especialista<small>Recebe após aprovação</small></div></div><p>O processo funciona assim:</p><ul><li><span class="arrow">→</span> A empresa aceita uma proposta e o valor fica retido na Synk</li><li><span class="arrow">→</span> O especialista começa o trabalho sabendo que o pagamento está garantido</li><li><span class="arrow">→</span> O especialista entrega o trabalho</li><li><span class="arrow">→</span> A empresa revê e aprova — só então o dinheiro é libertado</li><li><span class="arrow">→</span> Se houver disputa, a Synk medeia a resolução</li></ul><div class="highlight-box">✓ Para a empresa: nunca perde dinheiro se o trabalho não for entregue. Para o especialista: nunca trabalha sem garantia de pagamento.</div><p style="margin-top:12px">Os pagamentos são processados pela <strong>Stripe</strong>, empresa que processa mais de €640 mil milhões por ano — a infraestrutura mais segura do mundo para pagamentos online.</p>`
+        }
+      },
+      {
+        icon:'🎁', title:'Registo Gratuito — Sem risco de entrada',
+        desc:'A empresa pode criar conta, ver projetos e receber propostas sem qualquer custo inicial.',
+        detail:null
+      },
+      {
+        icon:'📧', title:'Email de Boas-vindas + Onboarding',
+        desc:'Após o registo, sequência de emails guia a empresa nos primeiros passos da plataforma.',
+        detail:{
+          title:'Sequência de onboarding por email',
+          content:`<p>O momento após o registo é crítico — a empresa está motivada mas pode ficar perdida se não souber o que fazer a seguir. A sequência de onboarding resolve isso com emails automáticos e úteis:</p><ul><li><span class="arrow">→</span> <strong>Email 1 (imediato):</strong> "Bem-vinda à Synk" — confirmação de conta + link para publicar o primeiro projeto</li><li><span class="arrow">→</span> <strong>Email 2 (dia 1):</strong> "Como descrever o teu projeto para receber as melhores propostas" — dicas práticas</li><li><span class="arrow">→</span> <strong>Email 3 (dia 3):</strong> "Ver especialistas disponíveis na tua área" — personalizado com base no perfil</li><li><span class="arrow">→</span> <strong>Email 4 (dia 7):</strong> "Tens alguma dúvida? A nossa equipa está aqui" — convite para chat de suporte</li></ul><p>O objetivo desta sequência é levar a empresa a publicar o primeiro projeto nos primeiros 7 dias — porque empresas que publicam na primeira semana têm muito maior probabilidade de se tornarem clientes recorrentes.</p>`
+        }
+      },
+      {
+        icon:'📋', title:'Reviews de empresas similares',
+        desc:'Sistema de avaliações verifica-das que mostram resultados de projetos parecidos com o do visitante.',
+        detail:null
+      }
+    ],
+    emotions:[
+      {e:'😰', t:'Ainda algum ceticismo e risco percebido'},
+      {e:'🔒', t:'O Escrow reduz significativamente o risco sentido'},
+      {e:'✅', t:'O registo gratuito elimina a barreira de entrada'},
+      {e:'😊', t:'Confiança cresce — toma a decisão de registar'},
+    ],
+    goals:[
+      'Eliminar fricção no processo de registo',
+      'Usar o Escrow como argumento decisivo de confiança',
+      'Destacar a gratuidade e a ausência de risco',
+      'Converter o visitante em utilizador registado',
+    ]
+  },
+  {
+    id:'compra', num:'04', name:'Compra & Uso',
+    color:'#10b981', colorBg:'rgba(16,185,129,.1)',
+    desc:'A empresa está registada e usa ativamente a plataforma. Publica projetos, recebe propostas, comunica com especialistas e gere o projeto do início ao fim.',
+    touchpoints:[
+      {
+        icon:'🖥️', title:'Dashboard — Publicação do Projeto',
+        desc:'Interface onde a empresa descreve o projeto, define orçamento e prazo e publica para especialistas.',
+        detail:{
+          title:'O formulário de publicação de projeto',
+          content:`<p>O formulário de publicação é um dos momentos mais críticos da plataforma. Se for demasiado complicado, a empresa desiste. Se for demasiado simples, os especialistas recebem informação a menos para fazer propostas boas.</p><p>O formulário guiado da Synk pede:</p><ul><li><span class="arrow">→</span> <strong>Título do projeto</strong> — ex: "Automatizar exportação de relatórios do ERP para Excel"</li><li><span class="arrow">→</span> <strong>Tipo de automação</strong> — seleção de categoria (RPA, integração, IA, etc.)</li><li><span class="arrow">→</span> <strong>Descrição</strong> — o que acontece hoje vs. o que devia acontecer</li><li><span class="arrow">→</span> <strong>Ferramentas utilizadas</strong> — ex: SAP, Excel, Google Sheets</li><li><span class="arrow">→</span> <strong>Prazo</strong> — urgência do projeto</li><li><span class="arrow">→</span> <strong>Orçamento estimado</strong> — intervalo (ex: €1.000–3.000)</li></ul><p>Com estas informações, os especialistas conseguem fazer propostas precisas e o matching é muito mais eficaz.</p>`
+        }
+      },
+      {
+        icon:'🔔', title:'Notificações de Propostas em 48h',
+        desc:'Em menos de 48h, especialistas verificados submetem propostas com preço, prazo e abordagem.',
+        detail:null
+      },
+      {
+        icon:'👤', title:'Perfis Verificados de Especialistas',
+        desc:'Portfolio, histórico de projetos, avaliações reais e badges de verificação técnica.',
+        detail:{
+          title:'O processo de verificação de especialistas',
+          content:`<p>A qualidade dos especialistas é o principal ativo da Synk. Por isso, não é qualquer pessoa que pode registar-se como especialista verificado.</p><p>O processo de verificação tem 4 etapas:</p><ul><li><span class="arrow">→</span> <strong>Revisão de perfil</strong> — A equipa Synk analisa o portfolio, experiência e competências declaradas</li><li><span class="arrow">→</span> <strong>Verificação de identidade</strong> — Confirma que é uma pessoa real com histórico profissional</li><li><span class="arrow">→</span> <strong>Avaliação técnica</strong> (opcional) — Para especialidades específicas, um teste prático de 30 minutos</li><li><span class="arrow">→</span> <strong>Badge de verificado</strong> — Só após passar todos os filtros, o perfil fica visível para empresas</li></ul><p>Após os primeiros projetos, o sistema de reviews reais complementa a verificação — a reputação constrói-se projeto a projeto.</p>`
+        }
+      },
+      {
+        icon:'💬', title:'Chat Integrado com Candidatos',
+        desc:'Comunicação direta com especialistas antes de contratar para esclarecer dúvidas técnicas.',
+        detail:null
+      },
+      {
+        icon:'🔒', title:'Contratação + Pagamento Escrow (Stripe)',
+        desc:'A empresa aceita uma proposta e o valor fica retido em Escrow via Stripe até aprovação.',
+        detail:{
+          title:'O fluxo de pagamento Escrow na prática',
+          content:`<p>Quando a empresa escolhe um especialista e aceita a sua proposta, o processo de pagamento é simples e seguro:</p><div class="modal-diagram"><div class="diag-box">1. Empresa paga<small>Stripe processa</small></div><div class="diag-arrow">→</div><div class="diag-box" style="background:rgba(6,182,212,.15);border-color:#06b6d4">2. Synk retém<small>Escrow ativo</small></div><div class="diag-arrow">→</div><div class="diag-box">3. Especialista entrega<small>Trabalho concluído</small></div><div class="diag-arrow">→</div><div class="diag-box" style="background:rgba(16,185,129,.15);border-color:#10b981">4. Empresa aprova<small>Pagamento libertado</small></div></div><p><strong>Métodos de pagamento aceites:</strong> Cartão de crédito/débito, Apple Pay, Google Pay, transferência bancária SEPA.</p><p><strong>E se o trabalho não for aprovado?</strong> Abre-se uma disputa. A Synk analisa o caso e medeia a resolução. Se o especialista não cumpriu o acordado, o valor é devolvido à empresa.</p><p>Os pagamentos são processados pela <strong>Stripe</strong> — a infraestrutura de pagamentos mais utilizada no mundo (Shopify, Amazon, Google usam Stripe).</p>`
+        }
+      },
+      {
+        icon:'📁', title:'Gestão do Projeto — Milestones e ficheiros',
+        desc:'Toda a comunicação, ficheiros partilhados e marcos do projeto numa só plataforma.',
+        detail:{
+          title:'Gestão integrada de projetos',
+          content:`<p>Um dos problemas comuns ao trabalhar com freelancers é a informação dispersa — emails por aqui, ficheiros no WhatsApp, versões de documentos perdidas. A Synk elimina este problema com uma área de projeto integrada.</p><p>Funcionalidades da gestão de projeto:</p><ul><li><span class="arrow">→</span> <strong>Milestones</strong> — marcos do projeto com datas e valores parciais</li><li><span class="arrow">→</span> <strong>Partilha de ficheiros</strong> — upload seguro de documentos, especificações, acessos</li><li><span class="arrow">→</span> <strong>Histórico de mensagens</strong> — toda a comunicação registada e pesquisável</li><li><span class="arrow">→</span> <strong>Status do projeto</strong> — "Em progresso", "Revisão pendente", "Concluído"</li></ul><p>Isto cria um registo completo do projeto que protege ambas as partes em caso de disputa.</p>`
+        }
+      },
+      {
+        icon:'✅', title:'Aprovação e Libertação do Pagamento',
+        desc:'A empresa revê o trabalho entregue, aprova e o pagamento é libertado automaticamente para o especialista.',
+        detail:null
+      }
+    ],
+    emotions:[
+      {e:'🚀', t:'Entusiasmo ao publicar o primeiro projeto'},
+      {e:'😬', t:'Alguma ansiedade durante a execução'},
+      {e:'👀', t:'Acompanha de perto o progresso do especialista'},
+      {e:'😄', t:'Satisfação e alívio ao aprovar o trabalho entregue'},
+    ],
+    goals:[
+      'Garantir uma experiência fluída e sem fricção',
+      'Assegurar comunicação eficaz entre empresa e especialista',
+      'Garantir qualidade na entrega — proteger a reputação da Synk',
+      'Criar uma primeira experiência positiva e memorável',
+    ]
+  },
+  {
+    id:'fidelizacao', num:'05', name:'Fidelização',
+    color:'#f59e0b', colorBg:'rgba(245,158,11,.1)',
+    desc:'O projeto foi concluído com sucesso. A empresa está satisfeita. Agora o objetivo é transformá-la numa cliente recorrente e, idealmente, numa embaixadora da Synk.',
+    touchpoints:[
+      {
+        icon:'📧', title:'Email de Follow-up pós-projeto',
+        desc:'Mensagem automática após conclusão do projeto para recolher feedback e satisfação.',
+        detail:{
+          title:'A importância do follow-up pós-projeto',
+          content:`<p>O momento logo após a conclusão de um projeto é o mais poderoso para reforçar a relação. A empresa está satisfeita, o problema foi resolvido — é o momento ideal para perguntar o que correu bem e plantar a semente do próximo projeto.</p><p>A sequência de follow-up da Synk:</p><ul><li><span class="arrow">→</span> <strong>Email 1 (dia seguinte):</strong> "O teu projeto foi concluído! Como correu?" — link para avaliar o especialista</li><li><span class="arrow">→</span> <strong>Email 2 (semana 1):</strong> "Outros processos a otimizar?" — sugestões personalizadas com base no tipo de projeto</li><li><span class="arrow">→</span> <strong>Email 3 (mês 1):</strong> "Resultados do teu projeto de automação" — lembra o valor criado e convida a partilhar</li></ul><p>A empresa que é contactada com relevância (não spam genérico) sente que a Synk se preocupa com o seu sucesso — não apenas com a transação.</p>`
+        }
+      },
+      {
+        icon:'⭐', title:'Sistema de Avaliações — Reviews verificados',
+        desc:'A empresa avalia o especialista e o projeto, contribuindo para a reputação da plataforma.',
+        detail:{
+          title:'Como funciona o sistema de avaliações',
+          content:`<p>O sistema de reviews da Synk é bidirecional — as empresas avaliam os especialistas e os especialistas avaliam as empresas. Isto cria responsabilidade de ambos os lados e melhora a qualidade geral.</p><p>O que se avalia:</p><ul><li><span class="arrow">→</span> <strong>Qualidade técnica</strong> — O trabalho entregue correspondeu ao que foi pedido?</li><li><span class="arrow">→</span> <strong>Comunicação</strong> — O especialista foi claro, responsivo e pontual?</li><li><span class="arrow">→</span> <strong>Cumprimento de prazos</strong> — O projeto foi entregue no prazo acordado?</li><li><span class="arrow">→</span> <strong>Recomendaria?</strong> — NPS do projeto</li></ul><p>Estes reviews são verificados (só quem completou um projeto pode avaliar) e públicos — ajudam a próxima empresa a escolher com confiança e incentivam os especialistas a manter qualidade elevada.</p>`
+        }
+      },
+      {
+        icon:'📊', title:'Dashboard com histórico de projetos',
+        desc:'Visão completa de todos os projetos passados, gastos, especialistas usados e resultados.',
+        detail:null
+      },
+      {
+        icon:'📰', title:'Newsletter — Conteúdo de valor contínuo',
+        desc:'Emails periódicos com dicas de automação, novidades da plataforma e casos de sucesso.',
+        detail:{
+          title:'Newsletter como ferramenta de retenção',
+          content:`<p>Uma newsletter bem feita não é publicidade — é valor entregue na caixa de entrada. O objetivo é que a empresa abra o email porque aprende algo útil, não porque está a ser bombardeada com promoções.</p><p>Conteúdo que a newsletter da Synk pode incluir:</p><ul><li><span class="arrow">→</span> "Processo do mês" — um caso de automação resolvido com custo e resultado real</li><li><span class="arrow">→</span> "Ferramenta em destaque" — tutorial curto de uma ferramenta (Make, n8n, Power Automate)</li><li><span class="arrow">→</span> "Novos especialistas verificados" — perfis em destaque na área da empresa</li><li><span class="arrow">→</span> "Tendência" — uma novidade do mundo da automação que pode afetar o setor do cliente</li></ul><p>Resultado: a empresa pensa na Synk regularmente, mesmo quando não está com um projeto ativo — e quando precisar de novo, é a primeira plataforma a que recorre.</p>`
+        }
+      },
+      {
+        icon:'🎁', title:'Programa de Referral',
+        desc:'Incentivo estruturado para que empresas satisfeitas recomendem a Synk a outros.',
+        detail:{
+          title:'Como funciona o Programa de Referral da Synk',
+          content:`<p>O programa de referral transforma clientes satisfeitos em canais de aquisição. É a forma mais eficiente de crescer porque o custo de aquisição é muito mais baixo do que publicidade paga, e a taxa de conversão é muito mais alta (o recomendado já chega com confiança).</p><p>Como funciona:</p><div class="modal-diagram"><div class="diag-box">Empresa A<small>Satisfeita com a Synk</small></div><div class="diag-arrow">→</div><div class="diag-box">Recomenda Empresa B<small>Partilha link único</small></div><div class="diag-arrow">→</div><div class="diag-box">Empresa B regista<small>+ completa 1º projeto</small></div><div class="diag-arrow">→</div><div class="diag-box" style="background:rgba(245,158,11,.15);border-color:#f59e0b">Ambas ganham<small>Crédito ou desconto</small></div></div><p>O programa de referral também funciona para especialistas — um especialista que traz outro especialista qualificado para a plataforma recebe um bónus quando o novo completa o primeiro projeto.</p><div class="highlight-box">✓ Dados do setor: clientes adquiridos por referral têm LTV (Lifetime Value) 16% superior a clientes adquiridos por publicidade.</div>`
+        }
+      },
+      {
+        icon:'💡', title:'Sugestões personalizadas de novos projetos',
+        desc:'Com base no histórico, a plataforma sugere proativamente próximos processos a automatizar.',
+        detail:null
+      },
+      {
+        icon:'🌐', title:'Comunidade Synk — Eventos e webinars',
+        desc:'Grupo LinkedIn exclusivo, webinars mensais e eventos de networking para clientes da plataforma.',
+        detail:{
+          title:'Comunidade como fator de retenção',
+          content:`<p>Uma comunidade ativa cria um sentido de pertença que vai além da transação. Quando uma empresa sente que faz parte de algo maior — uma rede de PMEs que estão a transformar-se digitalmente — a probabilidade de churnar (cancelar) é muito mais baixa.</p><p>O que a Comunidade Synk pode incluir:</p><ul><li><span class="arrow">→</span> <strong>Grupo LinkedIn privado</strong> — Para clientes e especialistas trocarem experiências</li><li><span class="arrow">→</span> <strong>Webinars mensais</strong> — Especialistas da plataforma demonstram soluções ao vivo</li><li><span class="arrow">→</span> <strong>Eventos presenciais</strong> (Lisboa, Porto) — Networking entre clientes e especialistas</li><li><span class="arrow">→</span> <strong>Acesso antecipado</strong> — Membros da comunidade testam novas features primeiro</li></ul><p>A comunidade também é um canal natural de referral — membros que se conhecem recomendam-se mutuamente.</p>`
+        }
+      }
+    ],
+    emotions:[
+      {e:'⭐', t:'Satisfação com o resultado e a experiência Synk'},
+      {e:'🤝', t:'Confiança consolidada na plataforma e nos especialistas'},
+      {e:'🔄', t:'Pensa já em novos processos para automatizar'},
+      {e:'📣', t:'Partilha a experiência e recomenda a colegas de negócios'},
+    ],
+    goals:[
+      'Reter e aumentar a frequência de uso da plataforma',
+      'Transformar clientes satisfeitos em embaixadores ativos',
+      'Crescer por referral orgânico — o canal mais barato e eficaz',
+      'Upsell para projetos maiores ou plano Enterprise',
+    ]
+  }
+];
+
+const kpis = [
+  { phase: phases[0], items: [
+    {m:'CTR nos Anúncios',l:'Taxa de clique nos Google/LinkedIn Ads'},
+    {m:'Tráfego orgânico',l:'Visitantes via SEO e redes sociais'},
+    {m:'Alcance de posts',l:'Impressões no LinkedIn e Instagram'},
+    {m:'Custo por clique',l:'Eficiência do investimento em ads'},
+  ]},
+  { phase: phases[1], items: [
+    {m:'Tempo no site',l:'Minutos médios por sessão'},
+    {m:'Bounce rate',l:'% que sai sem interagir'},
+    {m:'Páginas vistas',l:'Profundidade de navegação'},
+    {m:'Engajamento chatbot',l:'% que interage com a IA'},
+  ]},
+  { phase: phases[2], items: [
+    {m:'Taxa de registo',l:'Visitas → contas criadas (%)'},
+    {m:'CPL',l:'Custo por lead registado'},
+    {m:'Tempo até registo',l:'Dias desde 1ª visita ao registo'},
+    {m:'Abertura email',l:'Taxa abertura email boas-vindas'},
+  ]},
+  { phase: phases[3], items: [
+    {m:'Projetos publicados',l:'% de registados que publica'},
+    {m:'Tempo até match',l:'Horas até 1ª proposta recebida'},
+    {m:'Taxa conclusão',l:'Projetos concluídos com sucesso'},
+    {m:'NPS pós-projeto',l:'Net Promoter Score médio'},
+  ]},
+  { phase: phases[4], items: [
+    {m:'Taxa de retenção',l:'% que volta para 2º projeto'},
+    {m:'LTV',l:'Valor total de vida do cliente'},
+    {m:'Taxa de referral',l:'% que indica outra empresa'},
+    {m:'NPS da plataforma',l:'Satisfação global com a Synk'},
+  ]},
+];
+
+const conclusoes = [
+  {c:'#6366f1',n:'01',t:'A fase de <strong>Descoberta</strong> é crítica — depende de conteúdo orgânico forte. Sem SEO e LinkedIn ativo, a Synk fica invisível para quem mais precisa.'},
+  {c:'#8b5cf6',n:'02',t:'Na <strong>Consideração</strong>, a comparação com concorrentes é inevitável. A especialização vertical em automação é a principal vantagem diferenciadora.'},
+  {c:'#06b6d4',n:'03',t:'Na <strong>Decisão</strong>, o <strong>Escrow</strong> é o argumento mais poderoso — elimina o principal obstáculo: o risco financeiro de pagar e não receber.'},
+  {c:'#10b981',n:'04',t:'Na fase de <strong>Compra e Uso</strong>, a qualidade do matching e da comunicação define se o cliente volta. Uma má experiência aqui anula tudo o resto.'},
+  {c:'#f59e0b',n:'05',t:'A <strong>Fidelização</strong> é onde está o maior valor. Um cliente recorrente custa 5× menos do que adquirir um novo — e ainda traz outros através do referral.'},
+];
+
+// ══════════════════════════════════════════════════════════════════════════════
+// BUILD UI
+// ══════════════════════════════════════════════════════════════════════════════
+let activePhase = 0;
+let currentColor = phases[0].color;
+
+function goTo(selector){
+  const el = document.querySelector(selector);
+  if(el) el.scrollIntoView({behavior:'smooth', block:'start'});
+}
+
+// Hero pills
+const heroPills = document.getElementById('heroPills');
+phases.forEach((ph,i)=>{
+  const el = document.createElement('div');
+  el.className = 'phase-pill-hero';
+  el.innerHTML = `<div class="dot" style="background:${ph.color}"></div>${ph.name}`;
+  el.onclick = () => { scrollTo('#journey'); setTimeout(()=>setPhase(i),400); };
+  heroPills.appendChild(el);
+});
+
+// Phase nav
+const nav = document.getElementById('phaseNavInner');
+phases.forEach((ph,i)=>{
+  const btn = document.createElement('button');
+  btn.className = 'phase-btn' + (i===0?' active':'');
+  btn.style.setProperty('--phase-color', ph.color);
+  btn.innerHTML = `<span class="pnum">${ph.num}</span><span>${ph.name}</span>`;
+  btn.onclick = () => setPhase(i);
+  nav.appendChild(btn);
+});
+
+// Journey content
+const wrapper = document.getElementById('journeyWrapper');
+phases.forEach((ph,i)=>{
+  const div = document.createElement('div');
+  div.className = 'phase-content' + (i===0?' active':'');
+  div.id = 'phase-'+ph.id;
+  div.style.setProperty('--phase-color', ph.color);
+  div.innerHTML = buildPhase(ph);
+  wrapper.appendChild(div);
+});
+
+// Mapa table
+buildMapa();
+
+// KPI grid
+const kpiGrid = document.getElementById('kpiGrid');
+kpis.forEach(k=>{
+  const card = document.createElement('div');
+  card.className = 'kpi-card';
+  card.innerHTML = `
+    <div class="kpi-card-header" style="background:${k.phase.color}">${k.phase.num} · ${k.phase.name}</div>
+    <div class="kpi-card-body">
+      ${k.items.map(item=>`<div class="kpi-item"><div class="kpi-metric">${item.m}</div><div class="kpi-label">${item.l}</div></div>`).join('')}
+    </div>`;
+  kpiGrid.appendChild(card);
+});
+
+// Conclusoes
+const conclList = document.getElementById('conclusoesList');
+conclusoes.forEach(c=>{
+  const el = document.createElement('div');
+  el.className = 'concl-item';
+  el.style.setProperty('--c', c.c);
+  el.innerHTML = `<div class="concl-num">${c.n}</div><div class="concl-text">${c.t}</div>`;
+  conclList.appendChild(el);
+});
+
+function buildPhase(ph){
+  return `
+    <div class="phase-header" style="--phase-color:${ph.color};border-left-color:${ph.color}">
+      <div>
+        <div class="phase-num-badge" style="color:${ph.color};background:${ph.colorBg}">FASE ${ph.num}</div>
+        <div class="phase-title-big" style="margin-top:6px">${ph.name}</div>
+      </div>
+      <div class="phase-desc">${ph.desc}</div>
+    </div>
+    <div style="margin-bottom:16px">
+      <h3 style="font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:${ph.color};margin-bottom:16px">Touchpoints — Onde a empresa encontra a Synk</h3>
+      <div class="tp-list">
+        ${ph.touchpoints.map((tp,idx)=>buildTouchpoint(tp,idx+1,ph.color,ph.id)).join('')}
+      </div>
+    </div>
+    <div class="state-goal-grid">
+      <div class="state-card">
+        <div class="state-card-header" style="background:${ph.color}">Estado do Cliente</div>
+        <div class="state-card-body">
+          ${ph.emotions.map(e=>`<div class="emotion-item"><span class="emotion-emoji">${e.e}</span><span>${e.t}</span></div>`).join('')}
+        </div>
+      </div>
+      <div class="goal-card">
+        <div class="goal-card-header" style="background:${ph.color}">Objetivo da Synk</div>
+        <div class="goal-card-body">
+          ${ph.goals.map(g=>`<div class="goal-item"><div class="goal-check" style="background:${ph.color}">✓</div><span>${g}</span></div>`).join('')}
+        </div>
+      </div>
+    </div>
+    <div style="display:flex;justify-content:space-between;margin-top:24px;flex-wrap:wrap;gap:10px">
+      <button onclick="setPhase(${phases.indexOf(ph)-1})" ${phases.indexOf(ph)===0?'style="opacity:.3;pointer-events:none"':''} style="display:flex;align-items:center;gap:6px;background:var(--card);border:1px solid var(--border);color:var(--mid);padding:10px 18px;border-radius:8px;cursor:pointer;font-family:Inter,sans-serif;font-size:13px;font-weight:600;transition:.2s" onmouseover="this.style.color='white'" onmouseout="this.style.color='var(--mid)'">← Fase anterior</button>
+      <button onclick="setPhase(${phases.indexOf(ph)+1})" ${phases.indexOf(ph)===phases.length-1?'style="opacity:.3;pointer-events:none"':''} style="display:flex;align-items:center;gap:6px;background:${ph.color};border:none;color:white;padding:10px 18px;border-radius:8px;cursor:pointer;font-family:Inter,sans-serif;font-size:13px;font-weight:600;transition:.2s">Próxima fase →</button>
+    </div>
+  `;
+}
+
+function buildTouchpoint(tp, num, color, phaseId){
+  const hasDetail = tp.detail !== null;
+  const detailId = `detail-${phaseId}-${num}`;
+  return `
+    <div class="tp-item">
+      <div class="tp-row ${hasDetail?'has-detail':''}" style="--phase-color:${color}" ${hasDetail?`onclick="toggleDetail('${detailId}', this, '${color}')"`:''}">
+        <div class="tp-num" style="color:${color};background:${color}22">${String(num).padStart(2,'0')}</div>
+        <div class="tp-text">
+          <div class="tp-title">${tp.icon} ${tp.title}</div>
+          <div class="tp-desc">${tp.desc}</div>
+          ${tp.desc_extra?`<span class="tp-badge">⭐ ${tp.desc_extra}</span>`:''}
+          ${hasDetail?`<button class="learn-more-btn" id="btn-${detailId}" style="color:${color}">Saber mais <span class="arrow">▾</span></button>`:''}
+        </div>
+      </div>
+      ${hasDetail?`
+      <div class="detail-panel" id="${detailId}" style="--phase-color:${color}">
+        <h4>${tp.detail.title}</h4>
+        ${tp.detail.content}
+      </div>`:''}
+    </div>
+  `;
+}
+
+function toggleDetail(id, row, color){
+  const panel = document.getElementById(id);
+  const btn = document.getElementById('btn-'+id);
+  const isOpen = panel.classList.contains('open');
+  panel.classList.toggle('open', !isOpen);
+  if(btn){
+    btn.classList.toggle('open', !isOpen);
+    btn.innerHTML = !isOpen ? `Fechar <span class="arrow" style="display:inline-block;transform:rotate(180deg)">▾</span>` : `Saber mais <span class="arrow">▾</span>`;
+  }
+}
+
+function buildMapa(){
+  const table = document.getElementById('mapaTable');
+  // Header
+  const thead = document.createElement('thead');
+  const tr = document.createElement('tr');
+  tr.innerHTML = `<td style="padding:8px;font-size:10px;color:var(--dim);font-weight:600;text-transform:uppercase;letter-spacing:1px">#</td>` +
+    phases.map(ph=>`<th class="phase-th" style="background:${ph.color}">${ph.num} · ${ph.name}</th>`).join('');
+  thead.appendChild(tr);
+  table.appendChild(thead);
+
+  const tbody = document.createElement('tbody');
+  const maxLen = Math.max(...phases.map(ph=>ph.touchpoints.length));
+  for(let i=0;i<maxLen;i++){
+    const row = document.createElement('tr');
+    row.innerHTML = `<td style="font-size:11px;font-weight:700;color:var(--dim);padding:10px 12px">${String(i+1).padStart(2,'0')}</td>` +
+      phases.map(ph=>{
+        const tp = ph.touchpoints[i];
+        if(!tp) return '<td></td>';
+        return `<td><div class="tp-cell-item"><div class="tp-cell-dot" style="background:${ph.color}"></div><span>${tp.icon} ${tp.title}</span></div></td>`;
+      }).join('');
+    tbody.appendChild(row);
+  }
+  table.appendChild(tbody);
+}
+
+function setPhase(idx){
+  if(idx < 0 || idx >= phases.length) return;
+  activePhase = idx;
+  currentColor = phases[idx].color;
+
+  // Update nav
+  document.querySelectorAll('.phase-btn').forEach((btn,i)=>{
+    btn.classList.toggle('active', i===idx);
+    btn.style.setProperty('--phase-color', phases[i].color);
+  });
+
+  // Update content
+  document.querySelectorAll('.phase-content').forEach((el,i)=>{
+    el.classList.toggle('active', i===idx);
+  });
+
+  // Scroll journey into view
+  const journey = document.getElementById('journey');
+  if(journey){
+    const top = journey.getBoundingClientRect().top + window.scrollY - 120;
+    window.scrollTo({top, behavior:'smooth'});
+  }
+}
+
+// Modal
+function openModal(title, body, color){
+  document.getElementById('modalTitle').textContent = title;
+  document.getElementById('modalBody').innerHTML = body;
+  document.getElementById('modalBox').style.setProperty('--phase-color', color);
+  document.getElementById('modalOverlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeModal(e){
+  if(e && e.target !== document.getElementById('modalOverlay')) return;
+  document.getElementById('modalOverlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+document.addEventListener('keydown', e=>{ if(e.key==='Escape') { document.getElementById('modalOverlay').classList.remove('open'); document.body.style.overflow=''; }});
+
+// ── READING PROGRESS BAR ──
+const progressBar = document.getElementById('readProgress');
+window.addEventListener('scroll', ()=>{
+  const scrollTop = window.scrollY;
+  const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+  const pct = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+  progressBar.style.width = pct + '%';
+}, {passive: true});
+
+// ── COUNTER ANIMATION ──
+function animateCounter(el){
+  const target = parseInt(el.dataset.target, 10);
+  const suffix = el.dataset.suffix || '';
+  const duration = 1200;
+  const steps = 40;
+  const increment = target / steps;
+  let current = 0;
+  let step = 0;
+  const timer = setInterval(()=>{
+    step++;
+    current = Math.min(Math.round(increment * step), target);
+    el.textContent = current + suffix;
+    if(step >= steps){ clearInterval(timer); el.textContent = target + suffix; }
+  }, duration / steps);
+}
+
+// Run counters when hero is visible
+const heroCounters = document.querySelectorAll('.hero-stat-num[data-target]');
+let heroCountersDone = false;
+const heroObserver = new IntersectionObserver((entries)=>{
+  entries.forEach(entry=>{
+    if(entry.isIntersecting && !heroCountersDone){
+      heroCountersDone = true;
+      heroCounters.forEach(el => animateCounter(el));
+      heroObserver.disconnect();
+    }
+  });
+}, {threshold: 0.3});
+const heroStatsEl = document.querySelector('.hero-stats');
+if(heroStatsEl) heroObserver.observe(heroStatsEl);
+
+// Run funnel counters when visible
+const funilCounters = document.querySelectorAll('.funil-step-pct[data-target]');
+let funilDone = false;
+const funilObserver = new IntersectionObserver((entries)=>{
+  entries.forEach(entry=>{
+    if(entry.isIntersecting && !funilDone){
+      funilDone = true;
+      funilCounters.forEach(el => animateCounter(el));
+      funilObserver.disconnect();
+    }
+  });
+}, {threshold: 0.2});
+const funilEl = document.querySelector('.funil-steps');
+if(funilEl) funilObserver.observe(funilEl);
+</script>
+</body>
+</html>
