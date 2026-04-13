@@ -13,5 +13,213 @@
   </head>
   <body>
     <div id="root"></div>
+    <!-- Synk ChatBot Widget -->
+<style>
+  #synk-chat-btn {
+    position: fixed; bottom: 24px; right: 24px; z-index: 9999;
+    width: 56px; height: 56px; border-radius: 50%;
+    background: #4f46e5; color: white; border: none; cursor: pointer;
+    box-shadow: 0 4px 20px rgba(79,70,229,0.4);
+    display: flex; align-items: center; justify-content: center;
+    transition: background 0.2s, transform 0.2s;
+  }
+  #synk-chat-btn:hover { background: #4338ca; transform: scale(1.05); }
+  #synk-chat-window {
+    position: fixed; bottom: 92px; right: 24px; z-index: 9999;
+    width: 360px; max-height: 520px; border-radius: 16px;
+    background: white; box-shadow: 0 8px 40px rgba(0,0,0,0.18);
+    display: none; flex-direction: column; overflow: hidden;
+    border: 1px solid #e5e7eb; font-family: 'Inter', sans-serif;
+  }
+  #synk-chat-window.open { display: flex; }
+  #synk-chat-header {
+    background: #4f46e5; padding: 14px 16px;
+    display: flex; align-items: center; gap: 12px;
+  }
+  #synk-chat-header .avatar {
+    width: 36px; height: 36px; border-radius: 50%;
+    background: rgba(255,255,255,0.2);
+    display: flex; align-items: center; justify-content: center;
+    color: white; font-weight: 700; font-size: 14px; flex-shrink: 0;
+  }
+  #synk-chat-header .info { flex: 1; }
+  #synk-chat-header .info p { margin: 0; }
+  #synk-chat-header .name { color: white; font-weight: 600; font-size: 14px; }
+  #synk-chat-header .status { color: #c7d2fe; font-size: 12px; }
+  #synk-chat-header button {
+    background: none; border: none; color: rgba(255,255,255,0.7);
+    cursor: pointer; padding: 4px; border-radius: 8px; line-height: 0;
+  }
+  #synk-chat-header button:hover { color: white; background: rgba(255,255,255,0.1); }
+  #synk-chat-messages {
+    flex: 1; overflow-y: auto; padding: 16px;
+    display: flex; flex-direction: column; gap: 12px;
+    background: #f9fafb; min-height: 0;
+  }
+  .synk-msg { display: flex; align-items: flex-end; gap: 8px; }
+  .synk-msg.user { flex-direction: row-reverse; }
+  .synk-msg .bot-av {
+    width: 30px; height: 30px; border-radius: 50%;
+    background: #4f46e5; color: white; font-size: 11px;
+    font-weight: 700; display: flex; align-items: center;
+    justify-content: center; flex-shrink: 0;
+  }
+  .synk-msg .bubble {
+    max-width: 75%; padding: 10px 14px; font-size: 13px;
+    line-height: 1.5; border-radius: 16px; white-space: pre-wrap; word-break: break-word;
+  }
+  .synk-msg.bot .bubble {
+    background: white; color: #1f2937;
+    border: 1px solid #e5e7eb; border-bottom-left-radius: 4px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+  }
+  .synk-msg.user .bubble {
+    background: #4f46e5; color: white; border-bottom-right-radius: 4px;
+  }
+  .synk-msg.error .bubble { background: #fef2f2; color: #b91c1c; border-color: #fecaca; }
+  .synk-typing { display: flex; gap: 4px; align-items: center; padding: 10px 14px; }
+  .synk-typing span {
+    width: 7px; height: 7px; border-radius: 50%; background: #9ca3af;
+    animation: synk-bounce 1s infinite;
+  }
+  .synk-typing span:nth-child(2) { animation-delay: 0.15s; }
+  .synk-typing span:nth-child(3) { animation-delay: 0.3s; }
+  @keyframes synk-bounce {
+    0%, 80%, 100% { transform: translateY(0); }
+    40% { transform: translateY(-6px); }
+  }
+  #synk-chat-input-area {
+    padding: 10px 12px; background: white;
+    border-top: 1px solid #f3f4f6; display: flex; gap: 8px;
+  }
+  #synk-chat-input {
+    flex: 1; padding: 8px 12px; border-radius: 12px; font-size: 13px;
+    border: 1px solid #e5e7eb; outline: none; font-family: inherit;
+    background: #f9fafb;
+  }
+  #synk-chat-input:focus { border-color: #a5b4fc; box-shadow: 0 0 0 3px rgba(165,180,252,0.2); }
+  #synk-send-btn {
+    width: 36px; height: 36px; border-radius: 10px;
+    background: #4f46e5; border: none; cursor: pointer;
+    color: white; display: flex; align-items: center;
+    justify-content: center; flex-shrink: 0; transition: background 0.2s;
+  }
+  #synk-send-btn:hover { background: #4338ca; }
+  #synk-send-btn:disabled { opacity: 0.4; cursor: default; }
+  @media (max-width: 480px) {
+    #synk-chat-window { width: calc(100vw - 32px); right: 16px; bottom: 84px; }
+    #synk-chat-btn { right: 16px; bottom: 16px; }
+  }
+</style>
+
+<div id="synk-chat-window">
+  <div id="synk-chat-header">
+    <div class="avatar">S</div>
+    <div class="info">
+      <p class="name">Assistente Synk</p>
+      <p class="status">Responde em segundos ⚡</p>
+    </div>
+    <button onclick="synkToggleChat()" aria-label="Fechar">
+      <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+    </button>
+  </div>
+  <div id="synk-chat-messages"></div>
+  <div id="synk-chat-input-area">
+    <input id="synk-chat-input" type="text" placeholder="Escreve a tua pergunta..." autocomplete="off" />
+    <button id="synk-send-btn" aria-label="Enviar">
+      <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5"/></svg>
+    </button>
+  </div>
+</div>
+
+<button id="synk-chat-btn" onclick="synkToggleChat()" aria-label="Abrir chat">
+  <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"/></svg>
+</button>
+
+<script>
+  var SYNK_WEBHOOK = 'https://khalidshah.app.n8n.cloud/webhook/synk-chat';
+  var synkOpen = false;
+  var synkLoading = false;
+  var synkSession = 'session-' + Date.now();
+
+  function synkToggleChat() {
+    synkOpen = !synkOpen;
+    var win = document.getElementById('synk-chat-window');
+    var btn = document.getElementById('synk-chat-btn');
+    win.classList.toggle('open', synkOpen);
+    btn.innerHTML = synkOpen
+      ? '<svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>'
+      : '<svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"/></svg>';
+    if (synkOpen) {
+      if (!document.querySelector('.synk-msg')) synkAddMsg('bot', 'Olá! 👋 Sou o assistente da Synk. Como posso ajudar-te hoje?');
+      setTimeout(function(){ document.getElementById('synk-chat-input').focus(); }, 100);
+    }
+  }
+
+  function synkAddMsg(role, text, isError) {
+    var msgs = document.getElementById('synk-chat-messages');
+    var div = document.createElement('div');
+    div.className = 'synk-msg ' + role + (isError ? ' error' : '');
+    if (role === 'bot') div.innerHTML = '<div class="bot-av">S</div><div class="bubble">' + synkEscape(text) + '</div>';
+    else div.innerHTML = '<div class="bubble">' + synkEscape(text) + '</div>';
+    msgs.appendChild(div);
+    msgs.scrollTop = msgs.scrollHeight;
+  }
+
+  function synkEscape(t) {
+    return t.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>');
+  }
+
+  function synkShowTyping() {
+    var msgs = document.getElementById('synk-chat-messages');
+    var d = document.createElement('div');
+    d.className = 'synk-msg bot'; d.id = 'synk-typing';
+    d.innerHTML = '<div class="bot-av">S</div><div class="bubble synk-typing"><span></span><span></span><span></span></div>';
+    msgs.appendChild(d);
+    msgs.scrollTop = msgs.scrollHeight;
+  }
+
+  function synkHideTyping() {
+    var el = document.getElementById('synk-typing');
+    if (el) el.remove();
+  }
+
+  async function synkSend() {
+    if (synkLoading) return;
+    var inp = document.getElementById('synk-chat-input');
+    var text = inp.value.trim();
+    if (!text) return;
+    synkAddMsg('user', text);
+    inp.value = '';
+    synkLoading = true;
+    document.getElementById('synk-send-btn').disabled = true;
+    synkShowTyping();
+    try {
+      var res = await fetch(SYNK_WEBHOOK, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ message: text, sessionId: synkSession })
+      });
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+      var data = await res.json();
+      synkHideTyping();
+      synkAddMsg('bot', data.response || data.output || data.text || 'Desculpa, não obtive resposta.');
+    } catch(e) {
+      synkHideTyping();
+      synkAddMsg('bot', 'Ocorreu um erro. Por favor tenta novamente.', true);
+    }
+    synkLoading = false;
+    document.getElementById('synk-send-btn').disabled = false;
+    inp.focus();
+  }
+
+  document.addEventListener('DOMContentLoaded', function() {
+    document.getElementById('synk-send-btn').addEventListener('click', synkSend);
+    document.getElementById('synk-chat-input').addEventListener('keydown', function(e) {
+      if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); synkSend(); }
+    });
+  });
+</script>
+<!-- Fim Synk ChatBot Widget -->
   </body>
 </html>
