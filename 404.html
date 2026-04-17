@@ -4,9 +4,8 @@
     <meta charset="UTF-8" />
     <title>Synk</title>
     <script>
-      var path = window.location.pathname.replace('/synk-web', '') + window.location.search + window.location.hash;
-      sessionStorage.setItem('redirect', path || '/');
-      window.location.replace('/synk-web/');
+      sessionStorage.redirect = location.href;
+      window.location.replace('https://ykrizy.github.io/synk-web/');
     </script>
   </head>
   <body></body>
