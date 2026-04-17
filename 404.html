@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html lang="pt">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Synk</title>
+    <script>
+      var path = window.location.pathname.replace('/synk-web', '') + window.location.search + window.location.hash;
+      sessionStorage.setItem('redirect', path || '/');
+      window.location.replace('/synk-web/');
+    </script>
+  </head>
+  <body></body>
+</html>
