@@ -8,14 +8,14 @@ import SectionHeader from '@/components/ui/SectionHeader'
 
 /* ── Process types with reduction rates ── */
 const PROCESS_TYPES = {
-  invoices:   { label: '📄 Processamento de Faturas / Documentos', reduction: 0.80, complexity: 'medium' },
-  emails:     { label: '📧 Gestão de Emails e Comunicações',        reduction: 0.70, complexity: 'simple' },
-  reports:    { label: '📊 Relatórios e Dashboards',                reduction: 0.85, complexity: 'medium' },
-  orders:     { label: '🛒 Processamento de Encomendas',            reduction: 0.75, complexity: 'medium' },
-  onboarding: { label: '👤 Onboarding de Clientes / Funcionários',  reduction: 0.65, complexity: 'complex' },
-  sync:       { label: '🔄 Sincronização de Dados entre Sistemas',  reduction: 0.90, complexity: 'complex' },
-  scheduling: { label: '📅 Agendamentos e Follow-ups',              reduction: 0.75, complexity: 'simple' },
-  accounting: { label: '🧾 Reconciliação Contabilística',           reduction: 0.80, complexity: 'complex' },
+  invoices:   { label: 'Processamento de Faturas / Documentos', reduction: 0.80, complexity: 'medium' },
+  emails:     { label: 'Gestão de Emails e Comunicações',        reduction: 0.70, complexity: 'simple' },
+  reports:    { label: 'Relatórios e Dashboards',                reduction: 0.85, complexity: 'medium' },
+  orders:     { label: 'Processamento de Encomendas',            reduction: 0.75, complexity: 'medium' },
+  onboarding: { label: 'Onboarding de Clientes / Funcionários',  reduction: 0.65, complexity: 'complex' },
+  sync:       { label: 'Sincronização de Dados entre Sistemas',  reduction: 0.90, complexity: 'complex' },
+  scheduling: { label: 'Agendamentos e Follow-ups',              reduction: 0.75, complexity: 'simple' },
+  accounting: { label: 'Reconciliação Contabilística',           reduction: 0.80, complexity: 'complex' },
 }
 
 const COMPLEXITY_MULTIPLIER = { simple: 30, medium: 50, complex: 70 }
@@ -54,20 +54,19 @@ function MetricCard({ label, value, suffix = '', prefix = '', color, icon, activ
   const animated = useCountUp(value, 1200, active)
   return (
     <div
-      className="card-no-hover rounded-xl p-6 text-center"
+      className="rounded-xl p-6 text-center"
       style={{
-        background: '#0f1117',
-        border: `1px solid ${color}33`,
+        background: 'rgba(0,0,0,0.2)',
+        border: `1px solid ${color}22`,
         opacity: active ? 1 : 0,
         transform: active ? 'translateY(0)' : 'translateY(16px)',
         transition: `opacity 0.5s ease ${delay}ms, transform 0.5s ease ${delay}ms`,
       }}
     >
-      <div className="text-2xl mb-3">{icon}</div>
-      <div className="text-3xl lg:text-4xl font-extrabold mb-2" style={{ color }}>
+      <div className="text-3xl lg:text-4xl font-extrabold mb-2" style={{ color, letterSpacing: '-0.04em' }}>
         {prefix}{animated.toLocaleString('pt-PT')}{suffix}
       </div>
-      <div className="text-sm" style={{ color: '#64748b' }}>{label}</div>
+      <div className="text-sm" style={{ color: '#475569', letterSpacing: '-0.01em' }}>{label}</div>
     </div>
   )
 }
@@ -77,7 +76,7 @@ function Slider({ label, helper, min, max, step, value, onChange, format }) {
   return (
     <div>
       <div className="flex justify-between mb-2">
-        <label className="text-sm font-medium" style={{ color: '#94a3b8' }}>{label}</label>
+        <label className="text-sm font-medium" style={{ color: '#475569' }}>{label}</label>
         <span className="text-sm font-bold" style={{ color: '#6366f1' }}>{format(value)}</span>
       </div>
       <input
@@ -85,7 +84,7 @@ function Slider({ label, helper, min, max, step, value, onChange, format }) {
         value={value}
         onChange={e => onChange(+e.target.value)}
       />
-      <div className="flex justify-between text-xs mt-1" style={{ color: '#64748b' }}>
+      <div className="flex justify-between text-xs mt-1" style={{ color: '#475569' }}>
         <span>{format(min)}</span>
         {helper && <span style={{ color: '#6366f1' }}>{helper}</span>}
         <span>{format(max)}</span>
@@ -99,11 +98,11 @@ function ComparisonBar({ label, value, maxValue, color, animated }) {
   const pct = maxValue > 0 ? Math.min((value / maxValue) * 100, 100) : 0
   return (
     <div className="mb-3">
-      <div className="flex justify-between text-sm mb-1.5" style={{ color: '#94a3b8' }}>
+      <div className="flex justify-between text-sm mb-1.5" style={{ color: '#475569' }}>
         <span>{label}</span>
         <span className="font-bold" style={{ color }}>{value.toLocaleString('pt-PT')}h</span>
       </div>
-      <div className="h-4 rounded-full" style={{ background: '#0f1117' }}>
+      <div className="h-4 rounded-full" style={{ background: '#080b12' }}>
         <div
           className="h-4 rounded-full flex items-center justify-end pr-2"
           style={{
@@ -209,48 +208,47 @@ export default function Calculadora() {
       />
 
       {/* Benchmarks */}
-      <section className="py-16" style={{ background: '#0f1117', borderBottom: '1px solid #1e2436' }}>
+      <section className="py-16" style={{ background: '#080b12', borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
             {[
-              { icon: '⏱️', value: '60–85%', label: 'Redução média de tempo de processamento', color: '#10b981' },
-              { icon: '📈', value: '300–500%', label: 'ROI médio no primeiro ano', color: '#6366f1' },
-              { icon: '💳', value: '3–6 meses', label: 'Payback period típico', color: '#06b6d4' },
-              { icon: '🎯', value: '80–95%', label: 'Redução de erros vs processos manuais', color: '#f59e0b' },
+              { value: '60–85%', label: 'Redução média de tempo de processamento', color: '#34d399' },
+              { value: '300–500%', label: 'ROI médio no primeiro ano', color: '#818cf8' },
+              { value: '3–6 meses', label: 'Payback period típico', color: '#22d3ee' },
+              { value: '80–95%', label: 'Redução de erros vs processos manuais', color: '#fbbf24' },
             ].map((b, i) => (
               <Reveal key={i} delay={i * 80}>
                 <div className="card p-5 text-center">
-                  <div className="text-2xl mb-2">{b.icon}</div>
-                  <div className="text-xl font-extrabold mb-1" style={{ color: b.color }}>{b.value}</div>
-                  <div className="text-xs leading-relaxed" style={{ color: '#64748b' }}>{b.label}</div>
+                  <div className="text-xl font-extrabold mb-1" style={{ color: b.color, letterSpacing: '-0.02em' }}>{b.value}</div>
+                  <div className="text-xs leading-relaxed" style={{ color: '#475569', letterSpacing: '-0.01em' }}>{b.label}</div>
                 </div>
               </Reveal>
             ))}
           </div>
-          <p className="text-xs text-center mt-4" style={{ color: '#64748b' }}>
+          <p className="text-xs text-center mt-4" style={{ color: '#475569' }}>
             Fonte: McKinsey Digital, Gartner 2025, Forrester Research
           </p>
         </div>
       </section>
 
       {/* Calculator form */}
-      <section className="py-24" style={{ background: '#1a1f2e' }}>
+      <section className="py-24" style={{ background: 'rgba(255,255,255,0.025)' }}>
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <Reveal>
             <div className="text-center mb-12">
-              <h2 className="text-3xl font-extrabold mb-3 tracking-tight" style={{ color: '#f1f5f9', letterSpacing: '-0.02em' }}>
+              <h2 className="text-3xl font-extrabold mb-3 tracking-tight" style={{ color: '#e2e8f0', letterSpacing: '-0.02em' }}>
                 O teu processo atual
               </h2>
-              <p style={{ color: '#94a3b8' }}>Preenche os campos abaixo para calcular o impacto da automação.</p>
+              <p style={{ color: '#475569' }}>Preenche os campos abaixo para calcular o impacto da automação.</p>
             </div>
           </Reveal>
 
           <Reveal delay={100}>
-            <div className="rounded-2xl p-8" style={{ background: '#0f1117', border: '1px solid #1e2436' }}>
+            <div className="rounded-2xl p-8" style={{ background: '#080b12', border: '1px solid rgba(255,255,255,0.07)' }}>
               <div className="space-y-8">
                 {/* Process type */}
                 <div>
-                  <label className="block text-sm font-medium mb-2" style={{ color: '#94a3b8' }}>
+                  <label className="block text-sm font-medium mb-2" style={{ color: '#475569' }}>
                     Tipo de processo a automatizar
                   </label>
                   <select
@@ -281,28 +279,28 @@ export default function Calculadora() {
                     format={fmtH}
                   />
                   <div>
-                    <label className="block text-sm font-medium mb-2" style={{ color: '#94a3b8' }}>
+                    <label className="block text-sm font-medium mb-2" style={{ color: '#475569' }}>
                       👥 Número de pessoas envolvidas
                     </label>
                     <div className="flex items-center gap-3">
                       <button
                         onClick={() => setForm(f => ({ ...f, people: Math.max(1, f.people - 1) }))}
                         className="w-10 h-10 rounded-lg font-bold text-lg flex items-center justify-center"
-                        style={{ background: '#1a1f2e', border: '1px solid #1e2436', color: '#f1f5f9', cursor: 'pointer' }}
+                        style={{ background: 'rgba(255,255,255,0.025)', border: '1px solid rgba(255,255,255,0.07)', color: '#e2e8f0', cursor: 'pointer' }}
                       >−</button>
                       <div
                         className="flex-1 text-center text-2xl font-extrabold rounded-lg py-2"
-                        style={{ background: '#1a1f2e', border: '1px solid #6366f1', color: '#6366f1' }}
+                        style={{ background: 'rgba(255,255,255,0.025)', border: '1px solid #6366f1', color: '#6366f1' }}
                       >
                         {form.people}
                       </div>
                       <button
                         onClick={() => setForm(f => ({ ...f, people: Math.min(50, f.people + 1) }))}
                         className="w-10 h-10 rounded-lg font-bold text-lg flex items-center justify-center"
-                        style={{ background: '#1a1f2e', border: '1px solid #1e2436', color: '#f1f5f9', cursor: 'pointer' }}
+                        style={{ background: 'rgba(255,255,255,0.025)', border: '1px solid rgba(255,255,255,0.07)', color: '#e2e8f0', cursor: 'pointer' }}
                       >+</button>
                     </div>
-                    <div className="text-xs mt-2 text-center" style={{ color: '#64748b' }}>1 a 50 pessoas</div>
+                    <div className="text-xs mt-2 text-center" style={{ color: '#475569' }}>1 a 50 pessoas</div>
                   </div>
                 </div>
 
@@ -316,7 +314,7 @@ export default function Calculadora() {
                   />
                   <div>
                     <div className="flex items-center justify-between mb-2">
-                      <label className="text-sm font-medium" style={{ color: '#94a3b8' }}>
+                      <label className="text-sm font-medium" style={{ color: '#475569' }}>
                         🏷️ Custo estimado do projeto
                       </label>
                       <button
@@ -340,7 +338,7 @@ export default function Calculadora() {
                         <div className="text-2xl font-extrabold mb-1" style={{ color: '#6366f1' }}>
                           {fmtEuro(autoProjectCost)}
                         </div>
-                        <div className="text-xs" style={{ color: '#64748b' }}>Estimativa automática com base na complexidade</div>
+                        <div className="text-xs" style={{ color: '#475569' }}>Estimativa automática com base na complexidade</div>
                       </div>
                     ) : (
                       <Slider
@@ -376,7 +374,7 @@ export default function Calculadora() {
         <section
           id="roi-results"
           className="py-24"
-          style={{ background: '#0f1117', borderTop: '1px solid #1e2436', scrollMarginTop: '80px' }}
+          style={{ background: '#080b12', borderTop: '1px solid #1e2436', scrollMarginTop: '80px' }}
         >
           <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
             <Reveal>
@@ -384,7 +382,7 @@ export default function Calculadora() {
                 <span className="badge badge-emerald mb-4">Resultados calculados</span>
                 <h2
                   className="text-3xl font-extrabold tracking-tight"
-                  style={{ color: '#f1f5f9', letterSpacing: '-0.02em' }}
+                  style={{ color: '#e2e8f0', letterSpacing: '-0.02em' }}
                 >
                   O impacto real da automação
                 </h2>
@@ -394,38 +392,38 @@ export default function Calculadora() {
             {/* 4 big metrics */}
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-12">
               <MetricCard
-                icon="⏱️"
+                icon=""
                 label="Horas poupadas por ano"
                 value={results.horasPoupadas}
                 suffix="h"
-                color="#10b981"
+                color="#34d399"
                 active={showResults}
                 delay={0}
               />
               <MetricCard
-                icon="💰"
+                icon=""
                 label="Poupança anual estimada"
                 value={results.poupancaAnual}
                 prefix="€"
-                color="#06b6d4"
+                color="#22d3ee"
                 active={showResults}
                 delay={100}
               />
               <MetricCard
-                icon="📈"
+                icon=""
                 label="ROI estimado"
                 value={Math.max(0, results.roi)}
                 suffix="%"
-                color="#6366f1"
+                color="#818cf8"
                 active={showResults}
                 delay={200}
               />
               <MetricCard
-                icon="📅"
+                icon=""
                 label="Payback period"
                 value={results.paybackMeses > 36 ? 36 : results.paybackMeses}
                 suffix={results.paybackMeses > 36 ? '+ meses' : ' meses'}
-                color="#f59e0b"
+                color="#fbbf24"
                 active={showResults}
                 delay={300}
               />
@@ -436,9 +434,9 @@ export default function Calculadora() {
               {/* Before/after bars */}
               <div
                 className="rounded-2xl p-6"
-                style={{ background: '#1a1f2e', border: '1px solid #1e2436' }}
+                style={{ background: 'rgba(255,255,255,0.025)', border: '1px solid rgba(255,255,255,0.07)' }}
               >
-                <h3 className="font-bold mb-5" style={{ color: '#f1f5f9' }}>
+                <h3 className="font-bold mb-5" style={{ color: '#e2e8f0' }}>
                   Comparação de horas anuais
                 </h3>
                 <ComparisonBar
@@ -468,9 +466,9 @@ export default function Calculadora() {
               {/* Detailed breakdown */}
               <div
                 className="rounded-2xl p-6"
-                style={{ background: '#1a1f2e', border: '1px solid #1e2436' }}
+                style={{ background: 'rgba(255,255,255,0.025)', border: '1px solid rgba(255,255,255,0.07)' }}
               >
-                <h3 className="font-bold mb-5" style={{ color: '#f1f5f9' }}>Breakdown detalhado</h3>
+                <h3 className="font-bold mb-5" style={{ color: '#e2e8f0' }}>Breakdown detalhado</h3>
                 <div className="space-y-3">
                   {[
                     { label: 'Custo atual anual', value: `€${results.custoAtualAnual.toLocaleString('pt-PT')}`, color: '#ef4444' },
@@ -485,7 +483,7 @@ export default function Calculadora() {
                       className="flex items-center justify-between py-2"
                       style={{ borderBottom: i < 5 ? '1px solid #1e2436' : 'none' }}
                     >
-                      <span className="text-sm" style={{ color: '#94a3b8' }}>{row.label}</span>
+                      <span className="text-sm" style={{ color: '#475569' }}>{row.label}</span>
                       <span className="text-sm font-bold" style={{ color: row.color }}>{row.value}</span>
                     </div>
                   ))}
@@ -505,13 +503,13 @@ export default function Calculadora() {
               }}
             >
               <div className="text-3xl mb-4">🚀</div>
-              <h3 className="text-lg font-extrabold mb-2" style={{ color: '#f1f5f9' }}>
+              <h3 className="text-lg font-extrabold mb-2" style={{ color: '#e2e8f0' }}>
                 Com base nestes dados, recomendamos um projeto com orçamento entre{' '}
                 <span style={{ color: '#10b981' }}>€{Math.round(results.projectCost * 0.8 / 500) * 500 > 500 ? (Math.round(results.projectCost * 0.8 / 500) * 500).toLocaleString('pt-PT') : 500}</span>
                 {' '}e{' '}
                 <span style={{ color: '#10b981' }}>€{(Math.round(results.projectCost * 1.3 / 500) * 500).toLocaleString('pt-PT')}</span>
               </h3>
-              <p className="text-sm mb-6" style={{ color: '#94a3b8' }}>
+              <p className="text-sm mb-6" style={{ color: '#475569' }}>
                 Publica o teu projeto na Synk e recebe propostas de especialistas verificados em 48h.
               </p>
               <Link to="/registar" className="btn-primary btn-primary-lg" style={{ background: 'linear-gradient(135deg, #10b981, #06b6d4)' }}>

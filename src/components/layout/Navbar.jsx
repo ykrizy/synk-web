@@ -3,6 +3,7 @@ import { Link, useLocation } from 'react-router-dom'
 
 const NAV_LINKS = [
   { label: 'Como Funciona', to: '/como-funciona' },
+  { label: 'Marketplace', to: '/marketplace' },
   { label: 'Para Empresas', to: '/para-empresas' },
   { label: 'Para Especialistas', to: '/para-especialistas' },
   { label: 'Preços', to: '/precos' },
@@ -22,7 +23,6 @@ export default function Navbar() {
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
-  // Close mobile menu on route change
   useEffect(() => {
     setMobileOpen(false)
   }, [location.pathname])
@@ -35,12 +35,16 @@ export default function Navbar() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
-          <Link to="/" className="text-gradient font-extrabold text-2xl tracking-tight" style={{ textDecoration: 'none' }}>
+          <Link
+            to="/"
+            className="text-gradient font-extrabold text-xl tracking-tight"
+            style={{ textDecoration: 'none', letterSpacing: '-0.03em' }}
+          >
             Synk
           </Link>
 
           {/* Desktop Nav */}
-          <nav className="hidden md:flex items-center gap-1">
+          <nav className="hidden md:flex items-center gap-0.5">
             {NAV_LINKS.map(link => {
               const isActive = location.pathname === link.to
               return (
@@ -50,10 +54,13 @@ export default function Navbar() {
                   className="font-medium px-3 py-2 rounded-lg transition-all duration-200 whitespace-nowrap"
                   style={{
                     fontSize: '13px',
-                    color: isActive ? '#f1f5f9' : '#94a3b8',
+                    color: isActive ? '#e2e8f0' : '#64748b',
                     textDecoration: 'none',
-                    background: isActive ? '#1a1f2e' : 'transparent',
+                    background: isActive ? 'rgba(255,255,255,0.06)' : 'transparent',
+                    letterSpacing: '-0.01em',
                   }}
+                  onMouseEnter={e => { if (!isActive) e.currentTarget.style.color = '#cbd5e1' }}
+                  onMouseLeave={e => { if (!isActive) e.currentTarget.style.color = '#64748b' }}
                 >
                   {link.label}
                 </Link>
@@ -62,15 +69,19 @@ export default function Navbar() {
           </nav>
 
           {/* Desktop CTAs */}
-          <div className="hidden md:flex items-center gap-3">
-            <Link to="/registar" className="btn-ghost">Entrar</Link>
-            <Link to="/registar" className="btn-primary">Começar Grátis</Link>
+          <div className="hidden md:flex items-center gap-2">
+            <Link to="/registar" className="btn-ghost" style={{ fontSize: '13px', padding: '8px 16px' }}>
+              Entrar
+            </Link>
+            <Link to="/registar" className="btn-primary" style={{ fontSize: '13px', padding: '8px 18px' }}>
+              Começar Grátis
+            </Link>
           </div>
 
           {/* Mobile hamburger */}
           <button
             className="md:hidden p-2 rounded-lg transition-colors"
-            style={{ color: '#94a3b8', background: 'none', border: 'none', cursor: 'pointer' }}
+            style={{ color: '#64748b', background: 'none', border: 'none', cursor: 'pointer' }}
             onClick={() => setMobileOpen(!mobileOpen)}
             aria-label="Menu"
           >
@@ -91,9 +102,9 @@ export default function Navbar() {
       <div
         className={`mobile-menu md:hidden ${mobileOpen ? 'open' : ''}`}
         style={{
-          borderTop: '1px solid #1e2436',
-          background: 'rgba(15,17,23,0.97)',
-          backdropFilter: 'blur(12px)',
+          borderTop: '1px solid rgba(255,255,255,0.05)',
+          background: 'rgba(8,11,18,0.98)',
+          backdropFilter: 'blur(16px)',
         }}
       >
         <div className="px-4 py-4 flex flex-col gap-1">
@@ -101,19 +112,19 @@ export default function Navbar() {
             <Link
               key={link.to}
               to={link.to}
-              className="block px-4 py-3 rounded-lg text-sm font-medium"
+              className="block px-4 py-3 rounded-lg text-sm font-medium transition-all"
               style={{
-                color: location.pathname === link.to ? '#f1f5f9' : '#94a3b8',
+                color: location.pathname === link.to ? '#e2e8f0' : '#64748b',
                 textDecoration: 'none',
-                background: location.pathname === link.to ? '#1a1f2e' : 'transparent',
+                background: location.pathname === link.to ? 'rgba(255,255,255,0.05)' : 'transparent',
               }}
             >
               {link.label}
             </Link>
           ))}
-          <div className="flex gap-3 mt-3 pt-3" style={{ borderTop: '1px solid #1e2436' }}>
-            <Link to="/registar" className="btn-ghost flex-1 justify-center">Entrar</Link>
-            <Link to="/registar" className="btn-primary flex-1 justify-center">Começar Grátis</Link>
+          <div className="flex gap-3 mt-3 pt-3" style={{ borderTop: '1px solid rgba(255,255,255,0.05)' }}>
+            <Link to="/registar" className="btn-ghost flex-1 justify-center" style={{ fontSize: '13px' }}>Entrar</Link>
+            <Link to="/registar" className="btn-primary flex-1 justify-center" style={{ fontSize: '13px' }}>Começar Grátis</Link>
           </div>
         </div>
       </div>

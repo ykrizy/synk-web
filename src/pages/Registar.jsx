@@ -9,6 +9,31 @@ const COUNTRIES = ['Portugal', 'Espanha', 'Brasil', 'Outro']
 const COMPANY_SIZES = ['1–10', '11–50', '51–200', '200+']
 const EXPERIENCE_YEARS = ['< 1 ano', '1–3 anos', '3–5 anos', '5–10 anos', '10+ anos']
 
+const IconBuilding = () => (
+  <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+    <rect x="2" y="7" width="20" height="15" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/><line x1="12" y1="12" x2="12" y2="12.01"/><path d="M12 12h.01"/>
+    <path d="M8 11v5"/><path d="M16 11v5"/><path d="M12 11v5"/>
+  </svg>
+)
+
+const IconCode = () => (
+  <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+    <polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/>
+  </svg>
+)
+
+const IconCheck = () => (
+  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+    <polyline points="20 6 9 17 4 12"/>
+  </svg>
+)
+
+const IconSuccess = () => (
+  <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/>
+  </svg>
+)
+
 function CheckboxGroup({ options, selected, onToggle }) {
   return (
     <div className="grid grid-cols-2 gap-2">
@@ -34,46 +59,46 @@ function EmpresaForm({ onSuccess }) {
     <form onSubmit={e => { e.preventDefault(); onSuccess() }} className="space-y-5">
       <div className="grid sm:grid-cols-2 gap-5">
         <div>
-          <label className="block text-sm font-medium mb-2" style={{ color: '#94a3b8' }}>Nome da empresa *</label>
+          <label className="block text-sm font-medium mb-2" style={{ color: '#64748b' }}>Nome da empresa *</label>
           <input type="text" required className="form-input" placeholder="Empresa Lda." />
         </div>
         <div>
-          <label className="block text-sm font-medium mb-2" style={{ color: '#94a3b8' }}>Nome do responsável *</label>
+          <label className="block text-sm font-medium mb-2" style={{ color: '#64748b' }}>Nome do responsável *</label>
           <input type="text" required className="form-input" placeholder="João Silva" />
         </div>
       </div>
       <div className="grid sm:grid-cols-2 gap-5">
         <div>
-          <label className="block text-sm font-medium mb-2" style={{ color: '#94a3b8' }}>Email profissional *</label>
+          <label className="block text-sm font-medium mb-2" style={{ color: '#64748b' }}>Email profissional *</label>
           <input type="email" required className="form-input" placeholder="joao@empresa.pt" />
         </div>
         <div>
-          <label className="block text-sm font-medium mb-2" style={{ color: '#94a3b8' }}>Telefone</label>
+          <label className="block text-sm font-medium mb-2" style={{ color: '#64748b' }}>Telefone</label>
           <input type="tel" className="form-input" placeholder="+351 900 000 000" />
         </div>
       </div>
       <div className="grid sm:grid-cols-2 gap-5">
         <div>
-          <label className="block text-sm font-medium mb-2" style={{ color: '#94a3b8' }}>País</label>
+          <label className="block text-sm font-medium mb-2" style={{ color: '#64748b' }}>País</label>
           <select className="form-input w-full">
             {COUNTRIES.map(c => <option key={c}>{c}</option>)}
           </select>
         </div>
         <div>
-          <label className="block text-sm font-medium mb-2" style={{ color: '#94a3b8' }}>Nº de funcionários</label>
+          <label className="block text-sm font-medium mb-2" style={{ color: '#64748b' }}>Nº de funcionários</label>
           <select className="form-input w-full">
             {COMPANY_SIZES.map(s => <option key={s}>{s}</option>)}
           </select>
         </div>
       </div>
       <div>
-        <label className="block text-sm font-medium mb-3" style={{ color: '#94a3b8' }}>Que tipo de automação precisas?</label>
+        <label className="block text-sm font-medium mb-3" style={{ color: '#64748b' }}>Que tipo de automação precisas?</label>
         <CheckboxGroup options={AUTOMATION_TYPES} selected={automationTypes} onToggle={toggle} />
       </div>
       <button type="submit" className="btn-primary btn-primary-lg w-full justify-center" style={{ marginTop: '8px' }}>
         Criar Conta Gratuita →
       </button>
-      <p className="text-xs text-center" style={{ color: '#64748b' }}>
+      <p className="text-xs text-center" style={{ color: '#475569' }}>
         Ao registares-te, aceitas os{' '}
         <Link to="#" style={{ color: '#6366f1', textDecoration: 'none' }}>Termos de Serviço</Link>
         {' '}e a{' '}
@@ -91,50 +116,50 @@ function EspecialistaForm({ onSuccess }) {
     <form onSubmit={e => { e.preventDefault(); onSuccess() }} className="space-y-5">
       <div className="grid sm:grid-cols-2 gap-5">
         <div>
-          <label className="block text-sm font-medium mb-2" style={{ color: '#94a3b8' }}>Nome completo *</label>
+          <label className="block text-sm font-medium mb-2" style={{ color: '#64748b' }}>Nome completo *</label>
           <input type="text" required className="form-input" placeholder="Ricardo Fernandes" />
         </div>
         <div>
-          <label className="block text-sm font-medium mb-2" style={{ color: '#94a3b8' }}>Email *</label>
+          <label className="block text-sm font-medium mb-2" style={{ color: '#64748b' }}>Email *</label>
           <input type="email" required className="form-input" placeholder="ricardo@email.com" />
         </div>
       </div>
       <div className="grid sm:grid-cols-2 gap-5">
         <div>
-          <label className="block text-sm font-medium mb-2" style={{ color: '#94a3b8' }}>Telefone</label>
+          <label className="block text-sm font-medium mb-2" style={{ color: '#64748b' }}>Telefone</label>
           <input type="tel" className="form-input" placeholder="+351 900 000 000" />
         </div>
         <div>
-          <label className="block text-sm font-medium mb-2" style={{ color: '#94a3b8' }}>LinkedIn</label>
+          <label className="block text-sm font-medium mb-2" style={{ color: '#64748b' }}>LinkedIn</label>
           <input type="url" className="form-input" placeholder="linkedin.com/in/teu-perfil" />
         </div>
       </div>
       <div className="grid sm:grid-cols-2 gap-5">
         <div>
-          <label className="block text-sm font-medium mb-2" style={{ color: '#94a3b8' }}>País</label>
+          <label className="block text-sm font-medium mb-2" style={{ color: '#64748b' }}>País</label>
           <select className="form-input w-full">
             {COUNTRIES.map(c => <option key={c}>{c}</option>)}
           </select>
         </div>
         <div>
-          <label className="block text-sm font-medium mb-2" style={{ color: '#94a3b8' }}>Anos de experiência</label>
+          <label className="block text-sm font-medium mb-2" style={{ color: '#64748b' }}>Anos de experiência</label>
           <select className="form-input w-full">
             {EXPERIENCE_YEARS.map(y => <option key={y}>{y}</option>)}
           </select>
         </div>
       </div>
       <div>
-        <label className="block text-sm font-medium mb-3" style={{ color: '#94a3b8' }}>Especialidades principais</label>
+        <label className="block text-sm font-medium mb-3" style={{ color: '#64748b' }}>Especialidades principais</label>
         <CheckboxGroup options={SPECIALIST_SKILLS} selected={skills} onToggle={toggle} />
       </div>
       <div>
-        <label className="block text-sm font-medium mb-2" style={{ color: '#94a3b8' }}>Portfolio / GitHub (opcional)</label>
+        <label className="block text-sm font-medium mb-2" style={{ color: '#64748b' }}>Portfolio / GitHub (opcional)</label>
         <input type="url" className="form-input" placeholder="github.com/teu-perfil" />
       </div>
       <button type="submit" className="btn-primary btn-primary-lg w-full justify-center" style={{ marginTop: '8px' }}>
         Submeter Candidatura →
       </button>
-      <p className="text-xs text-center" style={{ color: '#64748b' }}>
+      <p className="text-xs text-center" style={{ color: '#475569' }}>
         Ao registares-te, aceitas os{' '}
         <Link to="#" style={{ color: '#6366f1', textDecoration: 'none' }}>Termos de Serviço</Link>
         {' '}e a{' '}
@@ -148,11 +173,16 @@ function SuccessMessage({ type, onReset }) {
   const isEmpresa = type === 'empresa'
   return (
     <div className="text-center py-16">
-      <div className="text-6xl mb-6">🎉</div>
-      <h2 className="text-2xl font-extrabold mb-4" style={{ color: '#f1f5f9', letterSpacing: '-0.02em' }}>
+      <div
+        className="w-20 h-20 rounded-2xl flex items-center justify-center mx-auto mb-6"
+        style={{ background: 'rgba(16,185,129,0.1)', color: '#34d399', border: '1px solid rgba(16,185,129,0.2)' }}
+      >
+        <IconSuccess />
+      </div>
+      <h2 className="text-2xl font-extrabold mb-4" style={{ color: '#e2e8f0', letterSpacing: '-0.02em' }}>
         {isEmpresa ? 'Conta criada com sucesso!' : 'Candidatura submetida!'}
       </h2>
-      <p className="text-lg mb-8" style={{ color: '#94a3b8' }}>
+      <p className="text-lg mb-8" style={{ color: '#64748b' }}>
         {isEmpresa
           ? 'Bem-vindo à Synk. Podes já publicar o teu primeiro projeto.'
           : 'Analisamos o teu perfil em 24 horas úteis e entramos em contacto.'}
@@ -180,7 +210,7 @@ export default function Registar() {
     description: 'Regista-te na Synk como empresa ou especialista. Rápido, grátis e sem compromisso.',
   })
 
-  const [selected, setSelected] = useState(null) // null | 'empresa' | 'especialista'
+  const [selected, setSelected] = useState(null)
   const [success, setSuccess] = useState(false)
 
   const reset = () => { setSelected(null); setSuccess(false) }
@@ -188,26 +218,23 @@ export default function Registar() {
   return (
     <section
       className="min-h-screen pt-20 pb-24 relative"
-      style={{ background: 'radial-gradient(ellipse at 50% 0%, #1a1f2e 0%, #0f1117 60%)' }}
+      style={{ background: '#080b12' }}
     >
-      {/* Grid bg */}
       <div
-        className="absolute inset-0 opacity-5"
+        className="absolute inset-0 pointer-events-none"
         style={{
-          backgroundImage: `linear-gradient(#6366f1 1px, transparent 1px), linear-gradient(90deg, #6366f1 1px, transparent 1px)`,
-          backgroundSize: '60px 60px',
+          background: 'radial-gradient(ellipse 80% 40% at 50% 0%, rgba(99,102,241,0.07) 0%, transparent 70%)',
         }}
       />
 
       <div className="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Header */}
         <Reveal>
           <div className="text-center mb-12 pt-8">
-            <h1 className="text-4xl sm:text-5xl font-extrabold mb-4 tracking-tight" style={{ color: '#f1f5f9', letterSpacing: '-0.03em' }}>
+            <h1 className="text-4xl sm:text-5xl font-extrabold mb-4" style={{ color: '#e2e8f0', letterSpacing: '-0.03em' }}>
               Como preferes{' '}
               <span className="text-gradient">começar?</span>
             </h1>
-            <p className="text-lg" style={{ color: '#94a3b8' }}>
+            <p className="text-lg" style={{ color: '#64748b' }}>
               Escolhe o teu caminho e começa em minutos.
             </p>
           </div>
@@ -217,32 +244,36 @@ export default function Registar() {
           <Reveal>
             <div
               className="max-w-2xl mx-auto rounded-2xl p-8"
-              style={{ background: '#1a1f2e', border: '1px solid #1e2436' }}
+              style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)' }}
             >
               <SuccessMessage type={selected} onReset={reset} />
             </div>
           </Reveal>
         ) : selected === null ? (
-          /* Split selection */
           <Reveal delay={100}>
             <div className="grid md:grid-cols-2 gap-6">
               {/* Empresa card */}
               <button
                 onClick={() => setSelected('empresa')}
                 className="card p-8 text-left transition-all"
-                style={{ background: '#1a1f2e', border: '1px solid #1e2436', borderRadius: '16px', cursor: 'pointer' }}
-                onMouseEnter={e => { e.currentTarget.style.borderColor = '#6366f1'; e.currentTarget.style.boxShadow = '0 0 30px rgba(99,102,241,0.15)' }}
-                onMouseLeave={e => { e.currentTarget.style.borderColor = '#1e2436'; e.currentTarget.style.boxShadow = 'none' }}
+                style={{ borderRadius: '16px', cursor: 'pointer' }}
+                onMouseEnter={e => { e.currentTarget.style.borderColor = '#6366f1'; e.currentTarget.style.boxShadow = '0 0 30px rgba(99,102,241,0.12)' }}
+                onMouseLeave={e => { e.currentTarget.style.borderColor = 'rgba(255,255,255,0.07)'; e.currentTarget.style.boxShadow = 'none' }}
               >
-                <div className="text-5xl mb-5">🏢</div>
-                <h2 className="text-xl font-extrabold mb-2" style={{ color: '#f1f5f9' }}>Sou uma Empresa</h2>
-                <p className="text-sm mb-6" style={{ color: '#94a3b8' }}>
+                <div
+                  className="w-14 h-14 rounded-xl flex items-center justify-center mb-5"
+                  style={{ background: 'rgba(99,102,241,0.1)', color: '#818cf8', border: '1px solid rgba(99,102,241,0.2)' }}
+                >
+                  <IconBuilding />
+                </div>
+                <h2 className="text-xl font-extrabold mb-2" style={{ color: '#e2e8f0' }}>Sou uma Empresa</h2>
+                <p className="text-sm mb-6" style={{ color: '#64748b' }}>
                   Quero contratar especialistas para automatizar processos
                 </p>
                 <ul className="space-y-2 mb-6">
                   {['Grátis', 'Propostas em 48h', 'Escrow incluído'].map((item, i) => (
-                    <li key={i} className="flex items-center gap-2 text-sm" style={{ color: '#94a3b8' }}>
-                      <span style={{ color: '#10b981' }}>✓</span> {item}
+                    <li key={i} className="flex items-center gap-2 text-sm" style={{ color: '#64748b' }}>
+                      <span style={{ color: '#10b981' }}><IconCheck /></span> {item}
                     </li>
                   ))}
                 </ul>
@@ -256,25 +287,30 @@ export default function Registar() {
                 onClick={() => setSelected('especialista')}
                 className="text-left transition-all"
                 style={{
-                  background: '#1a1f2e',
-                  border: '1px solid rgba(139,92,246,0.4)',
+                  background: 'rgba(255,255,255,0.03)',
+                  border: '1px solid rgba(139,92,246,0.3)',
                   borderRadius: '16px',
                   padding: '32px',
                   cursor: 'pointer',
-                  boxShadow: '0 0 30px rgba(139,92,246,0.1)',
+                  boxShadow: '0 0 30px rgba(139,92,246,0.08)',
                 }}
-                onMouseEnter={e => { e.currentTarget.style.borderColor = '#8b5cf6'; e.currentTarget.style.boxShadow = '0 0 40px rgba(139,92,246,0.2)' }}
-                onMouseLeave={e => { e.currentTarget.style.borderColor = 'rgba(139,92,246,0.4)'; e.currentTarget.style.boxShadow = '0 0 30px rgba(139,92,246,0.1)' }}
+                onMouseEnter={e => { e.currentTarget.style.borderColor = '#8b5cf6'; e.currentTarget.style.boxShadow = '0 0 40px rgba(139,92,246,0.15)' }}
+                onMouseLeave={e => { e.currentTarget.style.borderColor = 'rgba(139,92,246,0.3)'; e.currentTarget.style.boxShadow = '0 0 30px rgba(139,92,246,0.08)' }}
               >
-                <div className="text-5xl mb-5">🧑‍💻</div>
-                <h2 className="text-xl font-extrabold mb-2" style={{ color: '#f1f5f9' }}>Sou Especialista</h2>
-                <p className="text-sm mb-6" style={{ color: '#94a3b8' }}>
+                <div
+                  className="w-14 h-14 rounded-xl flex items-center justify-center mb-5"
+                  style={{ background: 'rgba(139,92,246,0.1)', color: '#a78bfa', border: '1px solid rgba(139,92,246,0.2)' }}
+                >
+                  <IconCode />
+                </div>
+                <h2 className="text-xl font-extrabold mb-2" style={{ color: '#e2e8f0' }}>Sou Especialista</h2>
+                <p className="text-sm mb-6" style={{ color: '#64748b' }}>
                   Quero aceder a projetos de automação qualificados
                 </p>
                 <ul className="space-y-2 mb-6">
                   {['Perfil gratuito', 'Pagamento garantido', 'Verificação em 24h'].map((item, i) => (
-                    <li key={i} className="flex items-center gap-2 text-sm" style={{ color: '#94a3b8' }}>
-                      <span style={{ color: '#8b5cf6' }}>✓</span> {item}
+                    <li key={i} className="flex items-center gap-2 text-sm" style={{ color: '#64748b' }}>
+                      <span style={{ color: '#8b5cf6' }}><IconCheck /></span> {item}
                     </li>
                   ))}
                 </ul>
@@ -285,29 +321,39 @@ export default function Registar() {
             </div>
           </Reveal>
         ) : (
-          /* Form */
           <Reveal>
             <div className="max-w-2xl mx-auto">
-              {/* Back button */}
               <button
                 onClick={reset}
                 className="flex items-center gap-2 mb-8 text-sm"
-                style={{ color: '#94a3b8', background: 'none', border: 'none', cursor: 'pointer' }}
+                style={{ color: '#64748b', background: 'none', border: 'none', cursor: 'pointer' }}
               >
                 ← Voltar à seleção
               </button>
 
               <div
                 className="rounded-2xl p-8"
-                style={{ background: '#1a1f2e', border: `1px solid ${selected === 'empresa' ? '#6366f1' : '#8b5cf6'}44` }}
+                style={{
+                  background: 'rgba(255,255,255,0.03)',
+                  border: `1px solid ${selected === 'empresa' ? 'rgba(99,102,241,0.3)' : 'rgba(139,92,246,0.3)'}`,
+                }}
               >
-                <div className="flex items-center gap-3 mb-8">
-                  <span className="text-3xl">{selected === 'empresa' ? '🏢' : '🧑‍💻'}</span>
+                <div className="flex items-center gap-4 mb-8">
+                  <div
+                    className="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0"
+                    style={{
+                      background: selected === 'empresa' ? 'rgba(99,102,241,0.1)' : 'rgba(139,92,246,0.1)',
+                      color: selected === 'empresa' ? '#818cf8' : '#a78bfa',
+                      border: `1px solid ${selected === 'empresa' ? 'rgba(99,102,241,0.2)' : 'rgba(139,92,246,0.2)'}`,
+                    }}
+                  >
+                    {selected === 'empresa' ? <IconBuilding /> : <IconCode />}
+                  </div>
                   <div>
-                    <h2 className="text-xl font-extrabold" style={{ color: '#f1f5f9' }}>
+                    <h2 className="text-xl font-extrabold" style={{ color: '#e2e8f0' }}>
                       {selected === 'empresa' ? 'Registar como Empresa' : 'Criar Perfil de Especialista'}
                     </h2>
-                    <p className="text-sm" style={{ color: '#64748b' }}>
+                    <p className="text-sm" style={{ color: '#475569' }}>
                       {selected === 'empresa' ? 'Leva menos de 2 minutos' : 'Verificação em 24h úteis'}
                     </p>
                   </div>

@@ -9,6 +9,7 @@ import SobreNos from '@/pages/SobreNos'
 import Registar from '@/pages/Registar'
 import Matching from '@/pages/Matching'
 import Calculadora from '@/pages/Calculadora'
+import Marketplace from '@/pages/Marketplace'
 import NotFound from '@/pages/NotFound'
 
 export default function App() {
@@ -24,6 +25,7 @@ export default function App() {
         <Route path="registar" element={<Registar />} />
         <Route path="matching" element={<Matching />} />
         <Route path="calculadora" element={<Calculadora />} />
+        <Route path="marketplace" element={<Marketplace />} />
         <Route path="*" element={<NotFound />} />
       </Route>
     </Routes>

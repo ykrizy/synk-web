@@ -12,16 +12,16 @@ export default function CTABanner({
   return (
     <section
       className="py-24 relative overflow-hidden"
-      style={{ background: 'linear-gradient(180deg, #0f1117 0%, #1a1f2e 100%)' }}
+      style={{ background: '#080b12', borderTop: '1px solid rgba(255,255,255,0.05)' }}
     >
       {/* Glow */}
       <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
         <div
           style={{
-            width: '600px',
-            height: '300px',
-            background: 'radial-gradient(ellipse, rgba(99,102,241,0.15) 0%, transparent 70%)',
-            filter: 'blur(40px)',
+            width: '700px',
+            height: '350px',
+            background: 'radial-gradient(ellipse, rgba(99,102,241,0.1) 0%, transparent 70%)',
+            filter: 'blur(60px)',
           }}
         />
       </div>
@@ -30,15 +30,16 @@ export default function CTABanner({
         <Reveal>
           <div
             className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full mb-8"
-            style={{ background: 'rgba(99,102,241,0.1)', border: '1px solid rgba(99,102,241,0.25)' }}
+            style={{ background: 'rgba(99,102,241,0.08)', border: '1px solid rgba(99,102,241,0.2)' }}
           >
-            <span className="text-xs font-semibold" style={{ color: '#6366f1' }}>
-              ✦ Começa hoje, grátis
+            <span className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: '#818cf8' }} />
+            <span className="text-xs font-semibold" style={{ color: '#818cf8', letterSpacing: '0.02em' }}>
+              Começa hoje, gratuitamente
             </span>
           </div>
           <h2
-            className="text-3xl sm:text-4xl lg:text-5xl font-extrabold mb-5 tracking-tight"
-            style={{ color: '#f1f5f9', letterSpacing: '-0.02em' }}
+            className="text-3xl sm:text-4xl lg:text-5xl font-extrabold mb-5"
+            style={{ color: '#e2e8f0', letterSpacing: '-0.035em' }}
           >
             {heading.split('\n').map((line, i) => (
               <span key={i}>
@@ -47,17 +48,17 @@ export default function CTABanner({
               </span>
             ))}
           </h2>
-          <p className="text-lg mb-10" style={{ color: '#94a3b8' }}>
+          <p className="text-lg mb-10" style={{ color: '#475569', letterSpacing: '-0.01em' }}>
             {sub}
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+          <div className="flex flex-col sm:flex-row gap-3 justify-center">
             <Link to={primaryTo} className="btn-primary btn-primary-lg">
               {primaryLabel}
-              <svg width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
+              <svg width="15" height="15" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
                 <path d="M5 12h14M12 5l7 7-7 7" />
               </svg>
             </Link>
-            <Link to={secondaryTo} className="btn-ghost" style={{ fontSize: '15px', padding: '14px 24px' }}>
+            <Link to={secondaryTo} className="btn-ghost" style={{ fontSize: '14px', padding: '13px 24px' }}>
               {secondaryLabel}
             </Link>
           </div>

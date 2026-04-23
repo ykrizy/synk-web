@@ -60,8 +60,15 @@ const FAQS_PRICING = [
 
 function CheckItem({ children, color = '#6366f1' }) {
   return (
-    <li className="flex items-center gap-3 text-sm" style={{ color: '#94a3b8' }}>
-      <span className="w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0 text-xs font-bold" style={{ background: `${color}22`, color }}>✓</span>
+    <li className="flex items-center gap-3 text-sm" style={{ color: '#475569', letterSpacing: '-0.01em' }}>
+      <span
+        className="w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0"
+        style={{ background: `${color}18`, border: `1px solid ${color}28` }}
+      >
+        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+          <polyline points="20 6 9 17 4 12" />
+        </svg>
+      </span>
       {children}
     </li>
   )
@@ -82,71 +89,85 @@ export default function Precos() {
       />
 
       {/* 3 pricing cards */}
-      <section className="py-24" style={{ background: '#0f1117' }}>
+      <section className="py-24" style={{ background: '#080b12' }}>
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid md:grid-cols-3 gap-6">
+          <div className="grid md:grid-cols-3 gap-5">
             {/* Empresas */}
             <Reveal delay={0}>
               <div className="card p-8 flex flex-col h-full">
-                <span className="badge badge-indigo mb-4">Para Empresas</span>
-                <div className="text-4xl font-extrabold mb-1" style={{ color: '#f1f5f9' }}>€0</div>
-                <div className="text-sm mb-2 font-medium" style={{ color: '#64748b' }}>/ sempre</div>
-                <p className="text-sm mb-6 leading-relaxed" style={{ color: '#94a3b8' }}>
+                <span className="badge badge-indigo mb-5">Para Empresas</span>
+                <div className="text-4xl font-extrabold mb-1" style={{ color: '#e2e8f0', letterSpacing: '-0.04em' }}>€0</div>
+                <div className="text-sm mb-2 font-medium" style={{ color: '#334155' }}>/ sempre</div>
+                <p className="text-sm mb-6 leading-relaxed" style={{ color: '#475569', letterSpacing: '-0.01em' }}>
                   Publicar e contratar é sempre gratuito
                 </p>
                 <ul className="space-y-3 mb-8 flex-1">
-                  {EMPRESAS_FEATURES.map((f, i) => <CheckItem key={i} color="#6366f1">{f}</CheckItem>)}
+                  {EMPRESAS_FEATURES.map((f, i) => <CheckItem key={i} color="#818cf8">{f}</CheckItem>)}
                 </ul>
                 <Link to="/registar" className="btn-outline" style={{ textAlign: 'center', justifyContent: 'center' }}>
                   Começar Grátis
                 </Link>
-                <p className="text-xs mt-3 text-center" style={{ color: '#64748b' }}>Só pagas o valor acordado com o especialista</p>
+                <p className="text-xs mt-3 text-center" style={{ color: '#334155' }}>Só pagas o valor acordado com o especialista</p>
               </div>
             </Reveal>
 
             {/* Especialistas — highlighted */}
             <Reveal delay={100}>
               <div
-                className="relative flex flex-col h-full rounded-xl p-8"
-                style={{ background: '#1a1f2e', border: '1px solid rgba(99,102,241,0.5)', boxShadow: '0 0 50px rgba(99,102,241,0.15)' }}
+                className="relative flex flex-col h-full rounded-2xl p-8"
+                style={{
+                  background: 'rgba(99,102,241,0.04)',
+                  border: '1px solid rgba(99,102,241,0.3)',
+                  boxShadow: '0 0 60px rgba(99,102,241,0.1)',
+                }}
               >
                 <div className="absolute -top-3 left-1/2 -translate-x-1/2">
-                  <span className="badge px-4 py-1" style={{ background: 'linear-gradient(135deg, #6366f1, #8b5cf6)', color: '#fff', borderColor: 'transparent', boxShadow: '0 0 20px rgba(99,102,241,0.5)' }}>
-                    ✦ Mais Popular
+                  <span
+                    className="badge px-4 py-1"
+                    style={{
+                      background: 'linear-gradient(135deg, #6366f1, #7c3aed)',
+                      color: '#fff',
+                      borderColor: 'transparent',
+                      boxShadow: '0 0 24px rgba(99,102,241,0.5)',
+                      fontSize: '10px',
+                      letterSpacing: '0.08em',
+                    }}
+                  >
+                    Mais Popular
                   </span>
                 </div>
-                <span className="badge badge-violet mb-4 mt-2">Para Especialistas</span>
-                <div className="text-4xl font-extrabold mb-1" style={{ color: '#f1f5f9' }}>15%</div>
-                <div className="text-sm mb-2 font-medium" style={{ color: '#8b5cf6' }}>por projeto concluído</div>
-                <p className="text-sm mb-6 leading-relaxed" style={{ color: '#94a3b8' }}>
+                <span className="badge badge-violet mb-5 mt-2">Para Especialistas</span>
+                <div className="text-4xl font-extrabold mb-1" style={{ color: '#e2e8f0', letterSpacing: '-0.04em' }}>15%</div>
+                <div className="text-sm mb-2 font-medium" style={{ color: '#a78bfa' }}>por projeto concluído</div>
+                <p className="text-sm mb-6 leading-relaxed" style={{ color: '#475569', letterSpacing: '-0.01em' }}>
                   Só pagas quando recebes
                 </p>
                 <ul className="space-y-3 mb-8 flex-1">
-                  {ESPECIALISTAS_FEATURES.map((f, i) => <CheckItem key={i} color="#8b5cf6">{f}</CheckItem>)}
+                  {ESPECIALISTAS_FEATURES.map((f, i) => <CheckItem key={i} color="#a78bfa">{f}</CheckItem>)}
                 </ul>
                 <Link to="/registar" className="btn-primary btn-primary-lg" style={{ textAlign: 'center', justifyContent: 'center' }}>
                   Criar Perfil Gratuito
                 </Link>
-                <p className="text-xs mt-3 text-center" style={{ color: '#64748b' }}>Sem mensalidade · Comissão só em projetos pagos</p>
+                <p className="text-xs mt-3 text-center" style={{ color: '#334155' }}>Sem mensalidade · Comissão só em projetos pagos</p>
               </div>
             </Reveal>
 
             {/* Enterprise */}
             <Reveal delay={200}>
               <div className="card p-8 flex flex-col h-full">
-                <span className="badge badge-amber mb-4">Grandes Empresas</span>
-                <div className="text-4xl font-extrabold mb-1" style={{ color: '#f1f5f9' }}>Custom</div>
-                <div className="text-sm mb-2 font-medium" style={{ color: '#f59e0b' }}>sob consulta</div>
-                <p className="text-sm mb-6 leading-relaxed" style={{ color: '#94a3b8' }}>
+                <span className="badge badge-amber mb-5">Grandes Empresas</span>
+                <div className="text-4xl font-extrabold mb-1" style={{ color: '#e2e8f0', letterSpacing: '-0.04em' }}>Custom</div>
+                <div className="text-sm mb-2 font-medium" style={{ color: '#fbbf24' }}>sob consulta</div>
+                <p className="text-sm mb-6 leading-relaxed" style={{ color: '#475569', letterSpacing: '-0.01em' }}>
                   Para empresas com volume de projetos elevado
                 </p>
                 <ul className="space-y-3 mb-8 flex-1">
-                  {ENTERPRISE_FEATURES.map((f, i) => <CheckItem key={i} color="#f59e0b">{f}</CheckItem>)}
+                  {ENTERPRISE_FEATURES.map((f, i) => <CheckItem key={i} color="#fbbf24">{f}</CheckItem>)}
                 </ul>
                 <a href="mailto:hello@synk.pt" className="btn-outline" style={{ textAlign: 'center', justifyContent: 'center', textDecoration: 'none' }}>
                   Falar com a Equipa
                 </a>
-                <p className="text-xs mt-3 text-center" style={{ color: '#64748b' }}>Resposta em 24h úteis</p>
+                <p className="text-xs mt-3 text-center" style={{ color: '#334155' }}>Resposta em 24h úteis</p>
               </div>
             </Reveal>
           </div>
@@ -154,28 +175,36 @@ export default function Precos() {
       </section>
 
       {/* Comparison table */}
-      <section className="py-24" style={{ background: '#1a1f2e', borderTop: '1px solid #1e2436' }}>
+      <section className="py-24" style={{ background: 'rgba(255,255,255,0.015)', borderTop: '1px solid rgba(255,255,255,0.05)' }}>
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
           <SectionHeader heading="Comparação" highlight="detalhada" sub="Tudo o que precisas de saber num só lugar." />
           <Reveal delay={100}>
-            <div className="rounded-2xl overflow-hidden" style={{ border: '1px solid #1e2436' }}>
-              {/* Table header */}
-              <div className="grid grid-cols-4 p-4" style={{ background: '#0f1117', borderBottom: '1px solid #1e2436' }}>
-                <div className="text-sm font-semibold" style={{ color: '#64748b' }}>Funcionalidade</div>
+            <div className="rounded-2xl overflow-hidden" style={{ border: '1px solid rgba(255,255,255,0.07)' }}>
+              <div className="grid grid-cols-4 p-4" style={{ background: 'rgba(0,0,0,0.3)', borderBottom: '1px solid rgba(255,255,255,0.07)' }}>
+                <div className="text-xs font-semibold uppercase tracking-widest" style={{ color: '#334155' }}>Funcionalidade</div>
                 {['Empresas', 'Especialistas', 'Enterprise'].map((h, i) => (
-                  <div key={i} className="text-sm font-bold text-center" style={{ color: i === 1 ? '#8b5cf6' : '#f1f5f9' }}>{h}</div>
+                  <div key={i} className="text-sm font-bold text-center" style={{ color: i === 1 ? '#a78bfa' : '#e2e8f0', letterSpacing: '-0.01em' }}>{h}</div>
                 ))}
               </div>
               {TABLE_FEATURES.map((row, i) => (
                 <div
                   key={i}
                   className="grid grid-cols-4 p-4 items-center"
-                  style={{ borderBottom: i < TABLE_FEATURES.length - 1 ? '1px solid #1e2436' : 'none', background: i % 2 === 0 ? '#0f1117' : '#1a1f2e' }}
+                  style={{
+                    borderBottom: i < TABLE_FEATURES.length - 1 ? '1px solid rgba(255,255,255,0.04)' : 'none',
+                    background: i % 2 === 0 ? 'transparent' : 'rgba(255,255,255,0.015)',
+                  }}
                 >
-                  <div className="text-sm" style={{ color: '#94a3b8' }}>{row.feature}</div>
+                  <div className="text-sm" style={{ color: '#64748b', letterSpacing: '-0.01em' }}>{row.feature}</div>
                   {[row.empresas, row.especialistas, row.enterprise].map((val, j) => (
-                    <div key={j} className="text-sm text-center font-medium" style={{ color: val === '✓' ? '#10b981' : val === '—' ? '#1e2436' : '#f1f5f9' }}>
-                      {val}
+                    <div key={j} className="text-sm text-center font-medium" style={{ color: val === '✓' ? '#34d399' : val === '—' ? 'rgba(255,255,255,0.1)' : '#e2e8f0' }}>
+                      {val === '✓' ? (
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#34d399" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="inline">
+                          <polyline points="20 6 9 17 4 12" />
+                        </svg>
+                      ) : val === '—' ? (
+                        <span style={{ color: 'rgba(255,255,255,0.12)' }}>—</span>
+                      ) : val}
                     </div>
                   ))}
                 </div>
@@ -186,48 +215,72 @@ export default function Precos() {
       </section>
 
       {/* Commission breakdown */}
-      <section className="py-24" style={{ background: '#0f1117' }}>
+      <section className="py-24" style={{ background: '#080b12' }}>
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <SectionHeader heading="Como funciona a" highlight="comissão de 15%" sub="Transparência total em cada projeto." />
           <Reveal delay={100}>
-            <div className="rounded-2xl p-8" style={{ background: '#1a1f2e', border: '1px solid #1e2436' }}>
-              {/* Flow */}
-              <div className="flex flex-col sm:flex-row items-center gap-4 mb-8">
+            <div
+              className="rounded-2xl p-8"
+              style={{ background: 'rgba(255,255,255,0.025)', border: '1px solid rgba(255,255,255,0.07)' }}
+            >
+              <div className="flex flex-col sm:flex-row items-center gap-4">
                 {[
-                  { label: 'Empresa paga', value: '€5.000', color: '#6366f1', icon: '🏢' },
+                  {
+                    label: 'Empresa paga',
+                    value: '€5.000',
+                    color: '#818cf8',
+                    icon: (
+                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" /><polyline points="9 22 9 12 15 12 15 22" />
+                      </svg>
+                    ),
+                  },
                   { arrow: true },
-                  { label: 'Synk retém', value: '€750 (15%)', color: '#8b5cf6', icon: '🛡️' },
+                  {
+                    label: 'Synk retém',
+                    value: '€750 (15%)',
+                    color: '#a78bfa',
+                    icon: (
+                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                      </svg>
+                    ),
+                  },
                   { arrow: true },
-                  { label: 'Especialista recebe', value: '€4.250 (85%)', color: '#10b981', icon: '💰' },
-                ].map((item, i) => (
+                  {
+                    label: 'Especialista recebe',
+                    value: '€4.250 (85%)',
+                    color: '#34d399',
+                    icon: (
+                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <line x1="12" y1="1" x2="12" y2="23" /><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
+                      </svg>
+                    ),
+                  },
+                ].map((item, i) =>
                   item.arrow ? (
-                    <div key={i} className="text-2xl font-bold hidden sm:block" style={{ color: '#1e2436' }}>→</div>
+                    <div key={i} className="hidden sm:flex items-center justify-center flex-shrink-0" style={{ color: 'rgba(255,255,255,0.15)' }}>
+                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M5 12h14M12 5l7 7-7 7" />
+                      </svg>
+                    </div>
                   ) : (
-                    <div key={i} className="flex-1 rounded-xl p-5 text-center" style={{ background: '#0f1117', border: `1px solid ${item.color}33` }}>
-                      <div className="text-2xl mb-2">{item.icon}</div>
-                      <div className="text-xs font-semibold mb-2" style={{ color: item.color }}>{item.label}</div>
-                      <div className="font-bold text-lg" style={{ color: '#f1f5f9' }}>{item.value}</div>
+                    <div
+                      key={i}
+                      className="flex-1 rounded-xl p-5 text-center"
+                      style={{ background: 'rgba(0,0,0,0.2)', border: `1px solid ${item.color}20` }}
+                    >
+                      <div
+                        className="w-10 h-10 rounded-xl flex items-center justify-center mx-auto mb-3"
+                        style={{ background: `${item.color}15`, color: item.color }}
+                      >
+                        {item.icon}
+                      </div>
+                      <div className="text-xs font-semibold mb-2 uppercase tracking-wide" style={{ color: item.color }}>{item.label}</div>
+                      <div className="font-bold text-lg" style={{ color: '#e2e8f0', letterSpacing: '-0.02em' }}>{item.value}</div>
                     </div>
                   )
-                ))}
-              </div>
-
-              {/* Competitor comparison */}
-              <h3 className="text-sm font-semibold uppercase tracking-wide mb-4" style={{ color: '#64748b' }}>Comparação com concorrentes</h3>
-              <div className="space-y-3">
-                {[
-                  { name: 'Upwork', commission: 'até 20%', color: '#ef4444', width: 100 },
-                  { name: 'Fiverr', commission: '20% fixo', color: '#f59e0b', width: 100 },
-                  { name: 'Synk', commission: '15% fixo, sem taxas adicionais', color: '#10b981', width: 75 },
-                ].map((c, i) => (
-                  <div key={i} className="flex items-center gap-4">
-                    <div className="w-20 text-sm font-medium flex-shrink-0" style={{ color: '#94a3b8' }}>{c.name}</div>
-                    <div className="flex-1 h-2 rounded-full" style={{ background: '#1e2436' }}>
-                      <div className="h-2 rounded-full" style={{ background: c.color, width: `${c.width}%` }} />
-                    </div>
-                    <div className="text-sm font-semibold flex-shrink-0" style={{ color: c.name === 'Synk' ? '#10b981' : '#94a3b8' }}>{c.commission}</div>
-                  </div>
-                ))}
+                )}
               </div>
             </div>
           </Reveal>
@@ -235,7 +288,7 @@ export default function Precos() {
       </section>
 
       {/* FAQ */}
-      <section className="py-24" style={{ background: '#0f1117' }}>
+      <section className="py-24" style={{ background: '#080b12', borderTop: '1px solid rgba(255,255,255,0.05)' }}>
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
           <SectionHeader heading="FAQ de" highlight="preços" />
           <FAQ faqs={FAQS_PRICING} />

@@ -41,24 +41,78 @@ const TIMELINE = [
 ]
 
 const VALUES = [
-  { icon: '🔒', title: 'Confiança primeiro', desc: 'Cada feature que construímos começa com a pergunta: "Isto torna a plataforma mais segura e transparente para ambas as partes?"' },
-  { icon: '⚡', title: 'Velocidade com qualidade', desc: 'Acreditamos que rapidez e qualidade não são opostos. O nosso processo de verificação garante ambos.' },
-  { icon: '🌍', title: 'Mercado ibérico, ambição global', desc: 'Começamos em Portugal porque é onde estamos. Mas o problema é global.' },
+  {
+    icon: (
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <rect x="3" y="11" width="18" height="11" rx="2" ry="2" /><path d="M7 11V7a5 5 0 0 1 10 0v4" />
+      </svg>
+    ),
+    title: 'Confiança primeiro',
+    desc: 'Cada feature que construímos começa com a pergunta: "Isto torna a plataforma mais segura e transparente para ambas as partes?"',
+    color: '#818cf8',
+  },
+  {
+    icon: (
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
+      </svg>
+    ),
+    title: 'Velocidade com qualidade',
+    desc: 'Acreditamos que rapidez e qualidade não são opostos. O nosso processo de verificação garante ambos.',
+    color: '#fbbf24',
+  },
+  {
+    icon: (
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <circle cx="12" cy="12" r="10" /><line x1="2" y1="12" x2="22" y2="12" />
+        <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
+      </svg>
+    ),
+    title: 'Mercado ibérico, ambição global',
+    desc: 'Começamos em Portugal porque é onde estamos. Mas o problema é global.',
+    color: '#34d399',
+  },
 ]
 
 const STATS = [
-  { value: 30, suffix: '+', label: 'Especialistas Verificados', icon: '👥' },
-  { value: 10, suffix: '', label: 'Projetos Piloto Concluídos', icon: '✅' },
-  { value: 48, suffix: 'h', label: 'Tempo médio de match', icon: '⚡' },
-  { value: 3, suffix: '', label: 'Co-fundadores apaixonados pelo problema', icon: '❤️' },
+  { value: 30, suffix: '+', label: 'Especialistas Verificados' },
+  { value: 10, suffix: '', label: 'Projetos Piloto Concluídos' },
+  { value: 48, suffix: 'h', label: 'Tempo médio de match' },
+  { value: 3, suffix: '', label: 'Co-fundadores apaixonados pelo problema' },
 ]
 
 const JOBS = ['Engenheiro Full-Stack', 'Community Manager', 'Sales (Espanha)']
 
 const CONTACTS = [
-  { icon: '📧', label: 'Email geral', email: 'hello@synk.pt' },
-  { icon: '💼', label: 'Parcerias', email: 'partnerships@synk.pt' },
-  { icon: '📰', label: 'Imprensa', email: 'press@synk.pt' },
+  {
+    icon: (
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
+        <polyline points="22,6 12,13 2,6" />
+      </svg>
+    ),
+    label: 'Email geral',
+    email: 'hello@synk.pt',
+  },
+  {
+    icon: (
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" /><circle cx="9" cy="7" r="4" />
+        <path d="M23 21v-2a4 4 0 0 0-3-3.87" /><path d="M16 3.13a4 4 0 0 1 0 7.75" />
+      </svg>
+    ),
+    label: 'Parcerias',
+    email: 'partnerships@synk.pt',
+  },
+  {
+    icon: (
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" /><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" />
+      </svg>
+    ),
+    label: 'Imprensa',
+    email: 'press@synk.pt',
+  },
 ]
 
 export default function SobreNos() {
@@ -76,27 +130,45 @@ export default function SobreNos() {
       />
 
       {/* Mission */}
-      <section className="py-24" style={{ background: '#0f1117' }}>
+      <section className="py-24" style={{ background: '#080b12' }}>
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <Reveal>
             <div
-              className="rounded-2xl p-8 lg:p-12 mb-16"
-              style={{ background: '#1a1f2e', border: '1px solid rgba(99,102,241,0.3)', boxShadow: '0 0 40px rgba(99,102,241,0.06)' }}
+              className="rounded-2xl p-8 lg:p-12 mb-16 text-center"
+              style={{
+                background: 'rgba(99,102,241,0.04)',
+                border: '1px solid rgba(99,102,241,0.2)',
+              }}
             >
-              <div className="text-4xl mb-6 text-center">🎯</div>
-              <blockquote className="text-lg sm:text-xl leading-relaxed text-center italic" style={{ color: '#f1f5f9' }}>
+              <div
+                className="w-12 h-12 rounded-xl flex items-center justify-center mx-auto mb-6"
+                style={{ background: 'rgba(99,102,241,0.12)', color: '#818cf8', border: '1px solid rgba(99,102,241,0.2)' }}
+              >
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <circle cx="12" cy="12" r="10" /><line x1="12" y1="8" x2="12" y2="12" /><line x1="12" y1="16" x2="12.01" y2="16" />
+                </svg>
+              </div>
+              <blockquote
+                className="text-lg sm:text-xl leading-relaxed italic"
+                style={{ color: '#cbd5e1', letterSpacing: '-0.01em' }}
+              >
                 "A nossa missão é democratizar o acesso à automação empresarial — para que qualquer PME, independentemente da dimensão, possa competir com as grandes empresas através da tecnologia certa, implementada pelas pessoas certas."
               </blockquote>
             </div>
           </Reveal>
 
-          <div className="grid md:grid-cols-3 gap-5">
+          <div className="grid md:grid-cols-3 gap-4">
             {VALUES.map((v, i) => (
-              <Reveal key={i} delay={i * 100}>
+              <Reveal key={i} delay={i * 80}>
                 <div className="card p-6 h-full">
-                  <div className="text-3xl mb-4">{v.icon}</div>
-                  <h3 className="font-bold mb-2" style={{ color: '#f1f5f9' }}>{v.title}</h3>
-                  <p className="text-sm leading-relaxed" style={{ color: '#94a3b8' }}>{v.desc}</p>
+                  <div
+                    className="w-10 h-10 rounded-xl flex items-center justify-center mb-4"
+                    style={{ background: `${v.color}12`, color: v.color, border: `1px solid ${v.color}20` }}
+                  >
+                    {v.icon}
+                  </div>
+                  <h3 className="font-bold mb-2" style={{ color: '#e2e8f0', letterSpacing: '-0.02em' }}>{v.title}</h3>
+                  <p className="text-sm leading-relaxed" style={{ color: '#475569', letterSpacing: '-0.01em' }}>{v.desc}</p>
                 </div>
               </Reveal>
             ))}
@@ -105,23 +177,27 @@ export default function SobreNos() {
       </section>
 
       {/* Team */}
-      <section className="py-24" style={{ background: '#1a1f2e', borderTop: '1px solid #1e2436' }}>
+      <section className="py-24" style={{ background: 'rgba(255,255,255,0.02)', borderTop: '1px solid rgba(255,255,255,0.05)', borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
           <SectionHeader heading="Quem está por trás" highlight="da Synk" />
-          <div className="grid md:grid-cols-3 gap-6">
+          <div className="grid md:grid-cols-3 gap-5">
             {TEAM.map((member, i) => (
-              <Reveal key={i} delay={i * 100}>
+              <Reveal key={i} delay={i * 80}>
                 <div className="card p-8 text-center h-full flex flex-col">
                   <div
-                    className="w-20 h-20 rounded-full flex items-center justify-center font-extrabold text-xl mx-auto mb-5"
-                    style={{ background: `linear-gradient(135deg, ${member.color}, ${member.color}88)`, color: '#fff', boxShadow: `0 0 30px ${member.color}33` }}
+                    className="w-16 h-16 rounded-2xl flex items-center justify-center font-extrabold text-lg mx-auto mb-5"
+                    style={{
+                      background: `linear-gradient(135deg, ${member.color}, ${member.color}88)`,
+                      color: '#fff',
+                      boxShadow: `0 8px 32px ${member.color}30`,
+                    }}
                   >
                     {member.initials}
                   </div>
-                  <h3 className="font-extrabold text-lg mb-1" style={{ color: '#f1f5f9' }}>{member.name}</h3>
+                  <h3 className="font-extrabold text-base mb-1" style={{ color: '#e2e8f0', letterSpacing: '-0.02em' }}>{member.name}</h3>
                   <div className="badge badge-indigo mb-3 mx-auto">{member.role}</div>
-                  <p className="text-xs mb-4" style={{ color: '#64748b' }}>{member.focus}</p>
-                  <blockquote className="text-sm italic flex-1" style={{ color: '#94a3b8' }}>
+                  <p className="text-xs mb-4" style={{ color: '#334155' }}>{member.focus}</p>
+                  <blockquote className="text-sm italic flex-1" style={{ color: '#64748b', letterSpacing: '-0.01em' }}>
                     "{member.quote}"
                   </blockquote>
                 </div>
@@ -132,24 +208,21 @@ export default function SobreNos() {
       </section>
 
       {/* Timeline */}
-      <section className="py-24" style={{ background: '#0f1117' }}>
+      <section className="py-24" style={{ background: '#080b12' }}>
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
           <SectionHeader heading="Como chegámos" highlight="aqui" />
           <div className="space-y-6">
             {TIMELINE.map((item, i) => (
-              <Reveal key={i} delay={i * 100}>
+              <Reveal key={i} delay={i * 80}>
                 <div className="timeline-item pb-6">
                   <div className="timeline-dot" style={{ fontSize: '9px' }}>{i + 1}</div>
-                  <div
-                    className="card p-5"
-                    style={{ opacity: item.future ? 0.6 : 1 }}
-                  >
+                  <div className="card p-5" style={{ opacity: item.future ? 0.55 : 1 }}>
                     <div className="flex items-center gap-3 mb-2">
                       <span className="badge badge-indigo">{item.year}</span>
-                      <h3 className="font-bold" style={{ color: '#f1f5f9' }}>{item.title}</h3>
+                      <h3 className="font-bold" style={{ color: '#e2e8f0', letterSpacing: '-0.02em' }}>{item.title}</h3>
                       {item.future && <span className="badge badge-amber">Em breve</span>}
                     </div>
-                    <p className="text-sm leading-relaxed" style={{ color: '#94a3b8' }}>{item.desc}</p>
+                    <p className="text-sm leading-relaxed" style={{ color: '#475569', letterSpacing: '-0.01em' }}>{item.desc}</p>
                   </div>
                 </div>
               </Reveal>
@@ -159,17 +232,22 @@ export default function SobreNos() {
       </section>
 
       {/* Stats */}
-      <section className="py-20" style={{ background: '#1a1f2e', borderTop: '1px solid #1e2436', borderBottom: '1px solid #1e2436' }}>
+      <section
+        className="py-20"
+        style={{ background: 'rgba(255,255,255,0.02)', borderTop: '1px solid rgba(255,255,255,0.05)', borderBottom: '1px solid rgba(255,255,255,0.05)' }}
+      >
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
             {STATS.map((s, i) => (
-              <Reveal key={i} delay={i * 100}>
+              <Reveal key={i} delay={i * 80}>
                 <div className="text-center">
-                  <div className="text-3xl mb-3">{s.icon}</div>
-                  <div className="text-4xl font-extrabold mb-2 text-gradient">
+                  <div
+                    className="text-4xl font-extrabold mb-2 text-gradient"
+                    style={{ letterSpacing: '-0.04em' }}
+                  >
                     <AnimatedNumber end={s.value} suffix={s.suffix} />
                   </div>
-                  <p className="text-sm" style={{ color: '#64748b' }}>{s.label}</p>
+                  <p className="text-sm" style={{ color: '#475569', letterSpacing: '-0.01em' }}>{s.label}</p>
                 </div>
               </Reveal>
             ))}
@@ -178,14 +256,20 @@ export default function SobreNos() {
       </section>
 
       {/* Careers */}
-      <section className="py-24" style={{ background: '#0f1117' }}>
+      <section className="py-24" style={{ background: '#080b12' }}>
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <Reveal>
             <div
               className="rounded-2xl p-8 mb-16"
-              style={{ background: 'linear-gradient(135deg, rgba(99,102,241,0.08), rgba(139,92,246,0.08))', border: '1px solid rgba(99,102,241,0.3)' }}
+              style={{
+                background: 'linear-gradient(135deg, rgba(99,102,241,0.06), rgba(139,92,246,0.06))',
+                border: '1px solid rgba(99,102,241,0.2)',
+              }}
             >
-              <h2 className="text-2xl font-extrabold mb-3" style={{ color: '#f1f5f9', letterSpacing: '-0.02em' }}>
+              <h2
+                className="text-2xl font-extrabold mb-3"
+                style={{ color: '#e2e8f0', letterSpacing: '-0.03em' }}
+              >
                 Estamos a construir algo grande.{' '}
                 <span className="text-gradient">Junta-te a nós.</span>
               </h2>
@@ -199,7 +283,10 @@ export default function SobreNos() {
                 className="btn-primary"
                 style={{ textDecoration: 'none' }}
               >
-                Ver posições abertas →
+                Ver posições abertas
+                <svg width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
+                  <path d="M5 12h14M12 5l7 7-7 7" />
+                </svg>
               </a>
             </div>
           </Reveal>
@@ -208,11 +295,27 @@ export default function SobreNos() {
           <SectionHeader heading="Fala" highlight="connosco" center={false} />
           <div className="grid sm:grid-cols-3 gap-4">
             {CONTACTS.map((c, i) => (
-              <Reveal key={i} delay={i * 80}>
+              <Reveal key={i} delay={i * 60}>
                 <div className="card p-5 text-center">
-                  <div className="text-2xl mb-2">{c.icon}</div>
-                  <div className="text-xs font-semibold uppercase tracking-wide mb-2" style={{ color: '#64748b' }}>{c.label}</div>
-                  <a href={`mailto:${c.email}`} className="text-sm font-medium" style={{ color: '#6366f1', textDecoration: 'none' }}>{c.email}</a>
+                  <div
+                    className="w-10 h-10 rounded-xl flex items-center justify-center mx-auto mb-3"
+                    style={{ background: 'rgba(99,102,241,0.1)', color: '#818cf8', border: '1px solid rgba(99,102,241,0.2)' }}
+                  >
+                    {c.icon}
+                  </div>
+                  <div
+                    className="text-xs font-semibold uppercase tracking-widest mb-2"
+                    style={{ color: '#334155', letterSpacing: '0.08em' }}
+                  >
+                    {c.label}
+                  </div>
+                  <a
+                    href={`mailto:${c.email}`}
+                    className="text-sm font-medium"
+                    style={{ color: '#818cf8', textDecoration: 'none', letterSpacing: '-0.01em' }}
+                  >
+                    {c.email}
+                  </a>
                 </div>
               </Reveal>
             ))}
