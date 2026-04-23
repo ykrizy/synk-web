@@ -52,18 +52,18 @@ export default function HowItWorks() {
   const [activeTab, setActiveTab] = useState('empresas')
 
   return (
-    <section id="como-funciona" className="py-24" style={{ background: '#080b12' }}>
+    <section id="como-funciona" className="py-24" style={{ background: 'var(--bg)' }}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <Reveal>
           <div className="text-center mb-16">
             <h2
-              className="text-3xl sm:text-4xl font-extrabold mb-4"
-              style={{ color: '#e2e8f0', letterSpacing: '-0.03em' }}
+              className="font-display mb-4"
+              style={{ fontSize: 'clamp(1.75rem, 4vw, 2.75rem)', color: 'var(--text)' }}
             >
               Simples para empresas.{' '}
               <span className="text-gradient">Poderoso para especialistas.</span>
             </h2>
-            <p className="text-lg max-w-xl mx-auto" style={{ color: '#475569', letterSpacing: '-0.01em' }}>
+            <p className="max-w-xl mx-auto leading-relaxed" style={{ color: 'var(--text-2)', fontSize: '1.0625rem', letterSpacing: '-0.01em' }}>
               Um processo transparente do início ao fim, com proteção para ambas as partes.
             </p>
           </div>
@@ -74,14 +74,14 @@ export default function HowItWorks() {
           <div className="flex justify-center mb-12">
             <div
               className="flex rounded-xl p-1"
-              style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)' }}
+              style={{ background: 'var(--surface)', border: '1px solid var(--border)' }}
             >
               {['empresas', 'especialistas'].map(tab => (
                 <button
                   key={tab}
                   onClick={() => setActiveTab(tab)}
                   className="tab-btn px-6 py-2.5 rounded-lg text-sm font-semibold capitalize transition-all"
-                  style={{ color: activeTab === tab ? '#fff' : '#475569', letterSpacing: '-0.01em' }}
+                  style={{ color: activeTab === tab ? '#fff' : 'var(--text-2)', letterSpacing: '-0.01em' }}
                 >
                   {tab === 'empresas' ? 'Para Empresas' : 'Para Especialistas'}
                 </button>
@@ -95,19 +95,19 @@ export default function HowItWorks() {
             <Reveal key={`${activeTab}-${i}`} delay={i * 80}>
               <div className="card p-7 relative h-full">
                 <div
-                  className="absolute top-6 right-6 select-none font-extrabold"
-                  style={{ color: 'rgba(99,102,241,0.06)', fontSize: '64px', letterSpacing: '-0.04em' }}
+                  className="absolute top-6 right-6 select-none font-display"
+                  style={{ color: 'rgba(124,92,246,0.06)', fontSize: '64px' }}
                 >
                   {step.step}
                 </div>
                 <div
                   className="w-10 h-10 rounded-xl flex items-center justify-center mb-5"
-                  style={{ background: 'rgba(99,102,241,0.1)', color: '#818cf8', border: '1px solid rgba(99,102,241,0.2)' }}
+                  style={{ background: 'rgba(124,92,246,0.1)', color: 'var(--brand-light)', border: '1px solid rgba(124,92,246,0.2)' }}
                 >
                   {step.icon}
                 </div>
-                <h3 className="text-base font-bold mb-3" style={{ color: '#e2e8f0', letterSpacing: '-0.02em' }}>{step.title}</h3>
-                <p className="text-sm leading-relaxed" style={{ color: '#475569', letterSpacing: '-0.01em' }}>{step.desc}</p>
+                <h3 className="font-heading text-base mb-3" style={{ color: 'var(--text)' }}>{step.title}</h3>
+                <p className="text-sm leading-relaxed" style={{ color: 'var(--text-2)', letterSpacing: '-0.01em' }}>{step.desc}</p>
               </div>
             </Reveal>
           ))}

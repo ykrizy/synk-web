@@ -60,7 +60,7 @@ const FAQS_PRICING = [
 
 function CheckItem({ children, color = '#6366f1' }) {
   return (
-    <li className="flex items-center gap-3 text-sm" style={{ color: '#475569', letterSpacing: '-0.01em' }}>
+    <li className="flex items-center gap-3 text-sm" style={{ color: 'var(--text-2)', letterSpacing: '-0.01em' }}>
       <span
         className="w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0"
         style={{ background: `${color}18`, border: `1px solid ${color}28` }}
@@ -89,16 +89,16 @@ export default function Precos() {
       />
 
       {/* 3 pricing cards */}
-      <section className="py-24" style={{ background: '#080b12' }}>
+      <section className="py-24" style={{ background: 'var(--bg)' }}>
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid md:grid-cols-3 gap-5">
             {/* Empresas */}
             <Reveal delay={0}>
               <div className="card p-8 flex flex-col h-full">
                 <span className="badge badge-indigo mb-5">Para Empresas</span>
-                <div className="text-4xl font-extrabold mb-1" style={{ color: '#e2e8f0', letterSpacing: '-0.04em' }}>€0</div>
-                <div className="text-sm mb-2 font-medium" style={{ color: '#334155' }}>/ sempre</div>
-                <p className="text-sm mb-6 leading-relaxed" style={{ color: '#475569', letterSpacing: '-0.01em' }}>
+                <div className="text-4xl font-extrabold mb-1" style={{ color: 'var(--text)', letterSpacing: '-0.04em' }}>€0</div>
+                <div className="text-sm mb-2 font-medium" style={{ color: 'var(--text-3)' }}>/ sempre</div>
+                <p className="text-sm mb-6 leading-relaxed" style={{ color: 'var(--text-2)', letterSpacing: '-0.01em' }}>
                   Publicar e contratar é sempre gratuito
                 </p>
                 <ul className="space-y-3 mb-8 flex-1">
@@ -107,7 +107,7 @@ export default function Precos() {
                 <Link to="/registar" className="btn-outline" style={{ textAlign: 'center', justifyContent: 'center' }}>
                   Começar Grátis
                 </Link>
-                <p className="text-xs mt-3 text-center" style={{ color: '#334155' }}>Só pagas o valor acordado com o especialista</p>
+                <p className="text-xs mt-3 text-center" style={{ color: 'var(--text-3)' }}>Só pagas o valor acordado com o especialista</p>
               </div>
             </Reveal>
 
@@ -116,9 +116,9 @@ export default function Precos() {
               <div
                 className="relative flex flex-col h-full rounded-2xl p-8"
                 style={{
-                  background: 'rgba(99,102,241,0.04)',
-                  border: '1px solid rgba(99,102,241,0.3)',
-                  boxShadow: '0 0 60px rgba(99,102,241,0.1)',
+                  background: 'rgba(124,92,246,0.04)',
+                  border: '1px solid rgba(124,92,246,0.3)',
+                  boxShadow: '0 0 60px rgba(124,92,246,0.1)',
                 }}
               >
                 <div className="absolute -top-3 left-1/2 -translate-x-1/2">
@@ -137,9 +137,9 @@ export default function Precos() {
                   </span>
                 </div>
                 <span className="badge badge-violet mb-5 mt-2">Para Especialistas</span>
-                <div className="text-4xl font-extrabold mb-1" style={{ color: '#e2e8f0', letterSpacing: '-0.04em' }}>15%</div>
+                <div className="text-4xl font-extrabold mb-1" style={{ color: 'var(--text)', letterSpacing: '-0.04em' }}>15%</div>
                 <div className="text-sm mb-2 font-medium" style={{ color: '#a78bfa' }}>por projeto concluído</div>
-                <p className="text-sm mb-6 leading-relaxed" style={{ color: '#475569', letterSpacing: '-0.01em' }}>
+                <p className="text-sm mb-6 leading-relaxed" style={{ color: 'var(--text-2)', letterSpacing: '-0.01em' }}>
                   Só pagas quando recebes
                 </p>
                 <ul className="space-y-3 mb-8 flex-1">
@@ -148,7 +148,7 @@ export default function Precos() {
                 <Link to="/registar" className="btn-primary btn-primary-lg" style={{ textAlign: 'center', justifyContent: 'center' }}>
                   Criar Perfil Gratuito
                 </Link>
-                <p className="text-xs mt-3 text-center" style={{ color: '#334155' }}>Sem mensalidade · Comissão só em projetos pagos</p>
+                <p className="text-xs mt-3 text-center" style={{ color: 'var(--text-3)' }}>Sem mensalidade · Comissão só em projetos pagos</p>
               </div>
             </Reveal>
 
@@ -156,9 +156,9 @@ export default function Precos() {
             <Reveal delay={200}>
               <div className="card p-8 flex flex-col h-full">
                 <span className="badge badge-amber mb-5">Grandes Empresas</span>
-                <div className="text-4xl font-extrabold mb-1" style={{ color: '#e2e8f0', letterSpacing: '-0.04em' }}>Custom</div>
+                <div className="text-4xl font-extrabold mb-1" style={{ color: 'var(--text)', letterSpacing: '-0.04em' }}>Custom</div>
                 <div className="text-sm mb-2 font-medium" style={{ color: '#fbbf24' }}>sob consulta</div>
-                <p className="text-sm mb-6 leading-relaxed" style={{ color: '#475569', letterSpacing: '-0.01em' }}>
+                <p className="text-sm mb-6 leading-relaxed" style={{ color: 'var(--text-2)', letterSpacing: '-0.01em' }}>
                   Para empresas com volume de projetos elevado
                 </p>
                 <ul className="space-y-3 mb-8 flex-1">
@@ -167,7 +167,7 @@ export default function Precos() {
                 <a href="mailto:hello@synk.pt" className="btn-outline" style={{ textAlign: 'center', justifyContent: 'center', textDecoration: 'none' }}>
                   Falar com a Equipa
                 </a>
-                <p className="text-xs mt-3 text-center" style={{ color: '#334155' }}>Resposta em 24h úteis</p>
+                <p className="text-xs mt-3 text-center" style={{ color: 'var(--text-3)' }}>Resposta em 24h úteis</p>
               </div>
             </Reveal>
           </div>
@@ -175,13 +175,13 @@ export default function Precos() {
       </section>
 
       {/* Comparison table */}
-      <section className="py-24" style={{ background: 'rgba(255,255,255,0.015)', borderTop: '1px solid rgba(255,255,255,0.05)' }}>
+      <section className="py-24" style={{ background: 'var(--bg-subtle)', borderTop: '1px solid var(--border)' }}>
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
           <SectionHeader heading="Comparação" highlight="detalhada" sub="Tudo o que precisas de saber num só lugar." />
           <Reveal delay={100}>
             <div className="rounded-2xl overflow-hidden" style={{ border: '1px solid rgba(255,255,255,0.07)' }}>
               <div className="grid grid-cols-4 p-4" style={{ background: 'rgba(0,0,0,0.3)', borderBottom: '1px solid rgba(255,255,255,0.07)' }}>
-                <div className="text-xs font-semibold uppercase tracking-widest" style={{ color: '#334155' }}>Funcionalidade</div>
+                <div className="text-xs font-semibold uppercase tracking-widest" style={{ color: 'var(--text-3)' }}>Funcionalidade</div>
                 {['Empresas', 'Especialistas', 'Enterprise'].map((h, i) => (
                   <div key={i} className="text-sm font-bold text-center" style={{ color: i === 1 ? '#a78bfa' : '#e2e8f0', letterSpacing: '-0.01em' }}>{h}</div>
                 ))}
@@ -195,7 +195,7 @@ export default function Precos() {
                     background: i % 2 === 0 ? 'transparent' : 'rgba(255,255,255,0.015)',
                   }}
                 >
-                  <div className="text-sm" style={{ color: '#64748b', letterSpacing: '-0.01em' }}>{row.feature}</div>
+                  <div className="text-sm" style={{ color: 'var(--text-2)', letterSpacing: '-0.01em' }}>{row.feature}</div>
                   {[row.empresas, row.especialistas, row.enterprise].map((val, j) => (
                     <div key={j} className="text-sm text-center font-medium" style={{ color: val === '✓' ? '#34d399' : val === '—' ? 'rgba(255,255,255,0.1)' : '#e2e8f0' }}>
                       {val === '✓' ? (
@@ -215,20 +215,20 @@ export default function Precos() {
       </section>
 
       {/* Commission breakdown */}
-      <section className="py-24" style={{ background: '#080b12' }}>
+      <section className="py-24" style={{ background: 'var(--bg)' }}>
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <SectionHeader heading="Como funciona a" highlight="comissão de 15%" sub="Transparência total em cada projeto." />
           <Reveal delay={100}>
             <div
               className="rounded-2xl p-8"
-              style={{ background: 'rgba(255,255,255,0.025)', border: '1px solid rgba(255,255,255,0.07)' }}
+              style={{ background: 'var(--surface)', border: '1px solid rgba(255,255,255,0.07)' }}
             >
               <div className="flex flex-col sm:flex-row items-center gap-4">
                 {[
                   {
                     label: 'Empresa paga',
                     value: '€5.000',
-                    color: '#818cf8',
+                    color: 'var(--brand-light)',
                     icon: (
                       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                         <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" /><polyline points="9 22 9 12 15 12 15 22" />
@@ -277,7 +277,7 @@ export default function Precos() {
                         {item.icon}
                       </div>
                       <div className="text-xs font-semibold mb-2 uppercase tracking-wide" style={{ color: item.color }}>{item.label}</div>
-                      <div className="font-bold text-lg" style={{ color: '#e2e8f0', letterSpacing: '-0.02em' }}>{item.value}</div>
+                      <div className="font-bold text-lg" style={{ color: 'var(--text)', letterSpacing: '-0.02em' }}>{item.value}</div>
                     </div>
                   )
                 )}
@@ -288,7 +288,7 @@ export default function Precos() {
       </section>
 
       {/* FAQ */}
-      <section className="py-24" style={{ background: '#080b12', borderTop: '1px solid rgba(255,255,255,0.05)' }}>
+      <section className="py-24" style={{ background: 'var(--bg)', borderTop: '1px solid var(--border)' }}>
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
           <SectionHeader heading="FAQ de" highlight="preços" />
           <FAQ faqs={FAQS_PRICING} />

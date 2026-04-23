@@ -7,8 +7,6 @@ const NAV_LINKS = [
   { label: 'Para Empresas', to: '/para-empresas' },
   { label: 'Para Especialistas', to: '/para-especialistas' },
   { label: 'Preços', to: '/precos' },
-  { label: 'Matching', to: '/matching' },
-  { label: 'Calculadora', to: '/calculadora' },
   { label: 'Sobre Nós', to: '/sobre-nos' },
 ]
 
@@ -18,14 +16,12 @@ export default function Navbar() {
   const location = useLocation()
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 20)
+    const onScroll = () => setScrolled(window.scrollY > 24)
     window.addEventListener('scroll', onScroll)
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
-  useEffect(() => {
-    setMobileOpen(false)
-  }, [location.pathname])
+  useEffect(() => { setMobileOpen(false) }, [location.pathname])
 
   return (
     <header
@@ -33,34 +29,52 @@ export default function Navbar() {
       style={{ backgroundColor: scrolled ? undefined : 'transparent' }}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16">
+        <div className="flex items-center justify-between h-[60px]">
+
           {/* Logo */}
           <Link
             to="/"
-            className="text-gradient font-extrabold text-xl tracking-tight"
-            style={{ textDecoration: 'none', letterSpacing: '-0.03em' }}
+            style={{ textDecoration: 'none' }}
+            className="flex items-center gap-2.5 flex-shrink-0"
           >
-            Synk
+            <div
+              className="w-7 h-7 rounded-lg flex items-center justify-center"
+              style={{ background: 'var(--brand)', boxShadow: '0 0 14px rgba(124,92,246,0.4)' }}
+            >
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" />
+              </svg>
+            </div>
+            <span
+              className="font-display text-lg"
+              style={{ color: 'var(--text)', letterSpacing: '-0.04em' }}
+            >
+              Synk
+            </span>
           </Link>
 
           {/* Desktop Nav */}
-          <nav className="hidden md:flex items-center gap-0.5">
+          <nav className="hidden lg:flex items-center gap-0.5">
             {NAV_LINKS.map(link => {
               const isActive = location.pathname === link.to
               return (
                 <Link
                   key={link.to}
                   to={link.to}
-                  className="font-medium px-3 py-2 rounded-lg transition-all duration-200 whitespace-nowrap"
                   style={{
-                    fontSize: '13px',
-                    color: isActive ? '#e2e8f0' : '#64748b',
                     textDecoration: 'none',
-                    background: isActive ? 'rgba(255,255,255,0.06)' : 'transparent',
+                    fontSize: '13.5px',
+                    fontWeight: 500,
                     letterSpacing: '-0.01em',
+                    padding: '6px 12px',
+                    borderRadius: '100px',
+                    color: isActive ? 'var(--text)' : 'var(--text-3)',
+                    background: isActive ? 'var(--surface-2)' : 'transparent',
+                    transition: 'all 0.15s ease',
+                    whiteSpace: 'nowrap',
                   }}
-                  onMouseEnter={e => { if (!isActive) e.currentTarget.style.color = '#cbd5e1' }}
-                  onMouseLeave={e => { if (!isActive) e.currentTarget.style.color = '#64748b' }}
+                  onMouseEnter={e => { if (!isActive) e.currentTarget.style.color = 'var(--text-2)' }}
+                  onMouseLeave={e => { if (!isActive) e.currentTarget.style.color = 'var(--text-3)' }}
                 >
                   {link.label}
                 </Link>
@@ -69,20 +83,20 @@ export default function Navbar() {
           </nav>
 
           {/* Desktop CTAs */}
-          <div className="hidden md:flex items-center gap-2">
-            <Link to="/registar" className="btn-ghost" style={{ fontSize: '13px', padding: '8px 16px' }}>
+          <div className="hidden lg:flex items-center gap-2">
+            <Link to="/registar" className="btn-ghost" style={{ fontSize: '13.5px', padding: '8px 16px' }}>
               Entrar
             </Link>
-            <Link to="/registar" className="btn-primary" style={{ fontSize: '13px', padding: '8px 18px' }}>
+            <Link to="/registar" className="btn-primary" style={{ fontSize: '13.5px', padding: '9px 20px' }}>
               Começar Grátis
             </Link>
           </div>
 
           {/* Mobile hamburger */}
           <button
-            className="md:hidden p-2 rounded-lg transition-colors"
-            style={{ color: '#64748b', background: 'none', border: 'none', cursor: 'pointer' }}
-            onClick={() => setMobileOpen(!mobileOpen)}
+            className="lg:hidden p-2 rounded-lg"
+            style={{ color: 'var(--text-2)', background: 'none', border: 'none', cursor: 'pointer' }}
+            onClick={() => setMobileOpen(o => !o)}
             aria-label="Menu"
           >
             {mobileOpen ? (
@@ -100,29 +114,29 @@ export default function Navbar() {
 
       {/* Mobile Menu */}
       <div
-        className={`mobile-menu md:hidden ${mobileOpen ? 'open' : ''}`}
-        style={{
-          borderTop: '1px solid rgba(255,255,255,0.05)',
-          background: 'rgba(8,11,18,0.98)',
-          backdropFilter: 'blur(16px)',
-        }}
+        className={`mobile-menu lg:hidden ${mobileOpen ? 'open' : ''}`}
+        style={{ background: 'rgba(9,9,13,0.97)', backdropFilter: 'blur(20px)', borderTop: '1px solid var(--border)' }}
       >
-        <div className="px-4 py-4 flex flex-col gap-1">
-          {NAV_LINKS.map(link => (
-            <Link
-              key={link.to}
-              to={link.to}
-              className="block px-4 py-3 rounded-lg text-sm font-medium transition-all"
-              style={{
-                color: location.pathname === link.to ? '#e2e8f0' : '#64748b',
-                textDecoration: 'none',
-                background: location.pathname === link.to ? 'rgba(255,255,255,0.05)' : 'transparent',
-              }}
-            >
-              {link.label}
-            </Link>
-          ))}
-          <div className="flex gap-3 mt-3 pt-3" style={{ borderTop: '1px solid rgba(255,255,255,0.05)' }}>
+        <div className="px-4 py-5 flex flex-col gap-1">
+          {NAV_LINKS.map(link => {
+            const isActive = location.pathname === link.to
+            return (
+              <Link
+                key={link.to}
+                to={link.to}
+                className="block px-4 py-3 rounded-xl text-sm font-medium transition-all"
+                style={{
+                  textDecoration: 'none',
+                  color: isActive ? 'var(--text)' : 'var(--text-2)',
+                  background: isActive ? 'var(--surface-2)' : 'transparent',
+                  letterSpacing: '-0.01em',
+                }}
+              >
+                {link.label}
+              </Link>
+            )
+          })}
+          <div className="flex gap-2 mt-4 pt-4" style={{ borderTop: '1px solid var(--border)' }}>
             <Link to="/registar" className="btn-ghost flex-1 justify-center" style={{ fontSize: '13px' }}>Entrar</Link>
             <Link to="/registar" className="btn-primary flex-1 justify-center" style={{ fontSize: '13px' }}>Começar Grátis</Link>
           </div>

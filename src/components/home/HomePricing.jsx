@@ -20,7 +20,7 @@ const ESPECIALISTAS_BENEFITS = [
 
 function CheckRow({ children, color }) {
   return (
-    <li className="flex items-center gap-3 text-sm" style={{ color: '#475569', letterSpacing: '-0.01em' }}>
+    <li className="flex items-center gap-3 text-sm" style={{ color: 'var(--text-2)', letterSpacing: '-0.01em' }}>
       <span
         className="w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0"
         style={{ background: `${color}18`, border: `1px solid ${color}30` }}
@@ -36,7 +36,7 @@ function CheckRow({ children, color }) {
 
 export default function HomePricing() {
   return (
-    <section id="precos" className="py-24" style={{ background: '#080b12' }}>
+    <section id="precos" className="py-24" style={{ background: 'var(--bg)' }}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <SectionHeader
           heading="Transparência total."
@@ -49,18 +49,15 @@ export default function HomePricing() {
           <Reveal delay={100}>
             <div className="card p-8 flex flex-col h-full">
               <span className="badge badge-indigo mb-5">Para Empresas</span>
-              <div
-                className="text-3xl font-extrabold mb-2"
-                style={{ color: '#e2e8f0', letterSpacing: '-0.03em' }}
-              >
+              <div className="font-display mb-2" style={{ fontSize: '2rem', color: 'var(--text)' }}>
                 Grátis para publicar
               </div>
-              <p className="text-sm mb-6 leading-relaxed" style={{ color: '#475569', letterSpacing: '-0.01em' }}>
+              <p className="text-sm mb-6 leading-relaxed" style={{ color: 'var(--text-2)', letterSpacing: '-0.01em' }}>
                 Publica projetos, recebe propostas e fala com especialistas sem qualquer custo.
               </p>
               <ul className="space-y-3 mb-8 flex-1">
                 {EMPRESAS_BENEFITS.map((b, i) => (
-                  <CheckRow key={i} color="#818cf8">{b}</CheckRow>
+                  <CheckRow key={i} color="#A78BFA">{b}</CheckRow>
                 ))}
               </ul>
               <Link to="/registar" className="btn-outline" style={{ textAlign: 'center', justifyContent: 'center' }}>
@@ -74,19 +71,19 @@ export default function HomePricing() {
             <div
               className="relative flex flex-col h-full rounded-2xl p-8"
               style={{
-                background: 'rgba(99,102,241,0.04)',
-                border: '1px solid rgba(99,102,241,0.3)',
-                boxShadow: '0 0 60px rgba(99,102,241,0.1)',
+                background: 'rgba(124,92,246,0.04)',
+                border: '1px solid rgba(124,92,246,0.3)',
+                boxShadow: '0 0 60px rgba(124,92,246,0.1)',
               }}
             >
               <div className="absolute -top-3 left-1/2 -translate-x-1/2">
                 <span
                   className="badge px-4 py-1"
                   style={{
-                    background: 'linear-gradient(135deg, #6366f1, #7c3aed)',
+                    background: 'linear-gradient(135deg, var(--brand), var(--brand-dark))',
                     color: '#fff',
                     borderColor: 'transparent',
-                    boxShadow: '0 0 24px rgba(99,102,241,0.5)',
+                    boxShadow: '0 0 24px rgba(124,92,246,0.5)',
                     fontSize: '10px',
                     letterSpacing: '0.08em',
                   }}
@@ -95,19 +92,16 @@ export default function HomePricing() {
                 </span>
               </div>
               <span className="badge badge-violet mb-5 mt-2">Para Especialistas</span>
-              <div
-                className="text-3xl font-extrabold mb-1"
-                style={{ color: '#e2e8f0', letterSpacing: '-0.03em' }}
-              >
+              <div className="font-display mb-1" style={{ fontSize: '2rem', color: 'var(--text)' }}>
                 15% de comissão
               </div>
-              <div className="text-sm mb-3 font-medium" style={{ color: '#a78bfa' }}>Só pagas quando recebes</div>
-              <p className="text-sm mb-6 leading-relaxed" style={{ color: '#475569', letterSpacing: '-0.01em' }}>
+              <div className="text-sm mb-3 font-medium" style={{ color: 'var(--brand-light)' }}>Só pagas quando recebes</div>
+              <p className="text-sm mb-6 leading-relaxed" style={{ color: 'var(--text-2)', letterSpacing: '-0.01em' }}>
                 Sem mensalidades, sem taxas de subscrição. A nossa comissão só é cobrada quando és pago.
               </p>
               <ul className="space-y-3 mb-8 flex-1">
                 {ESPECIALISTAS_BENEFITS.map((b, i) => (
-                  <CheckRow key={i} color="#a78bfa">{b}</CheckRow>
+                  <CheckRow key={i} color="#C4B5FD">{b}</CheckRow>
                 ))}
               </ul>
               <Link
@@ -126,7 +120,7 @@ export default function HomePricing() {
             <Link
               to="/precos"
               className="text-sm font-medium"
-              style={{ color: '#6366f1', textDecoration: 'none', letterSpacing: '-0.01em' }}
+              style={{ color: 'var(--brand-light)', textDecoration: 'none', letterSpacing: '-0.01em' }}
             >
               Ver comparação completa de planos →
             </Link>

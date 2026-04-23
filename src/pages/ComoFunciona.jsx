@@ -45,8 +45,8 @@ function Timeline({ steps }) {
           <div className="timeline-item pb-6">
             <div className="timeline-dot" style={{ fontSize: '9px' }}>{step.num}</div>
             <div className="card p-5">
-              <h3 className="font-bold text-base mb-1" style={{ color: '#e2e8f0', letterSpacing: '-0.02em' }}>{step.title}</h3>
-              <p className="text-sm leading-relaxed" style={{ color: '#475569', letterSpacing: '-0.01em' }}>{step.desc}</p>
+              <h3 className="font-bold text-base mb-1" style={{ color: 'var(--text)', letterSpacing: '-0.02em' }}>{step.title}</h3>
+              <p className="text-sm leading-relaxed" style={{ color: 'var(--text-2)', letterSpacing: '-0.01em' }}>{step.desc}</p>
             </div>
           </div>
         </Reveal>
@@ -70,12 +70,12 @@ export default function ComoFunciona() {
       />
 
       {/* Fluxo Empresas */}
-      <section className="py-24" style={{ background: '#080b12' }}>
+      <section className="py-24" style={{ background: 'var(--bg)' }}>
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <Reveal>
             <div className="flex items-center gap-3 mb-12">
               <span className="badge badge-indigo">Para Empresas</span>
-              <h2 className="text-2xl sm:text-3xl font-extrabold" style={{ color: '#e2e8f0', letterSpacing: '-0.03em' }}>
+              <h2 className="text-2xl sm:text-3xl font-extrabold" style={{ color: 'var(--text)', letterSpacing: '-0.03em' }}>
                 Como publicar e contratar
               </h2>
             </div>
@@ -85,12 +85,12 @@ export default function ComoFunciona() {
       </section>
 
       {/* Fluxo Especialistas */}
-      <section className="py-24" style={{ background: 'rgba(255,255,255,0.02)', borderTop: '1px solid rgba(255,255,255,0.05)' }}>
+      <section className="py-24" style={{ background: 'var(--bg-subtle)', borderTop: '1px solid var(--border)' }}>
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <Reveal>
             <div className="flex items-center gap-3 mb-12">
               <span className="badge badge-violet">Para Especialistas</span>
-              <h2 className="text-2xl sm:text-3xl font-extrabold" style={{ color: '#e2e8f0', letterSpacing: '-0.03em' }}>
+              <h2 className="text-2xl sm:text-3xl font-extrabold" style={{ color: 'var(--text)', letterSpacing: '-0.03em' }}>
                 Como entrar e receber
               </h2>
             </div>
@@ -100,17 +100,17 @@ export default function ComoFunciona() {
       </section>
 
       {/* Escrow explanation */}
-      <section className="py-24" style={{ background: '#080b12' }}>
+      <section className="py-24" style={{ background: 'var(--bg)' }}>
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <Reveal>
             <div
               className="rounded-2xl p-8 lg:p-12"
               style={{
-                background: 'rgba(99,102,241,0.04)',
-                border: '1px solid rgba(99,102,241,0.2)',
+                background: 'rgba(124,92,246,0.04)',
+                border: '1px solid rgba(124,92,246,0.2)',
               }}
             >
-              <h2 className="text-2xl sm:text-3xl font-extrabold mb-6" style={{ color: '#e2e8f0', letterSpacing: '-0.03em' }}>
+              <h2 className="text-2xl sm:text-3xl font-extrabold mb-6" style={{ color: 'var(--text)', letterSpacing: '-0.03em' }}>
                 O que é o Escrow e{' '}
                 <span className="text-gradient">porque te protege</span>
               </h2>
@@ -120,7 +120,7 @@ export default function ComoFunciona() {
                 {[
                   {
                     label: 'Empresa deposita',
-                    color: '#818cf8',
+                    color: 'var(--brand-light)',
                     icon: (
                       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                         <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/>
@@ -172,7 +172,7 @@ export default function ComoFunciona() {
                 )}
               </div>
 
-              <p className="text-sm leading-relaxed mb-6" style={{ color: '#475569', letterSpacing: '-0.01em' }}>
+              <p className="text-sm leading-relaxed mb-6" style={{ color: 'var(--text-2)', letterSpacing: '-0.01em' }}>
                 O Escrow é um sistema de pagamento onde os fundos ficam retidos por um intermediário (a Synk) até que ambas as partes cumpram os termos acordados. É o padrão de segurança em marketplaces profissionais globais.
               </p>
 
@@ -191,7 +191,7 @@ export default function ComoFunciona() {
       </section>
 
       {/* Mini FAQ */}
-      <section className="py-24" style={{ background: '#080b12', borderTop: '1px solid rgba(255,255,255,0.05)' }}>
+      <section className="py-24" style={{ background: 'var(--bg)', borderTop: '1px solid var(--border)' }}>
         <div className="max-w-3xl mx-auto px-4 sm:px-6">
           <SectionHeader heading="Dúvidas" highlight="rápidas" />
           <FAQ faqs={FAQS} />

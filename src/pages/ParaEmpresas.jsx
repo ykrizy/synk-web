@@ -80,7 +80,7 @@ const PERSONAS = [
     ),
     title: 'Retalho & E-commerce',
     desc: 'Automatiza inventário, fulfillment, email marketing e relatórios de vendas.',
-    color: '#818cf8',
+    color: 'var(--brand-light)',
   },
   {
     icon: (
@@ -195,29 +195,29 @@ function ROICalculator() {
   return (
     <div
       className="rounded-2xl p-8"
-      style={{ background: 'rgba(255,255,255,0.025)', border: '1px solid rgba(255,255,255,0.07)' }}
+      style={{ background: 'var(--surface)', border: '1px solid rgba(255,255,255,0.07)' }}
     >
       <div className="grid md:grid-cols-2 gap-10">
         {/* Inputs */}
         <div className="space-y-8">
           <div>
             <div className="flex justify-between mb-3">
-              <label className="text-sm font-semibold" style={{ color: '#e2e8f0', letterSpacing: '-0.01em' }}>Horas semanais em tarefas manuais</label>
-              <span className="text-sm font-bold" style={{ color: '#818cf8' }}>{hours}h</span>
+              <label className="text-sm font-semibold" style={{ color: 'var(--text)', letterSpacing: '-0.01em' }}>Horas semanais em tarefas manuais</label>
+              <span className="text-sm font-bold" style={{ color: 'var(--brand-light)' }}>{hours}h</span>
             </div>
             <input type="range" min="1" max="40" value={hours} onChange={e => setHours(+e.target.value)} />
-            <div className="flex justify-between text-xs mt-1" style={{ color: '#334155' }}>
+            <div className="flex justify-between text-xs mt-1" style={{ color: 'var(--text-3)' }}>
               <span>1h</span><span>40h</span>
             </div>
           </div>
 
           <div>
             <div className="flex justify-between mb-3">
-              <label className="text-sm font-semibold" style={{ color: '#e2e8f0', letterSpacing: '-0.01em' }}>Custo hora da tua equipa</label>
-              <span className="text-sm font-bold" style={{ color: '#818cf8' }}>€{hourCost}</span>
+              <label className="text-sm font-semibold" style={{ color: 'var(--text)', letterSpacing: '-0.01em' }}>Custo hora da tua equipa</label>
+              <span className="text-sm font-bold" style={{ color: 'var(--brand-light)' }}>€{hourCost}</span>
             </div>
             <input type="range" min="10" max="100" value={hourCost} onChange={e => setHourCost(+e.target.value)} />
-            <div className="flex justify-between text-xs mt-1" style={{ color: '#334155' }}>
+            <div className="flex justify-between text-xs mt-1" style={{ color: 'var(--text-3)' }}>
               <span>€10</span><span>€100</span>
             </div>
           </div>
@@ -233,7 +233,7 @@ function ROICalculator() {
             >
               <div className="flex items-center gap-3">
                 <span style={{ color: item.color }}>{item.icon}</span>
-                <span className="text-sm" style={{ color: '#64748b', letterSpacing: '-0.01em' }}>{item.label}</span>
+                <span className="text-sm" style={{ color: 'var(--text-2)', letterSpacing: '-0.01em' }}>{item.label}</span>
               </div>
               <span className="font-bold text-sm" style={{ color: item.color }}>{item.value}</span>
             </div>
@@ -242,7 +242,7 @@ function ROICalculator() {
       </div>
 
       <div className="mt-6 pt-6 text-center" style={{ borderTop: '1px solid rgba(255,255,255,0.06)' }}>
-        <p className="text-xs mb-4" style={{ color: '#334155' }}>* Valores estimados com base em médias do mercado ibérico</p>
+        <p className="text-xs mb-4" style={{ color: 'var(--text-3)' }}>* Valores estimados com base em médias do mercado ibérico</p>
         <Link to="/registar" className="btn-primary btn-primary-lg">
           Automatizar agora
           <svg width="15" height="15" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7" /></svg>
@@ -270,7 +270,7 @@ export default function ParaEmpresas() {
       />
 
       {/* Problemas */}
-      <section className="py-24" style={{ background: '#080b12' }}>
+      <section className="py-24" style={{ background: 'var(--bg)' }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <SectionHeader heading="Reconheces algum" highlight="destes problemas?" />
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -283,8 +283,8 @@ export default function ParaEmpresas() {
                   >
                     {p.icon}
                   </div>
-                  <h3 className="font-bold text-sm mb-2" style={{ color: '#e2e8f0', letterSpacing: '-0.02em' }}>{p.title}</h3>
-                  <p className="text-sm leading-relaxed" style={{ color: '#475569', letterSpacing: '-0.01em' }}>{p.desc}</p>
+                  <h3 className="font-bold text-sm mb-2" style={{ color: 'var(--text)', letterSpacing: '-0.02em' }}>{p.title}</h3>
+                  <p className="text-sm leading-relaxed" style={{ color: 'var(--text-2)', letterSpacing: '-0.01em' }}>{p.desc}</p>
                 </div>
               </Reveal>
             ))}
@@ -293,7 +293,7 @@ export default function ParaEmpresas() {
       </section>
 
       {/* Benefícios alternados */}
-      <section className="py-24" style={{ background: 'rgba(255,255,255,0.02)', borderTop: '1px solid rgba(255,255,255,0.05)' }}>
+      <section className="py-24" style={{ background: 'var(--bg-subtle)', borderTop: '1px solid var(--border)' }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <SectionHeader heading="O que a Synk" highlight="faz por ti" />
 
@@ -309,12 +309,12 @@ export default function ParaEmpresas() {
                   <div className="flex items-center gap-4 mb-4">
                     <div className="w-12 h-12 rounded-full flex items-center justify-center font-bold" style={{ background: 'linear-gradient(135deg, #6366f1, #7c3aed)', color: '#fff' }}>MS</div>
                     <div>
-                      <div className="font-bold text-sm" style={{ color: '#e2e8f0', letterSpacing: '-0.02em' }}>Miguel Santos</div>
-                      <div className="text-xs" style={{ color: '#475569' }}>RPA & Workflow Specialist</div>
+                      <div className="font-bold text-sm" style={{ color: 'var(--text)', letterSpacing: '-0.02em' }}>Miguel Santos</div>
+                      <div className="text-xs" style={{ color: 'var(--text-2)' }}>RPA & Workflow Specialist</div>
                     </div>
                     <div className="ml-auto flex items-center gap-1">
                       <svg width="13" height="13" viewBox="0 0 24 24" fill="#f59e0b" stroke="none"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" /></svg>
-                      <span className="font-bold text-sm" style={{ color: '#e2e8f0' }}>4.9</span>
+                      <span className="font-bold text-sm" style={{ color: 'var(--text)' }}>4.9</span>
                     </div>
                   </div>
                   <div className="flex flex-wrap gap-2 mb-4">
@@ -322,7 +322,7 @@ export default function ParaEmpresas() {
                     <span className="badge badge-indigo">47 projetos</span>
                     <span className="badge badge-cyan">RPA</span>
                   </div>
-                  <div className="flex justify-between text-xs" style={{ color: '#334155' }}>
+                  <div className="flex justify-between text-xs" style={{ color: 'var(--text-3)' }}>
                     <span>Tempo de resposta: &lt;2h</span>
                     <span>Taxa de sucesso: 100%</span>
                   </div>
@@ -351,7 +351,7 @@ export default function ParaEmpresas() {
                         {step.done ? (
                           <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
                         ) : (
-                          <span className="text-xs font-bold" style={{ color: '#334155' }}>{i + 1}</span>
+                          <span className="text-xs font-bold" style={{ color: 'var(--text-3)' }}>{i + 1}</span>
                         )}
                       </div>
                       <span className="text-sm flex-1" style={{ color: step.done ? '#e2e8f0' : '#475569', letterSpacing: '-0.01em' }}>{step.label}</span>
@@ -371,7 +371,7 @@ export default function ParaEmpresas() {
                 >
                   <div className="flex flex-col gap-3">
                     {[
-                      { step: '1', label: 'Empresa deposita', desc: 'Pagamento retido pela Synk', color: '#818cf8' },
+                      { step: '1', label: 'Empresa deposita', desc: 'Pagamento retido pela Synk', color: 'var(--brand-light)' },
                       { step: '2', label: 'Trabalho em progresso', desc: 'Especialista executa o projeto', color: '#a78bfa' },
                       { step: '3', label: 'Aprovação da empresa', desc: 'Empresa revê e aprova', color: '#22d3ee' },
                       { step: '4', label: 'Pagamento libertado', desc: 'Especialista recebe automaticamente', color: '#34d399' },
@@ -384,8 +384,8 @@ export default function ParaEmpresas() {
                           {s.step}
                         </div>
                         <div>
-                          <div className="text-xs font-semibold" style={{ color: '#e2e8f0', letterSpacing: '-0.01em' }}>{s.label}</div>
-                          <div className="text-xs" style={{ color: '#475569' }}>{s.desc}</div>
+                          <div className="text-xs font-semibold" style={{ color: 'var(--text)', letterSpacing: '-0.01em' }}>{s.label}</div>
+                          <div className="text-xs" style={{ color: 'var(--text-2)' }}>{s.desc}</div>
                         </div>
                       </div>
                     ))}
@@ -397,8 +397,8 @@ export default function ParaEmpresas() {
             <Reveal key={i} delay={100}>
               <div className={`grid md:grid-cols-2 gap-10 items-center mb-20 last:mb-0 ${i % 2 === 1 ? 'md:[direction:rtl]' : ''}`}>
                 <div className={i % 2 === 1 ? 'md:[direction:ltr]' : ''}>
-                  <h3 className="text-xl sm:text-2xl font-extrabold mb-4" style={{ color: '#e2e8f0', letterSpacing: '-0.03em' }}>{block.title}</h3>
-                  <p className="text-sm leading-relaxed" style={{ color: '#475569', letterSpacing: '-0.01em' }}>{block.body}</p>
+                  <h3 className="text-xl sm:text-2xl font-display mb-4" style={{ color: 'var(--text)', letterSpacing: '-0.03em' }}>{block.title}</h3>
+                  <p className="text-sm leading-relaxed" style={{ color: 'var(--text-2)', letterSpacing: '-0.01em' }}>{block.body}</p>
                 </div>
                 <div className={i % 2 === 1 ? 'md:[direction:ltr]' : ''}>{block.visual}</div>
               </div>
@@ -408,7 +408,7 @@ export default function ParaEmpresas() {
       </section>
 
       {/* Personas */}
-      <section className="py-24" style={{ background: '#080b12' }}>
+      <section className="py-24" style={{ background: 'var(--bg)' }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <SectionHeader heading="Feito para PMEs que querem" highlight="crescer sem contratar" />
           <div className="grid md:grid-cols-3 gap-5">
@@ -421,8 +421,8 @@ export default function ParaEmpresas() {
                   >
                     {p.icon}
                   </div>
-                  <h3 className="font-bold mb-2" style={{ color: '#e2e8f0', letterSpacing: '-0.02em' }}>{p.title}</h3>
-                  <p className="text-sm leading-relaxed" style={{ color: '#475569', letterSpacing: '-0.01em' }}>{p.desc}</p>
+                  <h3 className="font-bold mb-2" style={{ color: 'var(--text)', letterSpacing: '-0.02em' }}>{p.title}</h3>
+                  <p className="text-sm leading-relaxed" style={{ color: 'var(--text-2)', letterSpacing: '-0.01em' }}>{p.desc}</p>
                 </div>
               </Reveal>
             ))}
@@ -431,7 +431,7 @@ export default function ParaEmpresas() {
       </section>
 
       {/* ROI Calculator */}
-      <section className="py-24" style={{ background: 'rgba(255,255,255,0.02)', borderTop: '1px solid rgba(255,255,255,0.05)' }}>
+      <section className="py-24" style={{ background: 'var(--bg-subtle)', borderTop: '1px solid var(--border)' }}>
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <SectionHeader heading="Quanto podes poupar" highlight="com automação?" />
           <Reveal delay={100}>
@@ -441,7 +441,7 @@ export default function ParaEmpresas() {
       </section>
 
       {/* 3 passos simples */}
-      <section className="py-24" style={{ background: '#080b12' }}>
+      <section className="py-24" style={{ background: 'var(--bg)' }}>
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <SectionHeader heading="Como publicar" highlight="um projeto" sub="Rápido, simples e sem compromisso." />
           <div className="grid md:grid-cols-3 gap-5 mb-10">
@@ -450,11 +450,11 @@ export default function ParaEmpresas() {
                 <div className="card p-7 text-center">
                   <div
                     className="w-12 h-12 rounded-xl flex items-center justify-center mx-auto mb-4"
-                    style={{ background: 'rgba(99,102,241,0.1)', color: '#818cf8', border: '1px solid rgba(99,102,241,0.2)' }}
+                    style={{ background: 'rgba(124,92,246,0.1)', color: 'var(--brand-light)', border: '1px solid rgba(124,92,246,0.2)' }}
                   >
                     {s.icon}
                   </div>
-                  <div className="text-sm font-bold mb-2" style={{ color: '#e2e8f0', letterSpacing: '-0.02em' }}>{s.title}</div>
+                  <div className="text-sm font-bold mb-2" style={{ color: 'var(--text)', letterSpacing: '-0.02em' }}>{s.title}</div>
                   <div className="badge badge-emerald">{s.sub}</div>
                 </div>
               </Reveal>

@@ -12,15 +12,15 @@ export default function CTABanner({
   return (
     <section
       className="py-24 relative overflow-hidden"
-      style={{ background: '#080b12', borderTop: '1px solid rgba(255,255,255,0.05)' }}
+      style={{ background: 'var(--bg)', borderTop: '1px solid var(--border)' }}
     >
-      {/* Glow */}
+      {/* Ambient glow */}
       <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
         <div
           style={{
             width: '700px',
             height: '350px',
-            background: 'radial-gradient(ellipse, rgba(99,102,241,0.1) 0%, transparent 70%)',
+            background: 'radial-gradient(ellipse, rgba(124,92,246,0.1) 0%, transparent 70%)',
             filter: 'blur(60px)',
           }}
         />
@@ -30,25 +30,25 @@ export default function CTABanner({
         <Reveal>
           <div
             className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full mb-8"
-            style={{ background: 'rgba(99,102,241,0.08)', border: '1px solid rgba(99,102,241,0.2)' }}
+            style={{ background: 'rgba(124,92,246,0.08)', border: '1px solid rgba(124,92,246,0.2)' }}
           >
-            <span className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: '#818cf8' }} />
-            <span className="text-xs font-semibold" style={{ color: '#818cf8', letterSpacing: '0.02em' }}>
+            <span className="w-1.5 h-1.5 rounded-full pulse-dot" style={{ backgroundColor: 'var(--brand-light)' }} />
+            <span className="text-xs font-semibold" style={{ color: 'var(--brand-light)', letterSpacing: '0.02em' }}>
               Começa hoje, gratuitamente
             </span>
           </div>
           <h2
-            className="text-3xl sm:text-4xl lg:text-5xl font-extrabold mb-5"
-            style={{ color: '#e2e8f0', letterSpacing: '-0.035em' }}
+            className="font-display mb-5"
+            style={{ fontSize: 'clamp(1.9rem, 4.5vw, 3rem)', color: 'var(--text)' }}
           >
-            {heading.split('\n').map((line, i) => (
+            {heading.split('\n').map((line, i, arr) => (
               <span key={i}>
                 {line}
-                {i < heading.split('\n').length - 1 && <br />}
+                {i < arr.length - 1 && <br />}
               </span>
             ))}
           </h2>
-          <p className="text-lg mb-10" style={{ color: '#475569', letterSpacing: '-0.01em' }}>
+          <p className="mb-10 leading-relaxed" style={{ color: 'var(--text-2)', fontSize: '1.0625rem', letterSpacing: '-0.01em' }}>
             {sub}
           </p>
           <div className="flex flex-col sm:flex-row gap-3 justify-center">

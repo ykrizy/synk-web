@@ -219,11 +219,11 @@ function Stars({ rating }) {
 function ScoreBar({ label, value, color, animated }) {
   return (
     <div className="mb-2">
-      <div className="flex justify-between text-xs mb-1" style={{ color: '#475569' }}>
+      <div className="flex justify-between text-xs mb-1" style={{ color: 'var(--text-2)' }}>
         <span>{label}</span>
         <span style={{ color }}>{value}</span>
       </div>
-      <div className="h-1.5 rounded-full" style={{ background: '#080b12' }}>
+      <div className="h-1.5 rounded-full" style={{ background: 'var(--bg)' }}>
         <div
           className="h-1.5 rounded-full"
           style={{
@@ -246,7 +246,7 @@ function SpecialistCard({ specialist, animated }) {
     <div
       className="card-no-hover rounded-xl p-6"
       style={{
-        background: 'rgba(255,255,255,0.025)',
+        background: 'var(--surface)',
         border: `1px solid ${scoreColor}33`,
         opacity: animated ? 1 : 0,
         transform: animated ? 'translateY(0)' : 'translateY(20px)',
@@ -262,28 +262,28 @@ function SpecialistCard({ specialist, animated }) {
           {specialist.initials}
         </div>
         <div className="flex-1 min-w-0">
-          <div className="font-bold text-sm" style={{ color: '#e2e8f0' }}>{specialist.name}</div>
-          <div className="text-xs" style={{ color: '#475569' }}>{specialist.title}</div>
+          <div className="font-bold text-sm" style={{ color: 'var(--text)' }}>{specialist.name}</div>
+          <div className="text-xs" style={{ color: 'var(--text-2)' }}>{specialist.title}</div>
           <div className="flex items-center gap-2 mt-1">
             <Stars rating={specialist.rating} />
-            <span className="text-xs" style={{ color: '#475569' }}>{specialist.rating} ({specialist.reviewCount})</span>
+            <span className="text-xs" style={{ color: 'var(--text-2)' }}>{specialist.rating} ({specialist.reviewCount})</span>
           </div>
         </div>
         <div className="text-right flex-shrink-0">
           <div className="text-lg font-extrabold" style={{ color: scoreColor }}>
             {score.total}
           </div>
-          <div className="text-xs" style={{ color: '#475569' }}>score</div>
+          <div className="text-xs" style={{ color: 'var(--text-2)' }}>score</div>
         </div>
       </div>
 
       {/* Total score bar */}
       <div className="mb-4">
-        <div className="flex justify-between text-xs mb-1.5" style={{ color: '#475569' }}>
+        <div className="flex justify-between text-xs mb-1.5" style={{ color: 'var(--text-2)' }}>
           <span>Score total</span>
           <span style={{ color: scoreColor }}>{score.total}%</span>
         </div>
-        <div className="h-2.5 rounded-full" style={{ background: '#080b12' }}>
+        <div className="h-2.5 rounded-full" style={{ background: 'var(--bg)' }}>
           <div
             className="h-2.5 rounded-full"
             style={{
@@ -315,9 +315,9 @@ function SpecialistCard({ specialist, animated }) {
       </div>
 
       {/* Footer */}
-      <div className="flex items-center justify-between pt-4" style={{ borderTop: '1px solid #1e2436' }}>
+      <div className="flex items-center justify-between pt-4" style={{ borderTop: '1px solid var(--border)' }}>
         <div>
-          <span className="font-bold text-sm" style={{ color: '#e2e8f0' }}>€{specialist.pricePerHour}/h</span>
+          <span className="font-bold text-sm" style={{ color: 'var(--text)' }}>€{specialist.pricePerHour}/h</span>
           <div className="mt-1">
             {specialist.availableIn === 0 ? (
               <span className="badge badge-emerald">● Disponível agora</span>
@@ -342,8 +342,8 @@ function Slider({ label, min, max, step, value, onChange, format }) {
   return (
     <div>
       <div className="flex justify-between mb-2">
-        <label className="text-sm font-medium" style={{ color: '#475569' }}>{label}</label>
-        <span className="text-sm font-bold" style={{ color: '#6366f1' }}>{format(value)}</span>
+        <label className="text-sm font-medium" style={{ color: 'var(--text-2)' }}>{label}</label>
+        <span className="text-sm font-bold" style={{ color: 'var(--brand)' }}>{format(value)}</span>
       </div>
       <input
         type="range"
@@ -351,7 +351,7 @@ function Slider({ label, min, max, step, value, onChange, format }) {
         value={value}
         onChange={e => onChange(+e.target.value)}
       />
-      <div className="flex justify-between text-xs mt-1" style={{ color: '#475569' }}>
+      <div className="flex justify-between text-xs mt-1" style={{ color: 'var(--text-2)' }}>
         <span>{format(min)}</span>
         <span>{format(max)}</span>
       </div>
@@ -361,7 +361,7 @@ function Slider({ label, min, max, step, value, onChange, format }) {
 
 /* ── Criteria explanation ── */
 const CRITERIA = [
-  { label: 'Tipo de Automação', weight: '35%', color: '#6366f1' },
+  { label: 'Tipo de Automação', weight: '35%', color: 'var(--brand)' },
   { label: 'Orçamento', weight: '25%', color: '#06b6d4' },
   { label: 'Prazo', weight: '20%', color: '#10b981' },
   { label: 'Avaliação', weight: '10%', color: '#f59e0b' },
@@ -416,7 +416,7 @@ export default function Matching() {
       />
 
       {/* How the algorithm works */}
-      <section className="py-20" style={{ background: '#080b12' }}>
+      <section className="py-20" style={{ background: 'var(--bg)' }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <SectionHeader
             heading="Os 5 critérios do"
@@ -428,14 +428,14 @@ export default function Matching() {
             {CRITERIA.map((c, i) => (
               <Reveal key={i} delay={i * 60}>
                 <div className="card p-5 text-center">
-                  <div className="font-bold text-sm mb-2" style={{ color: '#e2e8f0', letterSpacing: '-0.01em' }}>{c.label}</div>
+                  <div className="font-bold text-sm mb-2" style={{ color: 'var(--text)', letterSpacing: '-0.01em' }}>{c.label}</div>
                   <div
                     className="text-2xl font-extrabold"
                     style={{ color: c.color, letterSpacing: '-0.03em' }}
                   >
                     {c.weight}
                   </div>
-                  <div className="text-xs mt-1" style={{ color: '#334155' }}>peso</div>
+                  <div className="text-xs mt-1" style={{ color: 'var(--text-3)' }}>peso</div>
                 </div>
               </Reveal>
             ))}
@@ -447,7 +447,7 @@ export default function Matching() {
       <section
         id="simulador"
         className="py-24"
-        style={{ background: 'rgba(255,255,255,0.025)', borderTop: '1px solid #1e2436', borderBottom: '1px solid #1e2436' }}
+        style={{ background: 'var(--surface)', borderTop: '1px solid var(--border)', borderBottom: '1px solid var(--border)' }}
       >
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
           <Reveal>
@@ -455,22 +455,22 @@ export default function Matching() {
               <span className="badge badge-indigo mb-4">Simulador Interativo</span>
               <h2
                 className="text-3xl sm:text-4xl font-extrabold mb-4 tracking-tight"
-                style={{ color: '#e2e8f0', letterSpacing: '-0.02em' }}
+                style={{ color: 'var(--text)', letterSpacing: '-0.02em' }}
               >
                 Experimenta o simulador
               </h2>
-              <p className="text-lg" style={{ color: '#475569' }}>
+              <p className="text-lg" style={{ color: 'var(--text-2)' }}>
                 Preenche o teu projeto e vê como o algoritmo classifica os candidatos em tempo real.
               </p>
             </div>
           </Reveal>
 
           <Reveal delay={100}>
-            <div className="rounded-2xl p-8" style={{ background: '#080b12', border: '1px solid #1e2436' }}>
+            <div className="rounded-2xl p-8" style={{ background: 'var(--bg)', border: '1px solid var(--border)' }}>
               <div className="grid sm:grid-cols-2 gap-6 mb-6">
                 {/* Tool */}
                 <div>
-                  <label className="block text-sm font-medium mb-2" style={{ color: '#475569' }}>
+                  <label className="block text-sm font-medium mb-2" style={{ color: 'var(--text-2)' }}>
                     ⚙️ Tipo de Automação
                   </label>
                   <select
@@ -486,7 +486,7 @@ export default function Matching() {
 
                 {/* Sector */}
                 <div>
-                  <label className="block text-sm font-medium mb-2" style={{ color: '#475569' }}>
+                  <label className="block text-sm font-medium mb-2" style={{ color: 'var(--text-2)' }}>
                     🏢 Setor da empresa
                   </label>
                   <select
@@ -513,7 +513,7 @@ export default function Matching() {
 
                 {/* Deadline */}
                 <div>
-                  <label className="block text-sm font-medium mb-2" style={{ color: '#475569' }}>
+                  <label className="block text-sm font-medium mb-2" style={{ color: 'var(--text-2)' }}>
                     📅 Prazo
                   </label>
                   <select
@@ -548,7 +548,7 @@ export default function Matching() {
                 {results && results.length > 0 ? (
                   <>
                     <div className="flex items-center justify-between mb-6">
-                      <h3 className="text-lg font-bold" style={{ color: '#e2e8f0' }}>
+                      <h3 className="text-lg font-bold" style={{ color: 'var(--text)' }}>
                         {results.length} especialista{results.length !== 1 ? 's' : ''} encontrado{results.length !== 1 ? 's' : ''}
                       </h3>
                       <span className="badge badge-emerald">Ordenados por score</span>
@@ -562,12 +562,12 @@ export default function Matching() {
                     </div>
                   </>
                 ) : (
-                  <div className="text-center py-16 rounded-2xl" style={{ background: '#080b12', border: '1px solid #1e2436' }}>
+                  <div className="text-center py-16 rounded-2xl" style={{ background: 'var(--bg)', border: '1px solid var(--border)' }}>
                     <div className="text-5xl mb-4">🔍</div>
-                    <h3 className="text-lg font-bold mb-2" style={{ color: '#e2e8f0' }}>
+                    <h3 className="text-lg font-bold mb-2" style={{ color: 'var(--text)' }}>
                       Nenhum especialista encontrado para estes critérios
                     </h3>
-                    <p className="text-sm" style={{ color: '#475569' }}>
+                    <p className="text-sm" style={{ color: 'var(--text-2)' }}>
                       Tenta ajustar o orçamento, o prazo ou o tipo de automação.
                     </p>
                   </div>

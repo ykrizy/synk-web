@@ -13,7 +13,7 @@ const TEAM = [
     role: 'Co-founder & CEO',
     focus: 'Estratégia, parcerias e crescimento',
     quote: 'Acredito que automação vai redefinir como as PMEs competem.',
-    color: '#6366f1',
+    color: 'var(--brand)',
   },
   {
     initials: 'DP',
@@ -49,7 +49,7 @@ const VALUES = [
     ),
     title: 'Confiança primeiro',
     desc: 'Cada feature que construímos começa com a pergunta: "Isto torna a plataforma mais segura e transparente para ambas as partes?"',
-    color: '#818cf8',
+    color: 'var(--brand-light)',
   },
   {
     icon: (
@@ -130,19 +130,19 @@ export default function SobreNos() {
       />
 
       {/* Mission */}
-      <section className="py-24" style={{ background: '#080b12' }}>
+      <section className="py-24" style={{ background: 'var(--bg)' }}>
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <Reveal>
             <div
               className="rounded-2xl p-8 lg:p-12 mb-16 text-center"
               style={{
-                background: 'rgba(99,102,241,0.04)',
-                border: '1px solid rgba(99,102,241,0.2)',
+                background: 'rgba(124,92,246,0.04)',
+                border: '1px solid rgba(124,92,246,0.2)',
               }}
             >
               <div
                 className="w-12 h-12 rounded-xl flex items-center justify-center mx-auto mb-6"
-                style={{ background: 'rgba(99,102,241,0.12)', color: '#818cf8', border: '1px solid rgba(99,102,241,0.2)' }}
+                style={{ background: 'rgba(124,92,246,0.12)', color: 'var(--brand-light)', border: '1px solid rgba(124,92,246,0.2)' }}
               >
                 <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <circle cx="12" cy="12" r="10" /><line x1="12" y1="8" x2="12" y2="12" /><line x1="12" y1="16" x2="12.01" y2="16" />
@@ -150,7 +150,7 @@ export default function SobreNos() {
               </div>
               <blockquote
                 className="text-lg sm:text-xl leading-relaxed italic"
-                style={{ color: '#cbd5e1', letterSpacing: '-0.01em' }}
+                style={{ color: 'var(--text)', letterSpacing: '-0.01em' }}
               >
                 "A nossa missão é democratizar o acesso à automação empresarial — para que qualquer PME, independentemente da dimensão, possa competir com as grandes empresas através da tecnologia certa, implementada pelas pessoas certas."
               </blockquote>
@@ -167,8 +167,8 @@ export default function SobreNos() {
                   >
                     {v.icon}
                   </div>
-                  <h3 className="font-bold mb-2" style={{ color: '#e2e8f0', letterSpacing: '-0.02em' }}>{v.title}</h3>
-                  <p className="text-sm leading-relaxed" style={{ color: '#475569', letterSpacing: '-0.01em' }}>{v.desc}</p>
+                  <h3 className="font-bold mb-2" style={{ color: 'var(--text)', letterSpacing: '-0.02em' }}>{v.title}</h3>
+                  <p className="text-sm leading-relaxed" style={{ color: 'var(--text-2)', letterSpacing: '-0.01em' }}>{v.desc}</p>
                 </div>
               </Reveal>
             ))}
@@ -177,7 +177,7 @@ export default function SobreNos() {
       </section>
 
       {/* Team */}
-      <section className="py-24" style={{ background: 'rgba(255,255,255,0.02)', borderTop: '1px solid rgba(255,255,255,0.05)', borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
+      <section className="py-24" style={{ background: 'var(--bg-subtle)', borderTop: '1px solid var(--border)', borderBottom: '1px solid var(--border)' }}>
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
           <SectionHeader heading="Quem está por trás" highlight="da Synk" />
           <div className="grid md:grid-cols-3 gap-5">
@@ -194,10 +194,10 @@ export default function SobreNos() {
                   >
                     {member.initials}
                   </div>
-                  <h3 className="font-extrabold text-base mb-1" style={{ color: '#e2e8f0', letterSpacing: '-0.02em' }}>{member.name}</h3>
+                  <h3 className="font-extrabold text-base mb-1" style={{ color: 'var(--text)', letterSpacing: '-0.02em' }}>{member.name}</h3>
                   <div className="badge badge-indigo mb-3 mx-auto">{member.role}</div>
-                  <p className="text-xs mb-4" style={{ color: '#334155' }}>{member.focus}</p>
-                  <blockquote className="text-sm italic flex-1" style={{ color: '#64748b', letterSpacing: '-0.01em' }}>
+                  <p className="text-xs mb-4" style={{ color: 'var(--text-3)' }}>{member.focus}</p>
+                  <blockquote className="text-sm italic flex-1" style={{ color: 'var(--text-2)', letterSpacing: '-0.01em' }}>
                     "{member.quote}"
                   </blockquote>
                 </div>
@@ -208,7 +208,7 @@ export default function SobreNos() {
       </section>
 
       {/* Timeline */}
-      <section className="py-24" style={{ background: '#080b12' }}>
+      <section className="py-24" style={{ background: 'var(--bg)' }}>
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
           <SectionHeader heading="Como chegámos" highlight="aqui" />
           <div className="space-y-6">
@@ -219,10 +219,10 @@ export default function SobreNos() {
                   <div className="card p-5" style={{ opacity: item.future ? 0.55 : 1 }}>
                     <div className="flex items-center gap-3 mb-2">
                       <span className="badge badge-indigo">{item.year}</span>
-                      <h3 className="font-bold" style={{ color: '#e2e8f0', letterSpacing: '-0.02em' }}>{item.title}</h3>
+                      <h3 className="font-bold" style={{ color: 'var(--text)', letterSpacing: '-0.02em' }}>{item.title}</h3>
                       {item.future && <span className="badge badge-amber">Em breve</span>}
                     </div>
-                    <p className="text-sm leading-relaxed" style={{ color: '#475569', letterSpacing: '-0.01em' }}>{item.desc}</p>
+                    <p className="text-sm leading-relaxed" style={{ color: 'var(--text-2)', letterSpacing: '-0.01em' }}>{item.desc}</p>
                   </div>
                 </div>
               </Reveal>
@@ -234,7 +234,7 @@ export default function SobreNos() {
       {/* Stats */}
       <section
         className="py-20"
-        style={{ background: 'rgba(255,255,255,0.02)', borderTop: '1px solid rgba(255,255,255,0.05)', borderBottom: '1px solid rgba(255,255,255,0.05)' }}
+        style={{ background: 'var(--bg-subtle)', borderTop: '1px solid var(--border)', borderBottom: '1px solid var(--border)' }}
       >
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
@@ -247,7 +247,7 @@ export default function SobreNos() {
                   >
                     <AnimatedNumber end={s.value} suffix={s.suffix} />
                   </div>
-                  <p className="text-sm" style={{ color: '#475569', letterSpacing: '-0.01em' }}>{s.label}</p>
+                  <p className="text-sm" style={{ color: 'var(--text-2)', letterSpacing: '-0.01em' }}>{s.label}</p>
                 </div>
               </Reveal>
             ))}
@@ -256,19 +256,19 @@ export default function SobreNos() {
       </section>
 
       {/* Careers */}
-      <section className="py-24" style={{ background: '#080b12' }}>
+      <section className="py-24" style={{ background: 'var(--bg)' }}>
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <Reveal>
             <div
               className="rounded-2xl p-8 mb-16"
               style={{
-                background: 'linear-gradient(135deg, rgba(99,102,241,0.06), rgba(139,92,246,0.06))',
-                border: '1px solid rgba(99,102,241,0.2)',
+                background: 'linear-gradient(135deg, rgba(124,92,246,0.06), rgba(139,92,246,0.06))',
+                border: '1px solid rgba(124,92,246,0.2)',
               }}
             >
               <h2
                 className="text-2xl font-extrabold mb-3"
-                style={{ color: '#e2e8f0', letterSpacing: '-0.03em' }}
+                style={{ color: 'var(--text)', letterSpacing: '-0.03em' }}
               >
                 Estamos a construir algo grande.{' '}
                 <span className="text-gradient">Junta-te a nós.</span>
@@ -299,20 +299,20 @@ export default function SobreNos() {
                 <div className="card p-5 text-center">
                   <div
                     className="w-10 h-10 rounded-xl flex items-center justify-center mx-auto mb-3"
-                    style={{ background: 'rgba(99,102,241,0.1)', color: '#818cf8', border: '1px solid rgba(99,102,241,0.2)' }}
+                    style={{ background: 'rgba(124,92,246,0.1)', color: 'var(--brand-light)', border: '1px solid rgba(124,92,246,0.2)' }}
                   >
                     {c.icon}
                   </div>
                   <div
                     className="text-xs font-semibold uppercase tracking-widest mb-2"
-                    style={{ color: '#334155', letterSpacing: '0.08em' }}
+                    style={{ color: 'var(--text-3)', letterSpacing: '0.08em' }}
                   >
                     {c.label}
                   </div>
                   <a
                     href={`mailto:${c.email}`}
                     className="text-sm font-medium"
-                    style={{ color: '#818cf8', textDecoration: 'none', letterSpacing: '-0.01em' }}
+                    style={{ color: 'var(--brand-light)', textDecoration: 'none', letterSpacing: '-0.01em' }}
                   >
                     {c.email}
                   </a>

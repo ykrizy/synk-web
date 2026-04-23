@@ -36,25 +36,17 @@ const ICONS = {
 }
 
 const TYPES = [
-  { icon: ICONS.rpa, title: 'RPA & Workflow', desc: 'Automatiza tarefas repetitivas com RPA, Zapier, Make, UiPath', tools: ['Zapier', 'Make', 'n8n'], badge: 'badge-indigo' },
-  { icon: ICONS.ai, title: 'IA & Machine Learning', desc: 'Implementa modelos de IA nos teus processos de negócio', tools: ['OpenAI', 'Python', 'TensorFlow'], badge: 'badge-violet' },
-  { icon: ICONS.integration, title: 'Integração de Sistemas', desc: 'Conecta as tuas ferramentas: CRM, ERP, e-commerce, APIs', tools: ['Salesforce', 'SAP', 'REST API'], badge: 'badge-cyan' },
-  { icon: ICONS.bi, title: 'Business Intelligence', desc: 'Automatiza relatórios, dashboards e fluxos de dados', tools: ['Power BI', 'Tableau', 'dbt'], badge: 'badge-emerald' },
-  { icon: ICONS.marketing, title: 'Marketing Automation', desc: 'Sequências de email, lead scoring, CRM automation', tools: ['HubSpot', 'Mailchimp', 'ActiveCampaign'], badge: 'badge-amber' },
-  { icon: ICONS.custom, title: 'Automação Custom', desc: 'Soluções à medida para os teus processos únicos', tools: ['Node.js', 'Python', 'SQL'], badge: 'badge-indigo' },
+  { icon: ICONS.rpa, title: 'RPA & Workflow', desc: 'Automatiza tarefas repetitivas com RPA, Zapier, Make, UiPath', tools: ['Zapier', 'Make', 'n8n'], badge: 'badge-indigo', color: '#818cf8' },
+  { icon: ICONS.ai, title: 'IA & Machine Learning', desc: 'Implementa modelos de IA nos teus processos de negócio', tools: ['OpenAI', 'Python', 'TensorFlow'], badge: 'badge-violet', color: '#C4B5FD' },
+  { icon: ICONS.integration, title: 'Integração de Sistemas', desc: 'Conecta as tuas ferramentas: CRM, ERP, e-commerce, APIs', tools: ['Salesforce', 'SAP', 'REST API'], badge: 'badge-cyan', color: '#67E8F9' },
+  { icon: ICONS.bi, title: 'Business Intelligence', desc: 'Automatiza relatórios, dashboards e fluxos de dados', tools: ['Power BI', 'Tableau', 'dbt'], badge: 'badge-emerald', color: '#34D399' },
+  { icon: ICONS.marketing, title: 'Marketing Automation', desc: 'Sequências de email, lead scoring, CRM automation', tools: ['HubSpot', 'Mailchimp', 'ActiveCampaign'], badge: 'badge-amber', color: '#FCD34D' },
+  { icon: ICONS.custom, title: 'Automação Custom', desc: 'Soluções à medida para os teus processos únicos', tools: ['Node.js', 'Python', 'SQL'], badge: 'badge-indigo', color: '#818cf8' },
 ]
-
-const BADGE_COLORS = {
-  'badge-indigo': '#818cf8',
-  'badge-violet': '#a78bfa',
-  'badge-cyan': '#22d3ee',
-  'badge-emerald': '#34d399',
-  'badge-amber': '#fbbf24',
-}
 
 export default function AutomationTypes() {
   return (
-    <section className="py-24" style={{ background: '#080b12' }}>
+    <section className="py-24" style={{ background: 'var(--bg-subtle)', borderTop: '1px solid var(--border)' }}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <SectionHeader
           heading="Todos os tipos de automação,"
@@ -63,28 +55,25 @@ export default function AutomationTypes() {
         />
 
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {TYPES.map((t, i) => {
-            const color = BADGE_COLORS[t.badge] || '#818cf8'
-            return (
-              <Reveal key={i} delay={i * 60}>
-                <div className="card p-6 h-full flex flex-col">
-                  <div
-                    className="w-10 h-10 rounded-xl flex items-center justify-center mb-4"
-                    style={{ background: `${color}15`, color, border: `1px solid ${color}25` }}
-                  >
-                    {t.icon}
-                  </div>
-                  <h3 className="text-base font-bold mb-2" style={{ color: '#e2e8f0', letterSpacing: '-0.02em' }}>{t.title}</h3>
-                  <p className="text-sm leading-relaxed mb-4 flex-1" style={{ color: '#475569', letterSpacing: '-0.01em' }}>{t.desc}</p>
-                  <div className="flex flex-wrap gap-1.5">
-                    {t.tools.map((tool, j) => (
-                      <span key={j} className={`badge ${t.badge}`}>{tool}</span>
-                    ))}
-                  </div>
+          {TYPES.map((t, i) => (
+            <Reveal key={i} delay={i * 60}>
+              <div className="card p-6 h-full flex flex-col">
+                <div
+                  className="w-10 h-10 rounded-xl flex items-center justify-center mb-4"
+                  style={{ background: `${t.color}15`, color: t.color, border: `1px solid ${t.color}25` }}
+                >
+                  {t.icon}
                 </div>
-              </Reveal>
-            )
-          })}
+                <h3 className="font-heading text-base mb-2" style={{ color: 'var(--text)' }}>{t.title}</h3>
+                <p className="text-sm leading-relaxed mb-4 flex-1" style={{ color: 'var(--text-2)', letterSpacing: '-0.01em' }}>{t.desc}</p>
+                <div className="flex flex-wrap gap-1.5">
+                  {t.tools.map((tool, j) => (
+                    <span key={j} className={`badge ${t.badge}`}>{tool}</span>
+                  ))}
+                </div>
+              </div>
+            </Reveal>
+          ))}
         </div>
       </div>
     </section>

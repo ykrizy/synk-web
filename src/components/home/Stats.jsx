@@ -12,13 +12,17 @@ export default function Stats() {
   return (
     <section
       className="py-20"
-      style={{ background: 'rgba(255,255,255,0.02)', borderTop: '1px solid rgba(255,255,255,0.05)', borderBottom: '1px solid rgba(255,255,255,0.05)' }}
+      style={{
+        background: 'var(--bg-subtle)',
+        borderTop: '1px solid var(--border)',
+        borderBottom: '1px solid var(--border)',
+      }}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <Reveal>
           <p
             className="text-center text-xs font-semibold uppercase tracking-widest mb-12"
-            style={{ color: '#334155', letterSpacing: '0.1em' }}
+            style={{ color: 'var(--text-3)', letterSpacing: '0.1em' }}
           >
             Números que falam por si
           </p>
@@ -29,12 +33,12 @@ export default function Stats() {
             <Reveal key={i} delay={i * 80}>
               <div className="text-center">
                 <div
-                  className="text-4xl lg:text-5xl font-extrabold mb-2 text-gradient"
-                  style={{ letterSpacing: '-0.03em' }}
+                  className="font-display text-gradient mb-2"
+                  style={{ fontSize: 'clamp(2.5rem, 5vw, 3.5rem)' }}
                 >
                   <AnimatedNumber end={s.value} suffix={s.suffix} />
                 </div>
-                <p className="text-sm" style={{ color: '#475569', letterSpacing: '-0.01em' }}>{s.label}</p>
+                <p className="text-sm" style={{ color: 'var(--text-2)', letterSpacing: '-0.01em' }}>{s.label}</p>
               </div>
             </Reveal>
           ))}

@@ -24,7 +24,7 @@ const BENEFITS = [
     ),
     title: 'Projetos qualificados',
     desc: 'Chega de perder tempo com clientes sem orçamento ou pedidos vagos. Os projetos na Synk são estruturados e com budget definido.',
-    color: '#818cf8',
+    color: 'var(--brand-light)',
   },
   {
     icon: (
@@ -92,7 +92,7 @@ export default function ParaEspecialistas() {
       />
 
       {/* Benefits */}
-      <section className="py-24" style={{ background: '#080b12' }}>
+      <section className="py-24" style={{ background: 'var(--bg)' }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <SectionHeader heading="O que ganhas como" highlight="especialista Synk" />
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -105,8 +105,8 @@ export default function ParaEspecialistas() {
                   >
                     {b.icon}
                   </div>
-                  <h3 className="font-bold mb-2" style={{ color: '#e2e8f0', letterSpacing: '-0.02em' }}>{b.title}</h3>
-                  <p className="text-sm leading-relaxed" style={{ color: '#475569', letterSpacing: '-0.01em' }}>{b.desc}</p>
+                  <h3 className="font-bold mb-2" style={{ color: 'var(--text)', letterSpacing: '-0.02em' }}>{b.title}</h3>
+                  <p className="text-sm leading-relaxed" style={{ color: 'var(--text-2)', letterSpacing: '-0.01em' }}>{b.desc}</p>
                 </div>
               </Reveal>
             ))}
@@ -115,7 +115,7 @@ export default function ParaEspecialistas() {
       </section>
 
       {/* Skills grid */}
-      <section className="py-24" style={{ background: 'rgba(255,255,255,0.02)', borderTop: '1px solid rgba(255,255,255,0.05)' }}>
+      <section className="py-24" style={{ background: 'var(--bg-subtle)', borderTop: '1px solid var(--border)' }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <SectionHeader heading="A tua área de especialização" highlight="tem procura" />
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -130,7 +130,7 @@ export default function ParaEspecialistas() {
                     style={{ background: '#6366f1' }}
                   />
                   <div>
-                    <div className="text-sm font-semibold mb-2" style={{ color: '#e2e8f0', letterSpacing: '-0.01em' }}>{s.title}</div>
+                    <div className="text-sm font-semibold mb-2" style={{ color: 'var(--text)', letterSpacing: '-0.01em' }}>{s.title}</div>
                     <span className={`badge ${s.demandVariant}`}>{s.demand}</span>
                   </div>
                 </div>
@@ -141,14 +141,14 @@ export default function ParaEspecialistas() {
       </section>
 
       {/* Earnings */}
-      <section className="py-24" style={{ background: '#080b12' }}>
+      <section className="py-24" style={{ background: 'var(--bg)' }}>
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <SectionHeader heading="Transparência total" highlight="nas comissões" sub="Sem mensalidades. Só pagas 15% quando recebes." />
           <Reveal delay={100}>
             <div className="rounded-2xl overflow-hidden" style={{ border: '1px solid rgba(255,255,255,0.07)' }}>
-              <div className="grid grid-cols-4 gap-4 p-4" style={{ background: 'rgba(255,255,255,0.03)', borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
+              <div className="grid grid-cols-4 gap-4 p-4" style={{ background: 'var(--surface)', borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
                 {['Valor do projeto', 'Comissão Synk (15%)', 'Tu recebes', ''].map((h, i) => (
-                  <div key={i} className="text-xs font-semibold uppercase tracking-widest" style={{ color: '#334155', letterSpacing: '0.06em' }}>{h}</div>
+                  <div key={i} className="text-xs font-semibold uppercase tracking-widest" style={{ color: 'var(--text-3)', letterSpacing: '0.06em' }}>{h}</div>
                 ))}
               </div>
               {EARNINGS.map((row, i) => (
@@ -160,19 +160,19 @@ export default function ParaEspecialistas() {
                     background: i % 2 === 0 ? 'transparent' : 'rgba(255,255,255,0.015)',
                   }}
                 >
-                  <div className="font-bold" style={{ color: '#e2e8f0', letterSpacing: '-0.02em' }}>{row.project}</div>
+                  <div className="font-bold" style={{ color: 'var(--text)', letterSpacing: '-0.02em' }}>{row.project}</div>
                   <div className="font-medium" style={{ color: '#f87171' }}>- {row.commission}</div>
                   <div className="font-bold text-lg" style={{ color: '#34d399', letterSpacing: '-0.02em' }}>{row.receives}</div>
                   <div>
                     <div className="h-1.5 rounded-full" style={{ background: 'rgba(255,255,255,0.06)' }}>
                       <div className="h-1.5 rounded-full" style={{ background: '#34d399', width: `${row.pct}%` }} />
                     </div>
-                    <div className="text-xs mt-1" style={{ color: '#334155' }}>{row.pct}% para ti</div>
+                    <div className="text-xs mt-1" style={{ color: 'var(--text-3)' }}>{row.pct}% para ti</div>
                   </div>
                 </div>
               ))}
-              <div className="p-4" style={{ background: 'rgba(255,255,255,0.02)', borderTop: '1px solid rgba(255,255,255,0.04)' }}>
-                <p className="text-sm text-center" style={{ color: '#334155', letterSpacing: '-0.01em' }}>
+              <div className="p-4" style={{ background: 'var(--bg-subtle)', borderTop: '1px solid rgba(255,255,255,0.04)' }}>
+                <p className="text-sm text-center" style={{ color: 'var(--text-3)', letterSpacing: '-0.01em' }}>
                   Sem taxas de subscrição · Sem mensalidades · Comissão só aplicada em projetos pagos
                 </p>
               </div>
@@ -182,7 +182,7 @@ export default function ParaEspecialistas() {
       </section>
 
       {/* Verification process */}
-      <section className="py-24" style={{ background: 'rgba(255,255,255,0.02)', borderTop: '1px solid rgba(255,255,255,0.05)' }}>
+      <section className="py-24" style={{ background: 'var(--bg-subtle)', borderTop: '1px solid var(--border)' }}>
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <SectionHeader heading="Como funciona a" highlight="verificação de perfis" />
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -195,8 +195,8 @@ export default function ParaEspecialistas() {
                   >
                     {i + 1}
                   </div>
-                  <h3 className="font-bold text-sm mb-2" style={{ color: '#e2e8f0', letterSpacing: '-0.02em' }}>{step.title}</h3>
-                  <p className="text-xs leading-relaxed" style={{ color: '#475569', letterSpacing: '-0.01em' }}>{step.desc}</p>
+                  <h3 className="font-bold text-sm mb-2" style={{ color: 'var(--text)', letterSpacing: '-0.02em' }}>{step.title}</h3>
+                  <p className="text-xs leading-relaxed" style={{ color: 'var(--text-2)', letterSpacing: '-0.01em' }}>{step.desc}</p>
                 </div>
               </Reveal>
             ))}
@@ -205,14 +205,14 @@ export default function ParaEspecialistas() {
       </section>
 
       {/* Featured testimonial */}
-      <section className="py-24" style={{ background: '#080b12' }}>
+      <section className="py-24" style={{ background: 'var(--bg)' }}>
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
           <Reveal>
             <div
               className="rounded-2xl p-8 lg:p-12"
               style={{
                 background: 'rgba(139,92,246,0.04)',
-                border: '1px solid rgba(139,92,246,0.2)',
+                border: '1px solid rgba(124,92,246,0.2)',
               }}
             >
               <div className="flex gap-1 mb-6">
@@ -224,7 +224,7 @@ export default function ParaEspecialistas() {
               </div>
               <blockquote
                 className="text-lg leading-relaxed italic mb-8"
-                style={{ color: '#cbd5e1', letterSpacing: '-0.01em' }}
+                style={{ color: 'var(--text)', letterSpacing: '-0.01em' }}
               >
                 "Em 6 meses na Synk fiz 12 projetos e construí uma base de clientes recorrentes. A plataforma poupou-me todo o trabalho de prospeção — posso focar-me no que sei fazer."
               </blockquote>
@@ -236,8 +236,8 @@ export default function ParaEspecialistas() {
                   RF
                 </div>
                 <div>
-                  <div className="font-bold" style={{ color: '#e2e8f0', letterSpacing: '-0.02em' }}>Ricardo Fernandes</div>
-                  <div className="text-sm" style={{ color: '#475569' }}>Especialista em RPA · 47 projetos concluídos</div>
+                  <div className="font-bold" style={{ color: 'var(--text)', letterSpacing: '-0.02em' }}>Ricardo Fernandes</div>
+                  <div className="text-sm" style={{ color: 'var(--text-2)' }}>Especialista em RPA · 47 projetos concluídos</div>
                 </div>
               </div>
             </div>
