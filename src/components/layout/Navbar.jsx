@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
-import { Link, useLocation } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
+import { useAuth } from '@/contexts/AuthContext'
 
 const NAV_LINKS = [
   { label: 'Como Funciona', to: '/como-funciona' },
@@ -14,6 +15,13 @@ export default function Navbar() {
   const [scrolled, setScrolled] = useState(false)
   const [mobileOpen, setMobileOpen] = useState(false)
   const location = useLocation()
+  const navigate = useNavigate()
+  const { user, logout } = useAuth()
+
+  async function handleLogout() {
+    await logout()
+    navigate('/')
+  }
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 24)
@@ -84,12 +92,25 @@ export default function Navbar() {
 
           {/* Desktop CTAs */}
           <div className="hidden lg:flex items-center gap-2">
-            <Link to="/registar" className="btn-ghost" style={{ fontSize: '13.5px', padding: '8px 16px' }}>
-              Entrar
-            </Link>
-            <Link to="/registar" className="btn-primary" style={{ fontSize: '13.5px', padding: '9px 20px' }}>
-              Começar Grátis
-            </Link>
+            {user ? (
+              <>
+                <span style={{ fontSize: '13px', color: 'var(--text-3)', maxWidth: '160px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                  {user.email}
+                </span>
+                <button onClick={handleLogout} className="btn-ghost" style={{ fontSize: '13.5px', padding: '8px 16px' }}>
+                  Sair
+                </button>
+              </>
+            ) : (
+              <>
+                <Link to="/login" className="btn-ghost" style={{ fontSize: '13.5px', padding: '8px 16px' }}>
+                  Entrar
+                </Link>
+                <Link to="/registar" className="btn-primary" style={{ fontSize: '13.5px', padding: '9px 20px' }}>
+                  Começar Grátis
+                </Link>
+              </>
+            )}
           </div>
 
           {/* Mobile hamburger */}
@@ -137,8 +158,16 @@ export default function Navbar() {
             )
           })}
           <div className="flex gap-2 mt-4 pt-4" style={{ borderTop: '1px solid var(--border)' }}>
-            <Link to="/registar" className="btn-ghost flex-1 justify-center" style={{ fontSize: '13px' }}>Entrar</Link>
-            <Link to="/registar" className="btn-primary flex-1 justify-center" style={{ fontSize: '13px' }}>Começar Grátis</Link>
+            {user ? (
+              <button onClick={handleLogout} className="btn-ghost flex-1 justify-center" style={{ fontSize: '13px' }}>
+                Sair
+              </button>
+            ) : (
+              <>
+                <Link to="/login" className="btn-ghost flex-1 justify-center" style={{ fontSize: '13px' }}>Entrar</Link>
+                <Link to="/registar" className="btn-primary flex-1 justify-center" style={{ fontSize: '13px' }}>Começar Grátis</Link>
+              </>
+            )}
           </div>
         </div>
       </div>
