@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import useMeta from '@/hooks/useMeta'
 import Reveal from '@/components/ui/Reveal'
+import { registarEmpresa, registarEspecialista } from '@/lib/api/auth'
 
 const AUTOMATION_TYPES = ['RPA', 'Integrações', 'IA / LLMs', 'Marketing Automation', 'BI & Data', 'Custom Dev', 'Outro']
 const SPECIALIST_SKILLS = ['RPA (UiPath, AA)', 'Make / Zapier / n8n', 'Python Automation', 'IA Aplicada', 'Power BI', 'HubSpot / Marketing', 'Cloud & DevOps', 'Outro']
@@ -53,40 +54,63 @@ function CheckboxGroup({ options, selected, onToggle }) {
 
 function EmpresaForm({ onSuccess }) {
   const [automationTypes, setAutomationTypes] = useState([])
+  const [fields, setFields] = useState({ nome_empresa: '', nome_responsavel: '', email: '', password: '', telefone: '', pais: 'Portugal', tamanho: '1–10' })
+  const [erro, setErro] = useState(null)
+  const [loading, setLoading] = useState(false)
+
   const toggle = (val) => setAutomationTypes(prev => prev.includes(val) ? prev.filter(x => x !== val) : [...prev, val])
+  const set = (k) => (e) => setFields(f => ({ ...f, [k]: e.target.value }))
+
+  async function handleSubmit(e) {
+    e.preventDefault()
+    setErro(null)
+    setLoading(true)
+    try {
+      await registarEmpresa({ ...fields, tipos_automacao: automationTypes })
+      onSuccess()
+    } catch (err) {
+      setErro(err.message || 'Erro ao criar conta. Tenta novamente.')
+    } finally {
+      setLoading(false)
+    }
+  }
 
   return (
-    <form onSubmit={e => { e.preventDefault(); onSuccess() }} className="space-y-5">
+    <form onSubmit={handleSubmit} className="space-y-5">
       <div className="grid sm:grid-cols-2 gap-5">
         <div>
           <label className="block text-sm font-medium mb-2" style={{ color: 'var(--text-2)' }}>Nome da empresa *</label>
-          <input type="text" required className="form-input" placeholder="Empresa Lda." />
+          <input type="text" required className="form-input" placeholder="Empresa Lda." value={fields.nome_empresa} onChange={set('nome_empresa')} />
         </div>
         <div>
           <label className="block text-sm font-medium mb-2" style={{ color: 'var(--text-2)' }}>Nome do responsável *</label>
-          <input type="text" required className="form-input" placeholder="João Silva" />
+          <input type="text" required className="form-input" placeholder="João Silva" value={fields.nome_responsavel} onChange={set('nome_responsavel')} />
         </div>
       </div>
       <div className="grid sm:grid-cols-2 gap-5">
         <div>
           <label className="block text-sm font-medium mb-2" style={{ color: 'var(--text-2)' }}>Email profissional *</label>
-          <input type="email" required className="form-input" placeholder="joao@empresa.pt" />
+          <input type="email" required className="form-input" placeholder="joao@empresa.pt" value={fields.email} onChange={set('email')} />
         </div>
         <div>
           <label className="block text-sm font-medium mb-2" style={{ color: 'var(--text-2)' }}>Telefone</label>
-          <input type="tel" className="form-input" placeholder="+351 900 000 000" />
+          <input type="tel" className="form-input" placeholder="+351 900 000 000" value={fields.telefone} onChange={set('telefone')} />
         </div>
+      </div>
+      <div>
+        <label className="block text-sm font-medium mb-2" style={{ color: 'var(--text-2)' }}>Password *</label>
+        <input type="password" required minLength={8} className="form-input" placeholder="Mínimo 8 caracteres" value={fields.password} onChange={set('password')} />
       </div>
       <div className="grid sm:grid-cols-2 gap-5">
         <div>
           <label className="block text-sm font-medium mb-2" style={{ color: 'var(--text-2)' }}>País</label>
-          <select className="form-input w-full">
+          <select className="form-input w-full" value={fields.pais} onChange={set('pais')}>
             {COUNTRIES.map(c => <option key={c}>{c}</option>)}
           </select>
         </div>
         <div>
           <label className="block text-sm font-medium mb-2" style={{ color: 'var(--text-2)' }}>Nº de funcionários</label>
-          <select className="form-input w-full">
+          <select className="form-input w-full" value={fields.tamanho} onChange={set('tamanho')}>
             {COMPANY_SIZES.map(s => <option key={s}>{s}</option>)}
           </select>
         </div>
@@ -95,8 +119,13 @@ function EmpresaForm({ onSuccess }) {
         <label className="block text-sm font-medium mb-3" style={{ color: 'var(--text-2)' }}>Que tipo de automação precisas?</label>
         <CheckboxGroup options={AUTOMATION_TYPES} selected={automationTypes} onToggle={toggle} />
       </div>
-      <button type="submit" className="btn-primary btn-primary-lg w-full justify-center" style={{ marginTop: '8px' }}>
-        Criar Conta Gratuita →
+      {erro && (
+        <p className="text-sm px-4 py-3 rounded-lg" style={{ color: '#f87171', background: 'rgba(248,113,113,0.08)', border: '1px solid rgba(248,113,113,0.2)' }}>
+          {erro}
+        </p>
+      )}
+      <button type="submit" disabled={loading} className="btn-primary btn-primary-lg w-full justify-center" style={{ marginTop: '8px', opacity: loading ? 0.7 : 1 }}>
+        {loading ? 'A criar conta…' : 'Criar Conta Gratuita →'}
       </button>
       <p className="text-xs text-center" style={{ color: 'var(--text-2)' }}>
         Ao registares-te, aceitas os{' '}
@@ -110,40 +139,63 @@ function EmpresaForm({ onSuccess }) {
 
 function EspecialistaForm({ onSuccess }) {
   const [skills, setSkills] = useState([])
+  const [fields, setFields] = useState({ nome: '', email: '', password: '', telefone: '', linkedin: '', portfolio: '', pais: 'Portugal', anos_experiencia: '1–3 anos' })
+  const [erro, setErro] = useState(null)
+  const [loading, setLoading] = useState(false)
+
   const toggle = (val) => setSkills(prev => prev.includes(val) ? prev.filter(x => x !== val) : [...prev, val])
+  const set = (k) => (e) => setFields(f => ({ ...f, [k]: e.target.value }))
+
+  async function handleSubmit(e) {
+    e.preventDefault()
+    setErro(null)
+    setLoading(true)
+    try {
+      await registarEspecialista({ ...fields, skills })
+      onSuccess()
+    } catch (err) {
+      setErro(err.message || 'Erro ao submeter candidatura. Tenta novamente.')
+    } finally {
+      setLoading(false)
+    }
+  }
 
   return (
-    <form onSubmit={e => { e.preventDefault(); onSuccess() }} className="space-y-5">
+    <form onSubmit={handleSubmit} className="space-y-5">
       <div className="grid sm:grid-cols-2 gap-5">
         <div>
           <label className="block text-sm font-medium mb-2" style={{ color: 'var(--text-2)' }}>Nome completo *</label>
-          <input type="text" required className="form-input" placeholder="Ricardo Fernandes" />
+          <input type="text" required className="form-input" placeholder="Ricardo Fernandes" value={fields.nome} onChange={set('nome')} />
         </div>
         <div>
           <label className="block text-sm font-medium mb-2" style={{ color: 'var(--text-2)' }}>Email *</label>
-          <input type="email" required className="form-input" placeholder="ricardo@email.com" />
+          <input type="email" required className="form-input" placeholder="ricardo@email.com" value={fields.email} onChange={set('email')} />
         </div>
+      </div>
+      <div>
+        <label className="block text-sm font-medium mb-2" style={{ color: 'var(--text-2)' }}>Password *</label>
+        <input type="password" required minLength={8} className="form-input" placeholder="Mínimo 8 caracteres" value={fields.password} onChange={set('password')} />
       </div>
       <div className="grid sm:grid-cols-2 gap-5">
         <div>
           <label className="block text-sm font-medium mb-2" style={{ color: 'var(--text-2)' }}>Telefone</label>
-          <input type="tel" className="form-input" placeholder="+351 900 000 000" />
+          <input type="tel" className="form-input" placeholder="+351 900 000 000" value={fields.telefone} onChange={set('telefone')} />
         </div>
         <div>
           <label className="block text-sm font-medium mb-2" style={{ color: 'var(--text-2)' }}>LinkedIn</label>
-          <input type="url" className="form-input" placeholder="linkedin.com/in/teu-perfil" />
+          <input type="url" className="form-input" placeholder="linkedin.com/in/teu-perfil" value={fields.linkedin} onChange={set('linkedin')} />
         </div>
       </div>
       <div className="grid sm:grid-cols-2 gap-5">
         <div>
           <label className="block text-sm font-medium mb-2" style={{ color: 'var(--text-2)' }}>País</label>
-          <select className="form-input w-full">
+          <select className="form-input w-full" value={fields.pais} onChange={set('pais')}>
             {COUNTRIES.map(c => <option key={c}>{c}</option>)}
           </select>
         </div>
         <div>
           <label className="block text-sm font-medium mb-2" style={{ color: 'var(--text-2)' }}>Anos de experiência</label>
-          <select className="form-input w-full">
+          <select className="form-input w-full" value={fields.anos_experiencia} onChange={set('anos_experiencia')}>
             {EXPERIENCE_YEARS.map(y => <option key={y}>{y}</option>)}
           </select>
         </div>
@@ -154,10 +206,15 @@ function EspecialistaForm({ onSuccess }) {
       </div>
       <div>
         <label className="block text-sm font-medium mb-2" style={{ color: 'var(--text-2)' }}>Portfolio / GitHub (opcional)</label>
-        <input type="url" className="form-input" placeholder="github.com/teu-perfil" />
+        <input type="url" className="form-input" placeholder="github.com/teu-perfil" value={fields.portfolio} onChange={set('portfolio')} />
       </div>
-      <button type="submit" className="btn-primary btn-primary-lg w-full justify-center" style={{ marginTop: '8px' }}>
-        Submeter Candidatura →
+      {erro && (
+        <p className="text-sm px-4 py-3 rounded-lg" style={{ color: '#f87171', background: 'rgba(248,113,113,0.08)', border: '1px solid rgba(248,113,113,0.2)' }}>
+          {erro}
+        </p>
+      )}
+      <button type="submit" disabled={loading} className="btn-primary btn-primary-lg w-full justify-center" style={{ marginTop: '8px', opacity: loading ? 0.7 : 1 }}>
+        {loading ? 'A submeter…' : 'Submeter Candidatura →'}
       </button>
       <p className="text-xs text-center" style={{ color: 'var(--text-2)' }}>
         Ao registares-te, aceitas os{' '}

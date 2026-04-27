@@ -1,10 +1,11 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import useMeta from '@/hooks/useMeta'
 import PageHero from '@/components/ui/PageHero'
 import SectionHeader from '@/components/ui/SectionHeader'
 import CTABanner from '@/components/ui/CTABanner'
 import Reveal from '@/components/ui/Reveal'
+import { listarEspecialistas } from '@/lib/api/especialistas'
 
 // ─── Mock data ───────────────────────────────────────────────────────────────
 
@@ -388,10 +389,38 @@ export default function Marketplace() {
   const [activeCategory, setActiveCategory] = useState('Todos')
   const [search, setSearch] = useState('')
   const [availableOnly, setAvailableOnly] = useState(false)
+  const [specialists, setSpecialists] = useState(SPECIALISTS)
+
+  useEffect(() => {
+    listarEspecialistas()
+      .then(data => {
+        if (!data || data.length === 0) return
+        const mapped = data.map(s => ({
+          id: s.id,
+          name: s.nome,
+          title: s.bio || s.skills?.join(' · ') || '',
+          location: s.pais || 'Portugal',
+          rate: s.preco_hora ? `€${s.preco_hora}/h` : 'A definir',
+          rating: s.rating || 0,
+          reviews: s.num_avaliacoes || 0,
+          skills: s.skills || [],
+          available: s.disponivel_agora ?? true,
+          avatar: s.nome?.split(' ').map(w => w[0]).slice(0, 2).join('') || '??',
+          avatarColor: '#6366f1',
+          verified: s.verificado,
+          projects: 0,
+          bio: s.bio || '',
+        }))
+        setSpecialists(mapped)
+      })
+      .catch(() => {
+        // Supabase não configurado ainda — mantém dados de demonstração
+      })
+  }, [])
 
   const categories = activeTab === 'especialistas' ? CATEGORIES_SPECIALISTS : CATEGORIES_PROJECTS
 
-  const filteredSpecialists = SPECIALISTS.filter(s => {
+  const filteredSpecialists = specialists.filter(s => {
     const matchesSearch = search === '' ||
       s.name.toLowerCase().includes(search.toLowerCase()) ||
       s.title.toLowerCase().includes(search.toLowerCase()) ||
