@@ -66,7 +66,22 @@ export default function Projeto() {
       })
   }, [id, navigate])
 
+  const [confirmDelete, setConfirmDelete] = useState(false)
+  const [deleting, setDeleting] = useState(false)
+
   const set = (k) => (e) => setFields(f => ({ ...f, [k]: e.target.value }))
+
+  async function handleDelete() {
+    setDeleting(true)
+    const { error } = await supabase.from('projetos').delete().eq('id', id)
+    if (error) {
+      setErro('Erro ao apagar o projeto. Tenta novamente.')
+      setDeleting(false)
+      setConfirmDelete(false)
+    } else {
+      navigate('/dashboard')
+    }
+  }
 
   async function handleSave(e) {
     e.preventDefault()
@@ -252,7 +267,7 @@ export default function Projeto() {
                   </div>
                 </div>
 
-                <div style={{ borderTop: '1px solid var(--border)', paddingTop: '1.5rem' }} className="flex gap-3">
+                <div style={{ borderTop: '1px solid var(--border)', paddingTop: '1.5rem' }} className="flex gap-3 flex-wrap">
                   <button
                     onClick={() => setEditMode(true)}
                     className="btn-primary"
@@ -260,8 +275,18 @@ export default function Projeto() {
                   >
                     ✏️ Editar projeto
                   </button>
+                  <button
+                    onClick={() => setConfirmDelete(true)}
+                    style={{
+                      fontSize: '14px', padding: '10px 20px', borderRadius: '10px',
+                      background: 'rgba(248,113,113,0.08)', border: '1px solid rgba(248,113,113,0.25)',
+                      color: '#f87171', cursor: 'pointer', fontWeight: 500,
+                    }}
+                  >
+                    🗑️ Apagar projeto
+                  </button>
                   <Link to="/dashboard" className="btn-ghost" style={{ fontSize: '14px', padding: '10px 20px' }}>
-                    ← Voltar ao Dashboard
+                    ← Voltar
                   </Link>
                 </div>
               </div>
@@ -269,6 +294,51 @@ export default function Projeto() {
           </div>
         </Reveal>
       </div>
+      {/* Modal de confirmação de eliminação */}
+      {confirmDelete && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center px-4"
+          style={{ background: 'rgba(0,0,0,0.7)', backdropFilter: 'blur(4px)' }}
+          onClick={() => setConfirmDelete(false)}
+        >
+          <div
+            className="rounded-2xl p-8 w-full max-w-sm"
+            style={{ background: 'var(--surface)', border: '1px solid var(--border)' }}
+            onClick={e => e.stopPropagation()}
+          >
+            <div className="text-4xl mb-4 text-center">🗑️</div>
+            <h2 className="font-heading text-xl text-center mb-2" style={{ color: 'var(--text)' }}>Apagar projeto?</h2>
+            <p className="text-sm text-center mb-6" style={{ color: 'var(--text-2)' }}>
+              Esta ação é <strong>irreversível</strong>. O projeto "<span style={{ color: 'var(--text)' }}>{projeto?.titulo}</span>" será apagado permanentemente.
+            </p>
+            {erro && (
+              <p className="text-sm px-4 py-3 rounded-lg mb-4" style={{ color: '#f87171', background: 'rgba(248,113,113,0.08)', border: '1px solid rgba(248,113,113,0.2)' }}>
+                {erro}
+              </p>
+            )}
+            <div className="flex gap-3">
+              <button
+                onClick={handleDelete}
+                disabled={deleting}
+                style={{
+                  flex: 1, padding: '12px', borderRadius: '10px', fontWeight: 600, fontSize: '14px',
+                  background: 'rgba(248,113,113,0.15)', border: '1px solid rgba(248,113,113,0.3)',
+                  color: '#f87171', cursor: deleting ? 'not-allowed' : 'pointer', opacity: deleting ? 0.7 : 1,
+                }}
+              >
+                {deleting ? 'A apagar…' : 'Sim, apagar'}
+              </button>
+              <button
+                onClick={() => setConfirmDelete(false)}
+                className="btn-ghost flex-1"
+                style={{ fontSize: '14px', padding: '12px' }}
+              >
+                Cancelar
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </section>
   )
 }
