@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
 import Reveal from '@/components/ui/Reveal'
 import SectionHeader from '@/components/ui/SectionHeader'
+import useSmartCTA from '@/hooks/useSmartCTA'
 
 const EMPRESAS_BENEFITS = [
   'Publicação de projetos gratuita',
@@ -35,6 +36,7 @@ function CheckRow({ children, color }) {
 }
 
 export default function HomePricing() {
+  const { empresaTo, especialistaTo } = useSmartCTA()
   return (
     <section id="precos" className="py-24" style={{ background: 'var(--bg)' }}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -60,7 +62,7 @@ export default function HomePricing() {
                   <CheckRow key={i} color="#A78BFA">{b}</CheckRow>
                 ))}
               </ul>
-              <Link to="/registar" className="btn-outline" style={{ textAlign: 'center', justifyContent: 'center' }}>
+              <Link to={empresaTo} className="btn-outline" style={{ textAlign: 'center', justifyContent: 'center' }}>
                 Publicar Projeto
               </Link>
             </div>
@@ -105,7 +107,7 @@ export default function HomePricing() {
                 ))}
               </ul>
               <Link
-                to="/registar"
+                to={especialistaTo}
                 className="btn-primary btn-primary-lg"
                 style={{ textAlign: 'center', justifyContent: 'center' }}
               >

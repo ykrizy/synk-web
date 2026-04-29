@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import useMeta from '@/hooks/useMeta'
+import useSmartCTA from '@/hooks/useSmartCTA'
 import PageHero from '@/components/ui/PageHero'
 import SectionHeader from '@/components/ui/SectionHeader'
 import CTABanner from '@/components/ui/CTABanner'
@@ -221,7 +222,7 @@ function StarRating({ rating }) {
   )
 }
 
-function SpecialistCard({ s }) {
+function SpecialistCard({ s, ctaTo = '/registar' }) {
   return (
     <div
       className="card p-6 flex flex-col gap-4"
@@ -292,7 +293,7 @@ function SpecialistCard({ s }) {
       {/* Rate + CTA */}
       <div className="flex items-center justify-between">
         <span className="font-bold text-sm text-gradient">{s.rate}</span>
-        <Link to="/registar" className="btn-primary" style={{ fontSize: '12px', padding: '6px 14px' }}>
+        <Link to={ctaTo} className="btn-primary" style={{ fontSize: '12px', padding: '6px 14px' }}>
           Ver Perfil
         </Link>
       </div>
@@ -300,7 +301,7 @@ function SpecialistCard({ s }) {
   )
 }
 
-function ProjectCard({ p }) {
+function ProjectCard({ p, ctaTo = '/registar' }) {
   return (
     <div className="card p-6 flex flex-col gap-4" style={{ cursor: 'pointer' }}>
       {/* Header */}
@@ -369,7 +370,7 @@ function ProjectCard({ p }) {
       {/* Category + CTA */}
       <div className="flex items-center justify-between">
         <span className="badge badge-violet" style={{ fontSize: '11px' }}>{p.category}</span>
-        <Link to="/registar" className="btn-primary" style={{ fontSize: '12px', padding: '6px 14px' }}>
+        <Link to={ctaTo} className="btn-primary" style={{ fontSize: '12px', padding: '6px 14px' }}>
           Candidatar
         </Link>
       </div>
@@ -380,6 +381,7 @@ function ProjectCard({ p }) {
 // ─── Page ─────────────────────────────────────────────────────────────────────
 
 export default function Marketplace() {
+  const { empresaTo, especialistaTo } = useSmartCTA()
   useMeta({
     title: 'Marketplace — Synk',
     description: 'Encontra especialistas verificados ou publica o teu projecto. O marketplace da Synk liga empresas e talentos independentes em Portugal.',
@@ -591,12 +593,12 @@ export default function Marketplace() {
                 : `${filteredProjects.length} projecto${filteredProjects.length !== 1 ? 's' : ''} encontrado${filteredProjects.length !== 1 ? 's' : ''}`}
             </span>
             {activeTab === 'projectos' && (
-              <Link to="/registar" className="btn-primary" style={{ fontSize: '13px', padding: '8px 18px' }}>
+              <Link to={empresaTo} className="btn-primary" style={{ fontSize: '13px', padding: '8px 18px' }}>
                 + Publicar Projecto
               </Link>
             )}
             {activeTab === 'especialistas' && (
-              <Link to="/registar" className="btn-primary" style={{ fontSize: '13px', padding: '8px 18px' }}>
+              <Link to={especialistaTo} className="btn-primary" style={{ fontSize: '13px', padding: '8px 18px' }}>
                 + Criar Perfil
               </Link>
             )}
@@ -608,7 +610,7 @@ export default function Marketplace() {
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
                 {filteredSpecialists.map((s, i) => (
                   <Reveal key={s.id} delay={i * 60}>
-                    <SpecialistCard s={s} />
+                    <SpecialistCard s={s} ctaTo={empresaTo} />
                   </Reveal>
                 ))}
               </div>
@@ -620,7 +622,7 @@ export default function Marketplace() {
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
                 {filteredProjects.map((p, i) => (
                   <Reveal key={p.id} delay={i * 60}>
-                    <ProjectCard p={p} />
+                    <ProjectCard p={p} ctaTo={especialistaTo} />
                   </Reveal>
                 ))}
               </div>
@@ -682,7 +684,7 @@ export default function Marketplace() {
                     </div>
                   ))}
                 </div>
-                <Link to="/registar" className="btn-primary mt-6 inline-flex">
+                <Link to={empresaTo} className="btn-primary mt-6 inline-flex">
                   Publicar Projecto
                 </Link>
               </div>
@@ -722,7 +724,7 @@ export default function Marketplace() {
                     </div>
                   ))}
                 </div>
-                <Link to="/registar" className="btn-outline mt-6 inline-flex">
+                <Link to={especialistaTo} className="btn-outline mt-6 inline-flex">
                   Criar Perfil
                 </Link>
               </div>

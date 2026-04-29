@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom'
+import useSmartCTA from '@/hooks/useSmartCTA'
 
 const SOCIAL_PROOF = [
   {
@@ -174,6 +175,7 @@ function HeroMockup() {
 }
 
 export default function Hero() {
+  const { empresaTo, especialistaTo } = useSmartCTA()
   return (
     <section
       className="relative min-h-screen flex items-center pt-16 overflow-hidden"
@@ -232,7 +234,7 @@ export default function Hero() {
                   <path d="M5 12h14M12 5l7 7-7 7" />
                 </svg>
               </Link>
-              <Link to="/registar" className="btn-outline">Sou Especialista</Link>
+              <Link to={especialistaTo} className="btn-outline">Sou Especialista</Link>
             </div>
 
             <div className="flex flex-wrap gap-x-5 gap-y-3">

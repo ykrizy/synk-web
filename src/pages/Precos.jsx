@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
 import useMeta from '@/hooks/useMeta'
+import useSmartCTA from '@/hooks/useSmartCTA'
 import PageHero from '@/components/ui/PageHero'
 import SectionHeader from '@/components/ui/SectionHeader'
 import FAQ from '@/components/ui/FAQ'
@@ -75,6 +76,7 @@ function CheckItem({ children, color = '#6366f1' }) {
 }
 
 export default function Precos() {
+  const { empresaTo, especialistaTo } = useSmartCTA()
   useMeta({
     title: 'Preços',
     description: 'Modelo simples e transparente. Sem mensalidades. Sem surpresas.',
@@ -104,7 +106,7 @@ export default function Precos() {
                 <ul className="space-y-3 mb-8 flex-1">
                   {EMPRESAS_FEATURES.map((f, i) => <CheckItem key={i} color="#818cf8">{f}</CheckItem>)}
                 </ul>
-                <Link to="/registar" className="btn-outline" style={{ textAlign: 'center', justifyContent: 'center' }}>
+                <Link to={empresaTo} className="btn-outline" style={{ textAlign: 'center', justifyContent: 'center' }}>
                   Começar Grátis
                 </Link>
                 <p className="text-xs mt-3 text-center" style={{ color: 'var(--text-3)' }}>Só pagas o valor acordado com o especialista</p>
@@ -145,7 +147,7 @@ export default function Precos() {
                 <ul className="space-y-3 mb-8 flex-1">
                   {ESPECIALISTAS_FEATURES.map((f, i) => <CheckItem key={i} color="#a78bfa">{f}</CheckItem>)}
                 </ul>
-                <Link to="/registar" className="btn-primary btn-primary-lg" style={{ textAlign: 'center', justifyContent: 'center' }}>
+                <Link to={especialistaTo} className="btn-primary btn-primary-lg" style={{ textAlign: 'center', justifyContent: 'center' }}>
                   Criar Perfil Gratuito
                 </Link>
                 <p className="text-xs mt-3 text-center" style={{ color: 'var(--text-3)' }}>Sem mensalidade · Comissão só em projetos pagos</p>
@@ -299,7 +301,7 @@ export default function Precos() {
         heading="Pronto para começar sem custos?"
         sub="Regista-te gratuitamente e descobre como a Synk pode transformar o teu negócio."
         primaryLabel="Começar Grátis"
-        primaryTo="/registar"
+        primaryTo={empresaTo}
         secondaryLabel="Ver como funciona"
         secondaryTo="/como-funciona"
       />

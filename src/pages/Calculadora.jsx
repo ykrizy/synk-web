@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react'
 import { Link } from 'react-router-dom'
 import useMeta from '@/hooks/useMeta'
+import useSmartCTA from '@/hooks/useSmartCTA'
 import PageHero from '@/components/ui/PageHero'
 import CTABanner from '@/components/ui/CTABanner'
 import Reveal from '@/components/ui/Reveal'
@@ -119,6 +120,7 @@ function ComparisonBar({ label, value, maxValue, color, animated }) {
 
 /* ══════════════════════════════ */
 export default function Calculadora() {
+  const { empresaTo } = useSmartCTA()
   useMeta({
     title: 'Calculadora de ROI',
     description: 'Calcula quanto tempo e dinheiro podes poupar com automação. Descobre o ROI real do teu projeto de automação.',
@@ -512,7 +514,7 @@ export default function Calculadora() {
               <p className="text-sm mb-6" style={{ color: 'var(--text-2)' }}>
                 Publica o teu projeto na Synk e recebe propostas de especialistas verificados em 48h.
               </p>
-              <Link to="/registar" className="btn-primary btn-primary-lg" style={{ background: 'linear-gradient(135deg, #10b981, #06b6d4)' }}>
+              <Link to={empresaTo} className="btn-primary btn-primary-lg" style={{ background: 'linear-gradient(135deg, #10b981, #06b6d4)' }}>
                 Publicar Projeto na Synk →
               </Link>
             </div>
@@ -524,7 +526,7 @@ export default function Calculadora() {
         heading="Pronto para começar a poupar?"
         sub="Publica o teu projeto gratuitamente e recebe propostas de especialistas verificados em menos de 48 horas."
         primaryLabel="Publicar Projeto Grátis"
-        primaryTo="/registar"
+        primaryTo={empresaTo}
         secondaryLabel="Explorar o sistema de matching"
         secondaryTo="/matching"
       />

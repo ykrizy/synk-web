@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import useMeta from '@/hooks/useMeta'
+import useSmartCTA from '@/hooks/useSmartCTA'
 import PageHero from '@/components/ui/PageHero'
 import SectionHeader from '@/components/ui/SectionHeader'
 import CTABanner from '@/components/ui/CTABanner'
@@ -243,7 +244,7 @@ function ROICalculator() {
 
       <div className="mt-6 pt-6 text-center" style={{ borderTop: '1px solid rgba(255,255,255,0.06)' }}>
         <p className="text-xs mb-4" style={{ color: 'var(--text-3)' }}>* Valores estimados com base em médias do mercado ibérico</p>
-        <Link to="/registar" className="btn-primary btn-primary-lg">
+        <Link to={empresaTo} className="btn-primary btn-primary-lg">
           Automatizar agora
           <svg width="15" height="15" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7" /></svg>
         </Link>
@@ -253,6 +254,7 @@ function ROICalculator() {
 }
 
 export default function ParaEmpresas() {
+  const { empresaTo } = useSmartCTA()
   useMeta({
     title: 'Para Empresas',
     description: 'Encontra especialistas em automação verificados para o teu negócio. Rápido, seguro e sem risco.',
@@ -461,7 +463,7 @@ export default function ParaEmpresas() {
             ))}
           </div>
           <Reveal delay={300}>
-            <Link to="/registar" className="btn-primary btn-primary-lg">
+            <Link to={empresaTo} className="btn-primary btn-primary-lg">
               Publicar o Meu Primeiro Projeto — É Grátis
               <svg width="15" height="15" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7" /></svg>
             </Link>
