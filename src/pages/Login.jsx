@@ -25,7 +25,7 @@ export default function Login() {
     setLoading(true)
     try {
       await login(fields.email, fields.password)
-      navigate('/')
+      navigate('/dashboard')
     } catch (err) {
       setErro(err.message || 'Email ou password incorretos.')
     } finally {

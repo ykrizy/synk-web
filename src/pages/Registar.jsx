@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import useMeta from '@/hooks/useMeta'
 import Reveal from '@/components/ui/Reveal'
 import { registarEmpresa, registarEspecialista } from '@/lib/api/auth'
@@ -269,6 +269,7 @@ export default function Registar() {
 
   const [selected, setSelected] = useState(null)
   const [success, setSuccess] = useState(false)
+  const navigate = useNavigate()
 
   const reset = () => { setSelected(null); setSuccess(false) }
 
@@ -417,8 +418,8 @@ export default function Registar() {
                 </div>
 
                 {selected === 'empresa'
-                  ? <EmpresaForm onSuccess={() => setSuccess(true)} />
-                  : <EspecialistaForm onSuccess={() => setSuccess(true)} />
+                  ? <EmpresaForm onSuccess={() => navigate('/dashboard')} />
+                  : <EspecialistaForm onSuccess={() => navigate('/dashboard')} />
                 }
               </div>
             </div>

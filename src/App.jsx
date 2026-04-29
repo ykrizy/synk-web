@@ -1,5 +1,6 @@
 import { Routes, Route } from 'react-router-dom'
 import { AuthProvider } from '@/contexts/AuthContext'
+import ProtectedRoute from '@/components/ui/ProtectedRoute'
 import Layout from '@/components/layout/Layout'
 import Home from '@/pages/Home'
 import ComoFunciona from '@/pages/ComoFunciona'
@@ -9,6 +10,8 @@ import Precos from '@/pages/Precos'
 import SobreNos from '@/pages/SobreNos'
 import Registar from '@/pages/Registar'
 import Login from '@/pages/Login'
+import Dashboard from '@/pages/Dashboard'
+import PublicarProjeto from '@/pages/PublicarProjeto'
 import Matching from '@/pages/Matching'
 import Calculadora from '@/pages/Calculadora'
 import Marketplace from '@/pages/Marketplace'
@@ -30,6 +33,8 @@ export default function App() {
           <Route path="matching" element={<Matching />} />
           <Route path="calculadora" element={<Calculadora />} />
           <Route path="marketplace" element={<Marketplace />} />
+          <Route path="dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
+          <Route path="publicar-projeto" element={<ProtectedRoute><PublicarProjeto /></ProtectedRoute>} />
           <Route path="*" element={<NotFound />} />
         </Route>
       </Routes>
