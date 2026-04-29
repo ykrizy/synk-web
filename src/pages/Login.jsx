@@ -12,7 +12,7 @@ export default function Login() {
   })
 
   const navigate = useNavigate()
-  const { user, loading } = useAuth()
+  const { user, loading: authLoading } = useAuth()
   const [fields, setFields] = useState({ email: '', password: '' })
   const [erro, setErro] = useState(null)
   const [loading, setLoading] = useState(false)
@@ -50,7 +50,7 @@ export default function Login() {
   }
 
   // Já autenticado → vai para o dashboard
-  if (!loading && user) return <Navigate to="/dashboard" replace />
+  if (!authLoading && user) return <Navigate to="/dashboard" replace />
 
   return (
     <section
