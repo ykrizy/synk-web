@@ -46,14 +46,14 @@ export default function PublicarProjeto() {
 
       if (!empresa) throw new Error('Perfil de empresa não encontrado. Certifica-te de que estás registado como empresa.')
 
-      // 2. Guardar projeto como rascunho (estado: pendente_pagamento)
+      // 2. Guardar projeto como rascunho — só fica ativo após pagamento
       const { data: projeto, error: projetoErr } = await supabase
         .from('projetos')
         .insert({
           empresa_id: empresa.id,
           ...fields,
           orcamento: Number(fields.orcamento),
-          estado: 'aberto',
+          estado: 'pendente_pagamento',
         })
         .select()
         .single()
@@ -72,7 +72,8 @@ export default function PublicarProjeto() {
           body: JSON.stringify({
             plano: 'publicar_projeto',
             empresa_id: empresa.id,
-            success_url: `${window.location.origin}/synk-web/dashboard?pagamento=sucesso`,
+            projeto_id: projeto.id,
+            success_url: `${window.location.origin}/synk-web/dashboard?pagamento=sucesso&projeto_id=${projeto.id}`,
             cancel_url: `${window.location.origin}/synk-web/publicar-projeto?pagamento=cancelado`,
           }),
         }

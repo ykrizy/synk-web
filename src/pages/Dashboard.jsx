@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useSearchParams } from 'react-router-dom'
 import useMeta from '@/hooks/useMeta'
 import Reveal from '@/components/ui/Reveal'
 import { useAuth } from '@/contexts/AuthContext'
@@ -27,13 +27,24 @@ function EmpresaDashboard({ dados }) {
       .then(({ data }) => setProjetos(data || []))
   }, [dados])
 
+  const projetosAtivos = projetos.filter(p => p.estado !== 'pendente_pagamento')
+  const projetosPendentes = projetos.filter(p => p.estado === 'pendente_pagamento')
+
   return (
     <div className="space-y-8">
+      {/* Aviso projetos com pagamento pendente */}
+      {projetosPendentes.length > 0 && (
+        <div className="px-4 py-3 rounded-xl text-sm flex items-center justify-between gap-4" style={{ color: '#f59e0b', background: 'rgba(245,158,11,0.08)', border: '1px solid rgba(245,158,11,0.2)' }}>
+          <span>⚠️ Tens {projetosPendentes.length} projeto{projetosPendentes.length > 1 ? 's' : ''} aguardando pagamento.</span>
+          <Link to="/publicar-projeto" style={{ color: '#f59e0b', fontWeight: 600, textDecoration: 'none', whiteSpace: 'nowrap' }}>Pagar agora →</Link>
+        </div>
+      )}
+
       {/* Stats */}
       <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
-        <StatCard label="Projetos publicados" value={projetos.length} />
-        <StatCard label="Projetos ativos" value={projetos.filter(p => p.estado === 'aberto').length} color="#10b981" />
-        <StatCard label="Em andamento" value={projetos.filter(p => p.estado === 'em_andamento').length} color="#f59e0b" />
+        <StatCard label="Projetos publicados" value={projetosAtivos.length} />
+        <StatCard label="Projetos ativos" value={projetosAtivos.filter(p => p.estado === 'aberto').length} color="#10b981" />
+        <StatCard label="Em andamento" value={projetosAtivos.filter(p => p.estado === 'em_andamento').length} color="#f59e0b" />
       </div>
 
       {/* Ação principal */}
@@ -53,7 +64,7 @@ function EmpresaDashboard({ dados }) {
       {/* Lista de projetos */}
       <div>
         <h3 className="font-heading text-lg mb-4" style={{ color: 'var(--text)' }}>Os teus projetos</h3>
-        {projetos.length === 0 ? (
+        {projetosAtivos.length === 0 ? (
           <div className="card p-10 text-center">
             <p className="text-4xl mb-3">📋</p>
             <p style={{ color: 'var(--text-2)' }}>Ainda não publicaste nenhum projeto.</p>
@@ -61,7 +72,7 @@ function EmpresaDashboard({ dados }) {
           </div>
         ) : (
           <div className="space-y-3">
-            {projetos.map(p => (
+            {projetosAtivos.map(p => (
               <Link
                 key={p.id}
                 to={`/projeto/${p.id}`}
@@ -145,11 +156,13 @@ export default function Dashboard() {
   const { user, perfil } = useAuth()
   const [dados, setDados] = useState(null)
   const [loading, setLoading] = useState(true)
+  const [searchParams, setSearchParams] = useSearchParams()
+  const pagamentoSucesso = searchParams.get('pagamento') === 'sucesso'
+  const projetoIdPago = searchParams.get('projeto_id')
 
   useEffect(() => {
     if (!user) return
     if (!perfil) {
-      // Sem perfil ainda (ex: utilizador criado antes da tabela profiles existir)
       setLoading(false)
       return
     }
@@ -161,6 +174,19 @@ export default function Dashboard() {
       .maybeSingle()
       .then(({ data }) => { setDados(data); setLoading(false) })
   }, [user, perfil])
+
+  // Ativar projeto após pagamento Stripe bem-sucedido
+  useEffect(() => {
+    if (!pagamentoSucesso || !projetoIdPago) return
+    supabase
+      .from('projetos')
+      .update({ estado: 'aberto' })
+      .eq('id', projetoIdPago)
+      .then(() => {
+        // Limpar params do URL sem recarregar a página
+        setSearchParams({}, { replace: true })
+      })
+  }, [pagamentoSucesso, projetoIdPago, setSearchParams])
 
   return (
     <section className="min-h-screen pt-24 pb-16" style={{ background: 'var(--bg)' }}>
