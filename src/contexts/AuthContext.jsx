@@ -9,29 +9,34 @@ export function AuthProvider({ children }) {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setUser(session?.user ?? null)
-      if (session?.user) fetchPerfil(session.user.id)
-      else setLoading(false)
-    })
-
+    // onAuthStateChange fires with INITIAL_SESSION on load (includes stored session)
+    // Using only this avoids race conditions between getSession + onAuthStateChange
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
       setUser(session?.user ?? null)
-      if (session?.user) fetchPerfil(session.user.id)
-      else { setPerfil(null); setLoading(false) }
+      if (session?.user) {
+        fetchPerfil(session.user.id)
+      } else {
+        setPerfil(null)
+        setLoading(false)
+      }
     })
 
     return () => subscription.unsubscribe()
   }, [])
 
   async function fetchPerfil(userId) {
-    const { data } = await supabase
-      .from('profiles')
-      .select('tipo')
-      .eq('id', userId)
-      .maybeSingle()
-    setPerfil(data?.tipo ?? null)
-    setLoading(false)
+    try {
+      const { data } = await supabase
+        .from('profiles')
+        .select('tipo')
+        .eq('id', userId)
+        .maybeSingle()
+      setPerfil(data?.tipo ?? null)
+    } catch {
+      setPerfil(null)
+    } finally {
+      setLoading(false)
+    }
   }
 
   async function logout() {
