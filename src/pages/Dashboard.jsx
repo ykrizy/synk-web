@@ -62,15 +62,31 @@ function EmpresaDashboard({ dados }) {
         ) : (
           <div className="space-y-3">
             {projetos.map(p => (
-              <div key={p.id} className="card p-5 flex items-center justify-between gap-4">
-                <div>
-                  <p className="font-semibold text-sm" style={{ color: 'var(--text)' }}>{p.titulo}</p>
-                  <p className="text-xs mt-1" style={{ color: 'var(--text-3)' }}>{p.tipo_automacao} · €{p.orcamento?.toLocaleString('pt-PT')}</p>
+              <Link
+                key={p.id}
+                to={`/projeto/${p.id}`}
+                style={{ textDecoration: 'none' }}
+              >
+                <div
+                  className="card p-5 flex items-center justify-between gap-4 transition-all"
+                  style={{ cursor: 'pointer' }}
+                  onMouseEnter={e => { e.currentTarget.style.borderColor = 'var(--brand)'; e.currentTarget.style.boxShadow = '0 0 20px rgba(124,92,246,0.1)' }}
+                  onMouseLeave={e => { e.currentTarget.style.borderColor = 'var(--border)'; e.currentTarget.style.boxShadow = 'none' }}
+                >
+                  <div>
+                    <p className="font-semibold text-sm" style={{ color: 'var(--text)' }}>{p.titulo}</p>
+                    <p className="text-xs mt-1" style={{ color: 'var(--text-3)' }}>
+                      {p.tipo_automacao} · €{p.orcamento?.toLocaleString('pt-PT')} · {p.setor}
+                    </p>
+                  </div>
+                  <div className="flex items-center gap-3 flex-shrink-0">
+                    <span className={`badge ${p.estado === 'aberto' ? 'badge-emerald' : p.estado === 'em_andamento' ? 'badge-amber' : 'badge-indigo'}`}>
+                      {p.estado === 'aberto' ? 'Aberto' : p.estado === 'em_andamento' ? 'Em andamento' : 'Concluído'}
+                    </span>
+                    <span style={{ color: 'var(--text-3)', fontSize: '16px' }}>→</span>
+                  </div>
                 </div>
-                <span className={`badge ${p.estado === 'aberto' ? 'badge-emerald' : p.estado === 'em_andamento' ? 'badge-amber' : 'badge-indigo'}`}>
-                  {p.estado === 'aberto' ? 'Aberto' : p.estado === 'em_andamento' ? 'Em andamento' : 'Concluído'}
-                </span>
-              </div>
+              </Link>
             ))}
           </div>
         )}
