@@ -9,12 +9,20 @@ export function AuthProvider({ children }) {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    // onAuthStateChange fires with INITIAL_SESSION on load (includes stored session)
-    // Using only this avoids race conditions between getSession + onAuthStateChange
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
-      setUser(session?.user ?? null)
-      if (session?.user) {
-        fetchPerfil(session.user.id)
+      const u = session?.user ?? null
+      setUser(u)
+
+      if (u) {
+        // 1. Lê o tipo diretamente dos user_metadata (guardado no signUp — instantâneo)
+        const tipoMeta = u.user_metadata?.tipo ?? null
+        if (tipoMeta) {
+          setPerfil(tipoMeta)
+          setLoading(false)
+        } else {
+          // 2. Fallback: query à tabela profiles (utilizadores antigos)
+          fetchPerfil(u.id)
+        }
       } else {
         setPerfil(null)
         setLoading(false)
