@@ -131,7 +131,12 @@ export default function Dashboard() {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    if (!user || !perfil) return
+    if (!user) return
+    if (!perfil) {
+      // Sem perfil ainda (ex: utilizador criado antes da tabela profiles existir)
+      setLoading(false)
+      return
+    }
     const tabela = perfil === 'empresa' ? 'empresas' : 'especialistas'
     supabase
       .from(tabela)
@@ -159,6 +164,17 @@ export default function Dashboard() {
           {loading ? (
             <div className="text-center py-20">
               <div className="w-8 h-8 rounded-full border-2 border-t-transparent animate-spin mx-auto" style={{ borderColor: 'var(--brand)', borderTopColor: 'transparent' }} />
+            </div>
+          ) : !perfil ? (
+            <div className="card p-10 text-center">
+              <p className="text-4xl mb-4">⚠️</p>
+              <h2 className="font-heading text-xl mb-2" style={{ color: 'var(--text)' }}>Perfil incompleto</h2>
+              <p className="mb-6" style={{ color: 'var(--text-2)' }}>
+                A tua conta existe mas o perfil não foi criado corretamente. Regista-te novamente para completar.
+              </p>
+              <div className="flex gap-3 justify-center flex-wrap">
+                <Link to="/registar" className="btn-primary">Completar registo →</Link>
+              </div>
             </div>
           ) : perfil === 'empresa' ? (
             <EmpresaDashboard dados={dados} />

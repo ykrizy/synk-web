@@ -228,11 +228,13 @@ export default function Hero() {
             </p>
 
             <div className="flex flex-wrap gap-3 mb-12">
-              <Link to="/para-empresas" className="btn-primary btn-primary-lg">
-                Publicar Projeto Grátis
-                <svg width="15" height="15" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
-                  <path d="M5 12h14M12 5l7 7-7 7" />
-                </svg>
+              <Link to={empresaTo} className="btn-primary btn-primary-lg">
+                {empresaTo === '/publicar-projeto' ? 'Publicar Projeto →' : 'Publicar Projeto Grátis'}
+                {empresaTo !== '/publicar-projeto' && (
+                  <svg width="15" height="15" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
+                    <path d="M5 12h14M12 5l7 7-7 7" />
+                  </svg>
+                )}
               </Link>
               <Link to={especialistaTo} className="btn-outline">Sou Especialista</Link>
             </div>
