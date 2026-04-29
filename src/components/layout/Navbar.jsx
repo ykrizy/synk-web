@@ -94,9 +94,12 @@ export default function Navbar() {
           <div className="hidden lg:flex items-center gap-2">
             {user ? (
               <>
-                <span style={{ fontSize: '13px', color: 'var(--text-3)', maxWidth: '160px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-                  {user.email}
-                </span>
+                <Link to="/dashboard" className="btn-ghost" style={{ fontSize: '13.5px', padding: '8px 16px' }}>
+                  Dashboard
+                </Link>
+                <Link to="/publicar-projeto" className="btn-primary" style={{ fontSize: '13.5px', padding: '9px 20px' }}>
+                  Publicar Projeto
+                </Link>
                 <button onClick={handleLogout} className="btn-ghost" style={{ fontSize: '13.5px', padding: '8px 16px' }}>
                   Sair
                 </button>
@@ -159,9 +162,10 @@ export default function Navbar() {
           })}
           <div className="flex gap-2 mt-4 pt-4" style={{ borderTop: '1px solid var(--border)' }}>
             {user ? (
-              <button onClick={handleLogout} className="btn-ghost flex-1 justify-center" style={{ fontSize: '13px' }}>
-                Sair
-              </button>
+              <>
+                <Link to="/dashboard" className="btn-primary flex-1 justify-center" style={{ fontSize: '13px' }}>Dashboard</Link>
+                <button onClick={handleLogout} className="btn-ghost flex-1 justify-center" style={{ fontSize: '13px' }}>Sair</button>
+              </>
             ) : (
               <>
                 <Link to="/login" className="btn-ghost flex-1 justify-center" style={{ fontSize: '13px' }}>Entrar</Link>

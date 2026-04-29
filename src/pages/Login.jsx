@@ -1,8 +1,9 @@
 import { useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useNavigate, Navigate } from 'react-router-dom'
 import useMeta from '@/hooks/useMeta'
 import Reveal from '@/components/ui/Reveal'
 import { login, resetPassword } from '@/lib/api/auth'
+import { useAuth } from '@/contexts/AuthContext'
 
 export default function Login() {
   useMeta({
@@ -11,6 +12,7 @@ export default function Login() {
   })
 
   const navigate = useNavigate()
+  const { user, loading } = useAuth()
   const [fields, setFields] = useState({ email: '', password: '' })
   const [erro, setErro] = useState(null)
   const [loading, setLoading] = useState(false)
@@ -46,6 +48,9 @@ export default function Login() {
       setLoading(false)
     }
   }
+
+  // Já autenticado → vai para o dashboard
+  if (!loading && user) return <Navigate to="/dashboard" replace />
 
   return (
     <section
