@@ -40,10 +40,14 @@ export default function Admin() {
 
   async function fetchEspecialistas() {
     setLoadingData(true)
-    const { data } = await supabase
+    const { data, error } = await supabase
       .from('especialistas')
       .select('*')
       .order('created_at', { ascending: false })
+    if (error) {
+      console.error('Supabase error:', error)
+      showToast('Erro ao carregar: ' + error.message, 'error')
+    }
     setEspecialistas(data || [])
     setLoadingData(false)
   }
