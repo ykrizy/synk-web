@@ -68,6 +68,23 @@ export default function Projeto() {
 
   const [confirmDelete, setConfirmDelete] = useState(false)
   const [deleting, setDeleting] = useState(false)
+  const [propostas, setPropostas] = useState([])
+
+  // Carregar propostas deste projeto
+  useEffect(() => {
+    if (!id) return
+    supabase
+      .from('propostas')
+      .select('*, especialistas(nome, email, pais, anos_experiencia, skills)')
+      .eq('projeto_id', id)
+      .order('created_at', { ascending: false })
+      .then(({ data }) => setPropostas(data || []))
+  }, [id])
+
+  async function handleProposta(propostaId, estado) {
+    await supabase.from('propostas').update({ estado }).eq('id', propostaId)
+    setPropostas(prev => prev.map(p => p.id === propostaId ? { ...p, estado } : p))
+  }
 
   const set = (k) => (e) => setFields(f => ({ ...f, [k]: e.target.value }))
 
@@ -265,6 +282,61 @@ export default function Projeto() {
                       </div>
                     ))}
                   </div>
+                </div>
+
+                {/* Propostas recebidas */}
+                <div style={{ borderTop: '1px solid var(--border)', paddingTop: '1.5rem' }}>
+                  <h3 className="font-heading text-lg mb-4" style={{ color: 'var(--text)' }}>
+                    Propostas recebidas
+                    <span className="ml-2 text-sm font-normal" style={{ color: 'var(--text-3)' }}>({propostas.length})</span>
+                  </h3>
+                  {propostas.length === 0 ? (
+                    <p className="text-sm" style={{ color: 'var(--text-3)' }}>Ainda não recebeste nenhuma proposta.</p>
+                  ) : (
+                    <div className="space-y-4">
+                      {propostas.map(prop => (
+                        <div key={prop.id} className="rounded-xl p-5" style={{ background: 'var(--bg)', border: '1px solid var(--border)' }}>
+                          <div className="flex items-start justify-between gap-4 mb-3">
+                            <div>
+                              <p className="font-semibold text-sm" style={{ color: 'var(--text)' }}>{prop.especialistas?.nome}</p>
+                              <p className="text-xs mt-0.5" style={{ color: 'var(--text-3)' }}>
+                                {prop.especialistas?.pais} · {prop.especialistas?.anos_experiencia}
+                                {prop.preco_proposto && <span className="ml-2 font-semibold" style={{ color: 'var(--brand-light)' }}>€{Number(prop.preco_proposto).toLocaleString('pt-PT')}</span>}
+                              </p>
+                            </div>
+                            <span className={`badge flex-shrink-0 ${prop.estado === 'aceite' ? 'badge-emerald' : prop.estado === 'rejeitado' ? 'badge-red' : 'badge-amber'}`}>
+                              {prop.estado === 'aceite' ? '✅ Aceite' : prop.estado === 'rejeitado' ? '❌ Rejeitado' : '⏳ Pendente'}
+                            </span>
+                          </div>
+                          <p className="text-sm mb-4 leading-relaxed" style={{ color: 'var(--text-2)', whiteSpace: 'pre-wrap' }}>{prop.mensagem}</p>
+                          {prop.especialistas?.skills?.length > 0 && (
+                            <div className="flex flex-wrap gap-1 mb-4">
+                              {prop.especialistas.skills.slice(0, 4).map(s => (
+                                <span key={s} className="badge badge-indigo" style={{ fontSize: '10px' }}>{s}</span>
+                              ))}
+                            </div>
+                          )}
+                          {prop.estado === 'pendente' && (
+                            <div className="flex gap-2">
+                              <button
+                                onClick={() => handleProposta(prop.id, 'aceite')}
+                                className="btn-primary"
+                                style={{ fontSize: '12px', padding: '6px 16px' }}
+                              >
+                                ✅ Aceitar
+                              </button>
+                              <button
+                                onClick={() => handleProposta(prop.id, 'rejeitado')}
+                                style={{ fontSize: '12px', padding: '6px 16px', borderRadius: '8px', background: 'rgba(248,113,113,0.08)', border: '1px solid rgba(248,113,113,0.2)', color: '#f87171', cursor: 'pointer' }}
+                              >
+                                ❌ Rejeitar
+                              </button>
+                            </div>
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                  )}
                 </div>
 
                 <div style={{ borderTop: '1px solid var(--border)', paddingTop: '1.5rem' }} className="flex gap-3 flex-wrap">

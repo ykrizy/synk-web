@@ -107,11 +107,23 @@ function EmpresaDashboard({ dados }) {
 }
 
 function EspecialistaDashboard({ dados }) {
+  const [propostas, setPropostas] = useState([])
+
+  useEffect(() => {
+    if (!dados?.id) return
+    supabase
+      .from('propostas')
+      .select('*, projetos(titulo, orcamento, tipo_automacao)')
+      .eq('especialista_id', dados.id)
+      .order('created_at', { ascending: false })
+      .then(({ data }) => setPropostas(data || []))
+  }, [dados])
+
   return (
     <div className="space-y-8">
       <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
         <StatCard label="Avaliação" value={dados?.rating ? `${dados.rating}★` : '—'} color="#f59e0b" />
-        <StatCard label="Avaliações" value={dados?.num_avaliacoes ?? 0} />
+        <StatCard label="Candidaturas" value={propostas.length} />
         <StatCard label="Estado" value={dados?.verificado ? 'Verificado' : 'Pendente'} color={dados?.verificado ? '#10b981' : '#f59e0b'} />
       </div>
 
@@ -145,6 +157,35 @@ function EspecialistaDashboard({ dados }) {
             </div>
           ) : null)}
         </div>
+      </div>
+
+      {/* Candidaturas enviadas */}
+      <div>
+        <h3 className="font-heading text-lg mb-4" style={{ color: 'var(--text)' }}>As tuas candidaturas</h3>
+        {propostas.length === 0 ? (
+          <div className="card p-8 text-center">
+            <p className="text-3xl mb-3">📨</p>
+            <p style={{ color: 'var(--text-2)' }}>Ainda não te candidataste a nenhum projeto.</p>
+            <Link to="/marketplace" className="btn-primary mt-4 inline-flex">Ver projetos →</Link>
+          </div>
+        ) : (
+          <div className="space-y-3">
+            {propostas.map(prop => (
+              <div key={prop.id} className="card p-5 flex items-center justify-between gap-4">
+                <div>
+                  <p className="font-semibold text-sm" style={{ color: 'var(--text)' }}>{prop.projetos?.titulo}</p>
+                  <p className="text-xs mt-1" style={{ color: 'var(--text-3)' }}>
+                    {prop.projetos?.tipo_automacao}
+                    {prop.preco_proposto && ` · €${Number(prop.preco_proposto).toLocaleString('pt-PT')}`}
+                  </p>
+                </div>
+                <span className={`badge flex-shrink-0 ${prop.estado === 'aceite' ? 'badge-emerald' : prop.estado === 'rejeitado' ? 'badge-red' : 'badge-amber'}`}>
+                  {prop.estado === 'aceite' ? '✅ Aceite' : prop.estado === 'rejeitado' ? '❌ Rejeitado' : '⏳ Pendente'}
+                </span>
+              </div>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   )

@@ -6,7 +6,10 @@ import PageHero from '@/components/ui/PageHero'
 import SectionHeader from '@/components/ui/SectionHeader'
 import CTABanner from '@/components/ui/CTABanner'
 import Reveal from '@/components/ui/Reveal'
+import CandidatarModal from '@/components/ui/CandidatarModal'
 import { listarEspecialistas } from '@/lib/api/especialistas'
+import { useAuth } from '@/contexts/AuthContext'
+import { supabase } from '@/lib/supabase'
 
 // ─── Mock data ───────────────────────────────────────────────────────────────
 
@@ -301,9 +304,9 @@ function SpecialistCard({ s, ctaTo = '/registar' }) {
   )
 }
 
-function ProjectCard({ p, ctaTo = '/registar' }) {
+function ProjectCard({ p, ctaTo = '/registar', onCandidatar = null }) {
   return (
-    <div className="card p-6 flex flex-col gap-4" style={{ cursor: 'pointer' }}>
+    <div className="card p-6 flex flex-col gap-4">
       {/* Header */}
       <div className="flex items-start justify-between gap-3">
         <div className="flex items-center gap-3">
@@ -370,9 +373,19 @@ function ProjectCard({ p, ctaTo = '/registar' }) {
       {/* Category + CTA */}
       <div className="flex items-center justify-between">
         <span className="badge badge-violet" style={{ fontSize: '11px' }}>{p.category}</span>
-        <Link to={ctaTo} className="btn-primary" style={{ fontSize: '12px', padding: '6px 14px' }}>
-          Candidatar
-        </Link>
+        {onCandidatar ? (
+          <button
+            onClick={() => onCandidatar(p)}
+            className="btn-primary"
+            style={{ fontSize: '12px', padding: '6px 14px' }}
+          >
+            Candidatar
+          </button>
+        ) : (
+          <Link to={ctaTo} className="btn-primary" style={{ fontSize: '12px', padding: '6px 14px' }}>
+            Candidatar
+          </Link>
+        )}
       </div>
     </div>
   )
@@ -382,6 +395,7 @@ function ProjectCard({ p, ctaTo = '/registar' }) {
 
 export default function Marketplace() {
   const { empresaTo, especialistaTo } = useSmartCTA()
+  const { user, perfil } = useAuth()
   useMeta({
     title: 'Marketplace — Synk',
     description: 'Encontra especialistas verificados ou publica o teu projecto. O marketplace da Synk liga empresas e talentos independentes em Portugal.',
@@ -392,7 +406,11 @@ export default function Marketplace() {
   const [search, setSearch] = useState('')
   const [availableOnly, setAvailableOnly] = useState(false)
   const [specialists, setSpecialists] = useState(SPECIALISTS)
+  const [projects, setProjects] = useState(PROJECTS)
+  const [modalProjeto, setModalProjeto] = useState(null) // projeto para o modal
+  const [candidaturaSucesso, setCandidaturaSucesso] = useState(false)
 
+  // Carregar especialistas reais
   useEffect(() => {
     listarEspecialistas()
       .then(data => {
@@ -415,9 +433,38 @@ export default function Marketplace() {
         }))
         setSpecialists(mapped)
       })
-      .catch(() => {
-        // Supabase não configurado ainda — mantém dados de demonstração
+      .catch(() => {})
+  }, [])
+
+  // Carregar projetos reais do Supabase
+  useEffect(() => {
+    supabase
+      .from('projetos')
+      .select('*, empresas(nome)')
+      .eq('estado', 'aberto')
+      .order('created_at', { ascending: false })
+      .then(({ data }) => {
+        if (!data || data.length === 0) return
+        const PRAZO_MAP = { urgent: 'Urgente', short: '1–2 semanas', normal: '1 mês', flexible: 'Flexível' }
+        const mapped = data.map(p => ({
+          id: p.id,
+          title: p.titulo,
+          company: p.empresas?.nome || 'Empresa',
+          description: p.descricao,
+          skills: p.tipo_automacao ? [p.tipo_automacao] : [],
+          budget: p.orcamento ? `€${Number(p.orcamento).toLocaleString('pt-PT')}` : 'A definir',
+          duration: PRAZO_MAP[p.prazo] || p.prazo,
+          category: p.tipo_automacao || 'Outro',
+          urgency: p.prazo === 'urgent' ? '🔥 Urgente' : 'Normal',
+          urgencyColor: p.prazo === 'urgent' ? '#f59e0b' : '#6366f1',
+          logo: p.empresas?.nome?.charAt(0) || '?',
+          logoColor: '#7c5cf6',
+          posted: new Date(p.created_at).toLocaleDateString('pt-PT'),
+          proposals: 0,
+        }))
+        setProjects(mapped)
       })
+      .catch(() => {})
   }, [])
 
   const categories = activeTab === 'especialistas' ? CATEGORIES_SPECIALISTS : CATEGORIES_PROJECTS
@@ -434,7 +481,7 @@ export default function Marketplace() {
     return matchesSearch && matchesCategory && matchesAvailable
   })
 
-  const filteredProjects = PROJECTS.filter(p => {
+  const filteredProjects = projects.filter(p => {
     const matchesSearch = search === '' ||
       p.title.toLowerCase().includes(search.toLowerCase()) ||
       p.company.toLowerCase().includes(search.toLowerCase()) ||
@@ -622,7 +669,11 @@ export default function Marketplace() {
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
                 {filteredProjects.map((p, i) => (
                   <Reveal key={p.id} delay={i * 60}>
-                    <ProjectCard p={p} ctaTo={especialistaTo} />
+                    <ProjectCard
+                      p={p}
+                      ctaTo={especialistaTo}
+                      onCandidatar={perfil === 'especialista' ? setModalProjeto : null}
+                    />
                   </Reveal>
                 ))}
               </div>
@@ -762,6 +813,29 @@ export default function Marketplace() {
         secondaryLabel="Criar Perfil de Especialista"
         secondaryTo="/registar"
       />
+
+      {/* Modal de candidatura */}
+      {modalProjeto && (
+        <CandidatarModal
+          projeto={modalProjeto}
+          onClose={() => { setModalProjeto(null); setCandidaturaSucesso(false) }}
+          onSucesso={() => {
+            setModalProjeto(null)
+            setCandidaturaSucesso(true)
+            setTimeout(() => setCandidaturaSucesso(false), 4000)
+          }}
+        />
+      )}
+
+      {/* Toast de sucesso */}
+      {candidaturaSucesso && (
+        <div
+          className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 px-6 py-4 rounded-2xl text-sm font-semibold shadow-2xl"
+          style={{ background: 'rgba(16,185,129,0.15)', border: '1px solid rgba(16,185,129,0.3)', color: '#10b981', backdropFilter: 'blur(12px)', whiteSpace: 'nowrap' }}
+        >
+          ✅ Candidatura enviada com sucesso!
+        </div>
+      )}
     </>
   )
 }
