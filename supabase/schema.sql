@@ -77,7 +77,7 @@ create table if not exists projetos (
   orcamento       int,
   prazo           text,                      -- 'urgent', 'short', 'normal', 'flexible'
   setor           text,
-  estado          text default 'aberto' check (estado in ('aberto', 'em_andamento', 'concluido', 'cancelado')),
+  estado          text default 'aberto' check (estado in ('aberto', 'em_andamento', 'concluido', 'cancelado', 'pendente_pagamento')),
   created_at      timestamptz default now()
 );
 alter table projetos enable row level security;
@@ -85,6 +85,14 @@ create policy "Projetos abertos são públicos"
   on projetos for select using (estado = 'aberto' or auth.uid() = (select user_id from empresas where id = empresa_id));
 create policy "Empresa insere projetos seus"
   on projetos for insert with check (
+    auth.uid() = (select user_id from empresas where id = empresa_id)
+  );
+create policy "Empresa atualiza projetos seus"
+  on projetos for update using (
+    auth.uid() = (select user_id from empresas where id = empresa_id)
+  );
+create policy "Empresa apaga projetos seus"
+  on projetos for delete using (
     auth.uid() = (select user_id from empresas where id = empresa_id)
   );
 
