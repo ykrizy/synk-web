@@ -1,8 +1,9 @@
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
 
-const RESEND_API_KEY = Deno.env.get('RESEND_API_KEY')!
-const FROM_EMAIL = 'Synk <noreply@synk.pt>'
-const BASE_URL = 'https://synk.pt'
+const BREVO_API_KEY = Deno.env.get('BREVO_API_KEY')!
+const FROM_EMAIL = Deno.env.get('FROM_EMAIL') ?? 'khalidshah1328@gmail.com'
+const FROM_NAME = 'Synk'
+const BASE_URL = 'https://ykrizy.github.io/synk-web'
 
 const supabase = createClient(
   Deno.env.get('SUPABASE_URL')!,
@@ -10,16 +11,21 @@ const supabase = createClient(
 )
 
 async function sendEmail(to: string, subject: string, html: string) {
-  const res = await fetch('https://api.resend.com/emails', {
+  const res = await fetch('https://api.brevo.com/v3/smtp/email', {
     method: 'POST',
     headers: {
-      Authorization: `Bearer ${RESEND_API_KEY}`,
+      'api-key': BREVO_API_KEY,
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify({ from: FROM_EMAIL, to, subject, html }),
+    body: JSON.stringify({
+      sender: { name: FROM_NAME, email: FROM_EMAIL },
+      to: [{ email: to }],
+      subject,
+      htmlContent: html,
+    }),
   })
   const data = await res.json()
-  if (!res.ok) console.error('Resend error:', data)
+  if (!res.ok) console.error('Brevo error:', data)
   return data
 }
 
