@@ -15,8 +15,20 @@ function StatCard({ label, value, color = 'var(--brand-light)' }) {
   )
 }
 
-function EmpresaDashboard({ dados }) {
+const AUTOMATION_TYPES = ['RPA', 'Integrações', 'IA / LLMs', 'Marketing Automation', 'BI & Data', 'Custom Dev', 'Outro']
+const COMPANY_SIZES = ['1–10', '11–50', '51–200', '200+']
+const SECTORS = ['Retalho', 'Saúde', 'Finanças', 'Logística', 'Imobiliário', 'Educação', 'Tecnologia', 'Indústria', 'Outro']
+
+function EmpresaDashboard({ dados: dadosIniciais }) {
+  const [dados, setDados] = useState(dadosIniciais)
   const [projetos, setProjetos] = useState([])
+  const [editandoPerfil, setEditandoPerfil] = useState(false)
+  const [form, setForm] = useState({})
+  const [savingPerfil, setSavingPerfil] = useState(false)
+  const [erroPerfil, setErroPerfil] = useState(null)
+  const [toastPerfil, setToastPerfil] = useState(false)
+
+  useEffect(() => { setDados(dadosIniciais) }, [dadosIniciais])
 
   useEffect(() => {
     if (!dados?.id) return
@@ -30,6 +42,64 @@ function EmpresaDashboard({ dados }) {
 
   const projetosAtivos = projetos.filter(p => p.estado !== 'pendente_pagamento')
   const projetosPendentes = projetos.filter(p => p.estado === 'pendente_pagamento')
+
+  function abrirEdicao() {
+    setForm({
+      nome: dados?.nome ?? '',
+      nome_responsavel: dados?.nome_responsavel ?? '',
+      telefone: dados?.telefone ?? '',
+      pais: dados?.pais ?? 'Portugal',
+      tamanho: dados?.tamanho ?? '1–10',
+      setor: dados?.setor ?? '',
+      website: dados?.website ?? '',
+      descricao: dados?.descricao ?? '',
+      nif: dados?.nif ?? '',
+      cidade: dados?.cidade ?? '',
+      tipos_automacao: dados?.tipos_automacao ?? [],
+    })
+    setErroPerfil(null)
+    setEditandoPerfil(true)
+  }
+
+  function toggleAutomacao(val) {
+    setForm(f => ({
+      ...f,
+      tipos_automacao: f.tipos_automacao.includes(val)
+        ? f.tipos_automacao.filter(x => x !== val)
+        : [...f.tipos_automacao, val]
+    }))
+  }
+
+  async function guardarPerfil(e) {
+    e.preventDefault()
+    setSavingPerfil(true)
+    setErroPerfil(null)
+    const { error } = await supabase
+      .from('empresas')
+      .update({
+        nome: form.nome,
+        nome_responsavel: form.nome_responsavel,
+        telefone: form.telefone || null,
+        pais: form.pais,
+        tamanho: form.tamanho,
+        setor: form.setor || null,
+        website: form.website || null,
+        descricao: form.descricao || null,
+        nif: form.nif || null,
+        cidade: form.cidade || null,
+        tipos_automacao: form.tipos_automacao,
+      })
+      .eq('id', dados.id)
+    setSavingPerfil(false)
+    if (error) {
+      setErroPerfil('Erro ao guardar. Tenta novamente.')
+    } else {
+      setDados(prev => ({ ...prev, ...form }))
+      setEditandoPerfil(false)
+      setToastPerfil(true)
+      setTimeout(() => setToastPerfil(false), 3000)
+    }
+  }
 
   return (
     <div className="space-y-8">
@@ -47,6 +117,124 @@ function EmpresaDashboard({ dados }) {
         <StatCard label="Projetos ativos" value={projetosAtivos.filter(p => p.estado === 'aberto').length} color="#10b981" />
         <StatCard label="Em andamento" value={projetosAtivos.filter(p => p.estado === 'em_andamento').length} color="#f59e0b" />
       </div>
+
+      {/* Perfil da empresa */}
+      <div className="card p-6">
+        <div className="flex items-center justify-between mb-4">
+          <h3 className="font-heading text-lg" style={{ color: 'var(--text)' }}>Perfil da empresa</h3>
+          {!editandoPerfil && (
+            <button onClick={abrirEdicao} className="btn-ghost" style={{ fontSize: '13px', padding: '6px 14px' }}>
+              ✏️ Editar perfil
+            </button>
+          )}
+        </div>
+
+        {editandoPerfil ? (
+          <form onSubmit={guardarPerfil} className="space-y-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-xs mb-1" style={{ color: 'var(--text-3)' }}>Nome da empresa *</label>
+                <input required className="form-input" value={form.nome} onChange={e => setForm(f => ({ ...f, nome: e.target.value }))} />
+              </div>
+              <div>
+                <label className="block text-xs mb-1" style={{ color: 'var(--text-3)' }}>Nome do responsável *</label>
+                <input required className="form-input" value={form.nome_responsavel} onChange={e => setForm(f => ({ ...f, nome_responsavel: e.target.value }))} />
+              </div>
+              <div>
+                <label className="block text-xs mb-1" style={{ color: 'var(--text-3)' }}>Telefone</label>
+                <input className="form-input" placeholder="+351 900 000 000" value={form.telefone} onChange={e => setForm(f => ({ ...f, telefone: e.target.value }))} />
+              </div>
+              <div>
+                <label className="block text-xs mb-1" style={{ color: 'var(--text-3)' }}>NIF</label>
+                <input className="form-input" placeholder="PT123456789" value={form.nif} onChange={e => setForm(f => ({ ...f, nif: e.target.value }))} />
+              </div>
+              <div>
+                <label className="block text-xs mb-1" style={{ color: 'var(--text-3)' }}>País</label>
+                <input className="form-input" value={form.pais} onChange={e => setForm(f => ({ ...f, pais: e.target.value }))} />
+              </div>
+              <div>
+                <label className="block text-xs mb-1" style={{ color: 'var(--text-3)' }}>Cidade</label>
+                <input className="form-input" placeholder="Lisboa" value={form.cidade} onChange={e => setForm(f => ({ ...f, cidade: e.target.value }))} />
+              </div>
+              <div>
+                <label className="block text-xs mb-1" style={{ color: 'var(--text-3)' }}>Nº de funcionários</label>
+                <select className="form-input" value={form.tamanho} onChange={e => setForm(f => ({ ...f, tamanho: e.target.value }))}>
+                  {COMPANY_SIZES.map(s => <option key={s}>{s}</option>)}
+                </select>
+              </div>
+              <div>
+                <label className="block text-xs mb-1" style={{ color: 'var(--text-3)' }}>Setor</label>
+                <select className="form-input" value={form.setor} onChange={e => setForm(f => ({ ...f, setor: e.target.value }))}>
+                  <option value="">Selecionar...</option>
+                  {SECTORS.map(s => <option key={s}>{s}</option>)}
+                </select>
+              </div>
+              <div className="sm:col-span-2">
+                <label className="block text-xs mb-1" style={{ color: 'var(--text-3)' }}>Website</label>
+                <input className="form-input" placeholder="https://empresa.pt" value={form.website} onChange={e => setForm(f => ({ ...f, website: e.target.value }))} />
+              </div>
+            </div>
+            <div>
+              <label className="block text-xs mb-1" style={{ color: 'var(--text-3)' }}>Descrição da empresa</label>
+              <textarea rows={3} className="form-input" style={{ resize: 'vertical' }} placeholder="O que faz a vossa empresa, principais áreas de negócio..." value={form.descricao} onChange={e => setForm(f => ({ ...f, descricao: e.target.value }))} />
+            </div>
+            <div>
+              <label className="block text-xs mb-2" style={{ color: 'var(--text-3)' }}>Tipos de automação de interesse</label>
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                {AUTOMATION_TYPES.map(opt => (
+                  <label key={opt} className="checkbox-item" style={{ fontSize: '12px' }}>
+                    <input type="checkbox" checked={form.tipos_automacao.includes(opt)} onChange={() => toggleAutomacao(opt)} />
+                    <span>{opt}</span>
+                  </label>
+                ))}
+              </div>
+            </div>
+            {erroPerfil && (
+              <p className="text-sm px-4 py-3 rounded-lg" style={{ color: '#f87171', background: 'rgba(248,113,113,0.08)', border: '1px solid rgba(248,113,113,0.2)' }}>
+                {erroPerfil}
+              </p>
+            )}
+            <div className="flex gap-3 pt-1">
+              <button type="submit" disabled={savingPerfil} className="btn-primary" style={{ opacity: savingPerfil ? 0.7 : 1 }}>
+                {savingPerfil ? 'A guardar…' : 'Guardar alterações →'}
+              </button>
+              <button type="button" onClick={() => setEditandoPerfil(false)} className="btn-ghost" style={{ fontSize: '14px' }}>
+                Cancelar
+              </button>
+            </div>
+          </form>
+        ) : (
+          <div className="space-y-3">
+            {[
+              { label: 'Empresa', value: dados?.nome },
+              { label: 'Responsável', value: dados?.nome_responsavel },
+              { label: 'Email', value: dados?.email },
+              { label: 'Telefone', value: dados?.telefone },
+              { label: 'NIF', value: dados?.nif },
+              { label: 'País', value: dados?.pais },
+              { label: 'Cidade', value: dados?.cidade },
+              { label: 'Dimensão', value: dados?.tamanho ? `${dados.tamanho} pessoas` : null },
+              { label: 'Setor', value: dados?.setor },
+              { label: 'Website', value: dados?.website },
+              { label: 'Descrição', value: dados?.descricao },
+              { label: 'Automação', value: dados?.tipos_automacao?.join(', ') },
+            ].map(({ label, value }) => value ? (
+              <div key={label} className="flex gap-3 text-sm">
+                <span style={{ color: 'var(--text-3)', minWidth: '100px', flexShrink: 0 }}>{label}</span>
+                <span style={{ color: 'var(--text)' }}>{value}</span>
+              </div>
+            ) : null)}
+          </div>
+        )}
+      </div>
+
+      {/* Toast */}
+      {toastPerfil && (
+        <div className="fixed bottom-6 right-6 px-5 py-3 rounded-xl text-sm font-medium shadow-xl z-50"
+          style={{ background: 'rgba(16,185,129,0.15)', border: '1px solid rgba(16,185,129,0.3)', color: '#10b981' }}>
+          ✅ Perfil atualizado!
+        </div>
+      )}
 
       {/* Ação principal */}
       <div
