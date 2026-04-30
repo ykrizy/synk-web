@@ -66,6 +66,11 @@ create policy "Especialista insere o seu perfil"
   on especialistas for insert with check (auth.uid() = user_id);
 create policy "Especialista atualiza o seu perfil"
   on especialistas for update using (auth.uid() = user_id);
+create policy "Admin pode verificar especialistas"
+  on especialistas for update
+  using (
+    (select email from auth.users where id = auth.uid()) = 'khalidshah1328@gmail.com'
+  );
 
 -- 4. PROJETOS (publicados pelas empresas)
 create table if not exists projetos (
@@ -127,5 +132,24 @@ create table if not exists leads (
 alter table leads enable row level security;
 create policy "Qualquer um pode submeter um lead"
   on leads for insert with check (true);
+
+-- 7. PROPOSTAS (candidaturas de especialistas a projetos)
+-- (Tabela criada separadamente via SQL Editor — incluída aqui para referência)
+-- create table if not exists propostas (
+--   id              uuid primary key default gen_random_uuid(),
+--   projeto_id      uuid references projetos on delete cascade,
+--   especialista_id uuid references especialistas on delete cascade,
+--   mensagem        text,
+--   preco_proposto  numeric,
+--   estado          text default 'pendente' check (estado in ('pendente', 'aceite', 'rejeitado')),
+--   created_at      timestamptz default now(),
+--   unique(projeto_id, especialista_id)
+-- );
+-- alter table propostas enable row level security;
+-- Políticas necessárias para a tabela propostas:
+-- create policy "Especialistas podem inserir propostas" on propostas for insert with check (auth.uid() = (select user_id from especialistas where id = especialista_id));
+-- create policy "Especialista vê as suas propostas" on propostas for select using (auth.uid() = (select user_id from especialistas where id = especialista_id) or auth.uid() = (select u.user_id from projetos p join empresas u on u.id = p.empresa_id where p.id = projeto_id));
+-- create policy "Empresa atualiza estado de propostas" on propostas for update using (auth.uid() = (select u.user_id from projetos p join empresas u on u.id = p.empresa_id where p.id = projeto_id));
+-- create policy "Especialista edita próprias propostas" on propostas for update using (auth.uid() = (select user_id from especialistas where id = especialista_id));
 
 -- Tabelas criadas. Regista utilizadores pelo formulário do site para adicionar dados.

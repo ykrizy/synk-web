@@ -16,6 +16,7 @@ import Matching from '@/pages/Matching'
 import Calculadora from '@/pages/Calculadora'
 import Marketplace from '@/pages/Marketplace'
 import Projeto from '@/pages/Projeto'
+import Admin from '@/pages/Admin'
 import NotFound from '@/pages/NotFound'
 
 export default function App() {
@@ -37,6 +38,7 @@ export default function App() {
           <Route path="dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
           <Route path="publicar-projeto" element={<ProtectedRoute><PublicarProjeto /></ProtectedRoute>} />
           <Route path="projeto/:id" element={<ProtectedRoute><Projeto /></ProtectedRoute>} />
+          <Route path="admin" element={<ProtectedRoute><Admin /></ProtectedRoute>} />
           <Route path="*" element={<NotFound />} />
         </Route>
       </Routes>
