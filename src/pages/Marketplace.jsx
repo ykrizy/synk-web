@@ -476,25 +476,25 @@ export default function Marketplace() {
 
   // Carregar candidaturas já feitas pelo especialista
   useEffect(() => {
-    if (!user || perfil !== 'especialista') return
+    if (!user) return
+    // Tenta sempre — se não houver registo de especialista, volta vazio
     supabase
       .from('especialistas')
       .select('id')
       .eq('user_id', user.id)
       .maybeSingle()
-      .then(({ data: esp }) => {
+      .then(async ({ data: esp }) => {
         if (!esp) return
-        return supabase
+        const { data } = await supabase
           .from('propostas')
           .select('projeto_id')
           .eq('especialista_id', esp.id)
-      })
-      .then(res => {
-        if (!res?.data) return
-        setProjetosComCandidatura(new Set(res.data.map(p => p.projeto_id)))
+        if (data?.length) {
+          setProjetosComCandidatura(new Set(data.map(p => p.projeto_id)))
+        }
       })
       .catch(() => {})
-  }, [user, perfil])
+  }, [user])
 
   const categories = activeTab === 'especialistas' ? CATEGORIES_SPECIALISTS : CATEGORIES_PROJECTS
 
