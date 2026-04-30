@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
+// useSearchParams mantido para ler ?pagamento=cancelado se necessário
 import useMeta from '@/hooks/useMeta'
 import CandidatarModal from '@/components/ui/CandidatarModal'
 import Reveal from '@/components/ui/Reveal'
@@ -571,9 +572,7 @@ export default function Dashboard() {
   const { user, perfil } = useAuth()
   const [dados, setDados] = useState(null)
   const [loading, setLoading] = useState(true)
-  const [searchParams, setSearchParams] = useSearchParams()
-  const pagamentoSucesso = searchParams.get('pagamento') === 'sucesso'
-  const projetoIdPago = searchParams.get('projeto_id')
+  const [searchParams] = useSearchParams()
 
   useEffect(() => {
     if (!user) return
@@ -590,18 +589,6 @@ export default function Dashboard() {
       .then(({ data }) => { setDados(data); setLoading(false) })
   }, [user, perfil])
 
-  // Ativar projeto após pagamento Stripe bem-sucedido
-  useEffect(() => {
-    if (!pagamentoSucesso || !projetoIdPago) return
-    supabase
-      .from('projetos')
-      .update({ estado: 'aberto' })
-      .eq('id', projetoIdPago)
-      .then(() => {
-        // Limpar params do URL sem recarregar a página
-        setSearchParams({}, { replace: true })
-      })
-  }, [pagamentoSucesso, projetoIdPago, setSearchParams])
 
   return (
     <section className="min-h-screen pt-24 pb-16" style={{ background: 'var(--bg)' }}>

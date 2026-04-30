@@ -25,7 +25,7 @@ Deno.serve(async (req) => {
   }
 
   try {
-    const { plano, empresa_id, success_url, cancel_url } = await req.json()
+    const { plano, empresa_id, projeto_id, success_url, cancel_url } = await req.json()
 
     const config = PLANOS[plano as keyof typeof PLANOS]
     if (!config) throw new Error('Plano inválido')
@@ -43,9 +43,12 @@ Deno.serve(async (req) => {
         },
       ],
       mode: 'payment',
-      success_url: success_url ?? 'https://ykrizy.github.io/synk-web/dashboard?pagamento=sucesso',
-      cancel_url: cancel_url ?? 'https://ykrizy.github.io/synk-web/publicar-projeto?pagamento=cancelado',
-      metadata: { empresa_id: empresa_id ?? '' },
+      success_url: success_url ?? 'https://synk.pt/dashboard',
+      cancel_url: cancel_url ?? 'https://synk.pt/publicar-projeto?pagamento=cancelado',
+      metadata: {
+        empresa_id: empresa_id ?? '',
+        projeto_id: projeto_id ?? '',
+      },
     })
 
     return new Response(JSON.stringify({ url: session.url }), {
