@@ -304,7 +304,7 @@ function SpecialistCard({ s, ctaTo = '/registar' }) {
   )
 }
 
-function ProjectCard({ p, ctaTo = '/registar', onCandidatar = null }) {
+function ProjectCard({ p, ctaTo = '/registar', onCandidatar = null, jaCandidatou = false }) {
   return (
     <div className="card p-6 flex flex-col gap-4">
       {/* Header */}
@@ -373,7 +373,13 @@ function ProjectCard({ p, ctaTo = '/registar', onCandidatar = null }) {
       {/* Category + CTA */}
       <div className="flex items-center justify-between">
         <span className="badge badge-violet" style={{ fontSize: '11px' }}>{p.category}</span>
-        {onCandidatar ? (
+        {jaCandidatou ? (
+          <span
+            style={{ fontSize: '12px', padding: '6px 14px', borderRadius: '8px', background: 'rgba(16,185,129,0.1)', border: '1px solid rgba(16,185,129,0.2)', color: '#10b981', fontWeight: 600 }}
+          >
+            ✅ Candidatado
+          </span>
+        ) : onCandidatar ? (
           <button
             onClick={() => onCandidatar(p)}
             className="btn-primary"
@@ -407,8 +413,9 @@ export default function Marketplace() {
   const [availableOnly, setAvailableOnly] = useState(false)
   const [specialists, setSpecialists] = useState(SPECIALISTS)
   const [projects, setProjects] = useState(PROJECTS)
-  const [modalProjeto, setModalProjeto] = useState(null) // projeto para o modal
+  const [modalProjeto, setModalProjeto] = useState(null)
   const [candidaturaSucesso, setCandidaturaSucesso] = useState(false)
+  const [projetosComCandidatura, setProjetosComCandidatura] = useState(new Set())
 
   // Carregar especialistas reais
   useEffect(() => {
@@ -466,6 +473,28 @@ export default function Marketplace() {
       })
       .catch(() => {})
   }, [])
+
+  // Carregar candidaturas já feitas pelo especialista
+  useEffect(() => {
+    if (!user || perfil !== 'especialista') return
+    supabase
+      .from('especialistas')
+      .select('id')
+      .eq('user_id', user.id)
+      .maybeSingle()
+      .then(({ data: esp }) => {
+        if (!esp) return
+        return supabase
+          .from('propostas')
+          .select('projeto_id')
+          .eq('especialista_id', esp.id)
+      })
+      .then(res => {
+        if (!res?.data) return
+        setProjetosComCandidatura(new Set(res.data.map(p => p.projeto_id)))
+      })
+      .catch(() => {})
+  }, [user, perfil])
 
   const categories = activeTab === 'especialistas' ? CATEGORIES_SPECIALISTS : CATEGORIES_PROJECTS
 
@@ -673,6 +702,7 @@ export default function Marketplace() {
                       p={p}
                       ctaTo={especialistaTo}
                       onCandidatar={perfil === 'especialista' ? setModalProjeto : null}
+                      jaCandidatou={projetosComCandidatura.has(p.id)}
                     />
                   </Reveal>
                 ))}
@@ -820,6 +850,7 @@ export default function Marketplace() {
           projeto={modalProjeto}
           onClose={() => { setModalProjeto(null); setCandidaturaSucesso(false) }}
           onSucesso={() => {
+            setProjetosComCandidatura(prev => new Set([...prev, modalProjeto.id]))
             setModalProjeto(null)
             setCandidaturaSucesso(true)
             setTimeout(() => setCandidaturaSucesso(false), 4000)
