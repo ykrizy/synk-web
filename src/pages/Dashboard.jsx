@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
 import useMeta from '@/hooks/useMeta'
+import CandidatarModal from '@/components/ui/CandidatarModal'
 import Reveal from '@/components/ui/Reveal'
 import { useAuth } from '@/contexts/AuthContext'
 import { supabase } from '@/lib/supabase'
@@ -108,6 +109,7 @@ function EmpresaDashboard({ dados }) {
 
 function EspecialistaDashboard({ dados }) {
   const [propostas, setPropostas] = useState([])
+  const [editarProposta, setEditarProposta] = useState(null)
 
   useEffect(() => {
     if (!dados?.id) return
@@ -169,22 +171,51 @@ function EspecialistaDashboard({ dados }) {
             <Link to="/marketplace" className="btn-primary mt-4 inline-flex">Ver projetos →</Link>
           </div>
         ) : (
-          <div className="space-y-3">
-            {propostas.map(prop => (
-              <div key={prop.id} className="card p-5 flex items-center justify-between gap-4">
-                <div>
-                  <p className="font-semibold text-sm" style={{ color: 'var(--text)' }}>{prop.projetos?.titulo}</p>
-                  <p className="text-xs mt-1" style={{ color: 'var(--text-3)' }}>
-                    {prop.projetos?.tipo_automacao}
-                    {prop.preco_proposto && ` · €${Number(prop.preco_proposto).toLocaleString('pt-PT')}`}
-                  </p>
+          <>
+            <div className="space-y-3">
+              {propostas.map(prop => (
+                <div key={prop.id} className="card p-5 flex items-center justify-between gap-4">
+                  <div>
+                    <p className="font-semibold text-sm" style={{ color: 'var(--text)' }}>{prop.projetos?.titulo}</p>
+                    <p className="text-xs mt-1" style={{ color: 'var(--text-3)' }}>
+                      {prop.projetos?.tipo_automacao}
+                      {prop.preco_proposto && ` · €${Number(prop.preco_proposto).toLocaleString('pt-PT')}`}
+                    </p>
+                  </div>
+                  <div className="flex items-center gap-2 flex-shrink-0">
+                    <span className={`badge ${prop.estado === 'aceite' ? 'badge-emerald' : prop.estado === 'rejeitado' ? 'badge-red' : 'badge-amber'}`}>
+                      {prop.estado === 'aceite' ? '✅ Aceite' : prop.estado === 'rejeitado' ? '❌ Rejeitado' : '⏳ Pendente'}
+                    </span>
+                    {prop.estado === 'pendente' && (
+                      <button
+                        onClick={() => setEditarProposta(prop)}
+                        className="btn-ghost"
+                        style={{ fontSize: '12px', padding: '5px 12px' }}
+                      >
+                        ✏️ Editar
+                      </button>
+                    )}
+                  </div>
                 </div>
-                <span className={`badge flex-shrink-0 ${prop.estado === 'aceite' ? 'badge-emerald' : prop.estado === 'rejeitado' ? 'badge-red' : 'badge-amber'}`}>
-                  {prop.estado === 'aceite' ? '✅ Aceite' : prop.estado === 'rejeitado' ? '❌ Rejeitado' : '⏳ Pendente'}
-                </span>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
+
+            {editarProposta && (
+              <CandidatarModal
+                projeto={{ id: editarProposta.projeto_id, titulo: editarProposta.projetos?.titulo }}
+                proposta={editarProposta}
+                onClose={() => setEditarProposta(null)}
+                onSucesso={(dadosAtualizados) => {
+                  setPropostas(prev => prev.map(p =>
+                    p.id === editarProposta.id
+                      ? { ...p, ...dadosAtualizados }
+                      : p
+                  ))
+                  setEditarProposta(null)
+                }}
+              />
+            )}
+          </>
         )}
       </div>
     </div>

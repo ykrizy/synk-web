@@ -2,10 +2,12 @@ import { useState } from 'react'
 import { useAuth } from '@/contexts/AuthContext'
 import { supabase } from '@/lib/supabase'
 
-export default function CandidatarModal({ projeto, onClose, onSucesso }) {
+// proposta = null → modo criar | proposta = { id, mensagem, preco_proposto } → modo editar
+export default function CandidatarModal({ projeto, proposta = null, onClose, onSucesso }) {
   const { user } = useAuth()
-  const [mensagem, setMensagem] = useState('')
-  const [preco, setPreco] = useState('')
+  const modoEditar = !!proposta
+  const [mensagem, setMensagem] = useState(proposta?.mensagem ?? '')
+  const [preco, setPreco] = useState(proposta?.preco_proposto ?? '')
   const [loading, setLoading] = useState(false)
   const [erro, setErro] = useState(null)
 
@@ -15,38 +17,50 @@ export default function CandidatarModal({ projeto, onClose, onSucesso }) {
     setLoading(true)
 
     try {
-      // Buscar id do especialista
-      const { data: esp } = await supabase
-        .from('especialistas')
-        .select('id')
-        .eq('user_id', user.id)
-        .maybeSingle()
+      if (modoEditar) {
+        // Atualizar candidatura existente
+        const { error } = await supabase
+          .from('propostas')
+          .update({
+            mensagem,
+            preco_proposto: preco ? Number(preco) : null,
+          })
+          .eq('id', proposta.id)
+        if (error) throw error
+        onSucesso({ mensagem, preco_proposto: preco ? Number(preco) : null })
+        return
+      } else {
+        // Criar nova candidatura
+        const { data: esp } = await supabase
+          .from('especialistas')
+          .select('id')
+          .eq('user_id', user.id)
+          .maybeSingle()
 
-      if (!esp) throw new Error('Perfil de especialista não encontrado.')
+        if (!esp) throw new Error('Perfil de especialista não encontrado.')
 
-      // Verificar se já se candidatou
-      const { data: jaExiste } = await supabase
-        .from('propostas')
-        .select('id')
-        .eq('projeto_id', projeto.id)
-        .eq('especialista_id', esp.id)
-        .maybeSingle()
+        const { data: jaExiste } = await supabase
+          .from('propostas')
+          .select('id')
+          .eq('projeto_id', projeto.id)
+          .eq('especialista_id', esp.id)
+          .maybeSingle()
 
-      if (jaExiste) throw new Error('Já te candidataste a este projeto.')
+        if (jaExiste) throw new Error('Já te candidataste a este projeto.')
 
-      const { error } = await supabase.from('propostas').insert({
-        projeto_id: projeto.id,
-        especialista_id: esp.id,
-        mensagem,
-        preco_proposto: preco ? Number(preco) : null,
-        estado: 'pendente',
-      })
+        const { error } = await supabase.from('propostas').insert({
+          projeto_id: projeto.id,
+          especialista_id: esp.id,
+          mensagem,
+          preco_proposto: preco ? Number(preco) : null,
+          estado: 'pendente',
+        })
+        if (error) throw error
+      }
 
-      if (error) throw error
-
-      onSucesso()
+      onSucesso({})
     } catch (err) {
-      setErro(err.message || 'Erro ao enviar candidatura. Tenta novamente.')
+      setErro(err.message || 'Erro ao guardar candidatura. Tenta novamente.')
     } finally {
       setLoading(false)
     }
@@ -67,7 +81,7 @@ export default function CandidatarModal({ projeto, onClose, onSucesso }) {
         <div className="flex items-start justify-between gap-4 mb-6">
           <div>
             <h2 className="font-heading text-xl mb-1" style={{ color: 'var(--text)' }}>
-              Candidatar ao projeto
+              {modoEditar ? 'Editar candidatura' : 'Candidatar ao projeto'}
             </h2>
             <p className="text-sm" style={{ color: 'var(--text-3)' }}>{projeto.titulo || projeto.title}</p>
           </div>
@@ -122,7 +136,7 @@ export default function CandidatarModal({ projeto, onClose, onSucesso }) {
               className="btn-primary btn-primary-lg flex-1 justify-center"
               style={{ opacity: loading ? 0.7 : 1 }}
             >
-              {loading ? 'A enviar…' : 'Enviar candidatura →'}
+              {loading ? 'A guardar…' : modoEditar ? 'Guardar alterações →' : 'Enviar candidatura →'}
             </button>
             <button
               type="button"
