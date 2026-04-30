@@ -43,8 +43,8 @@ Deno.serve(async (req) => {
         },
       ],
       mode: 'payment',
-      success_url: success_url ?? 'https://synk.pt/dashboard',
-      cancel_url: cancel_url ?? 'https://synk.pt/publicar-projeto?pagamento=cancelado',
+      success_url: success_url ?? 'https://www.synk.pt/dashboard',
+      cancel_url: cancel_url ?? 'https://www.synk.pt/publicar-projeto?pagamento=cancelado',
       metadata: {
         empresa_id: empresa_id ?? '',
         projeto_id: projeto_id ?? '',
