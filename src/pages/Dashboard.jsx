@@ -107,9 +107,17 @@ function EmpresaDashboard({ dados }) {
   )
 }
 
-function EspecialistaDashboard({ dados }) {
+function EspecialistaDashboard({ dados: dadosIniciais }) {
+  const [dados, setDados] = useState(dadosIniciais)
   const [propostas, setPropostas] = useState([])
   const [editarProposta, setEditarProposta] = useState(null)
+  const [editandoPerfil, setEditandoPerfil] = useState(false)
+  const [form, setForm] = useState({})
+  const [savingPerfil, setSavingPerfil] = useState(false)
+  const [erroPerfil, setErroPerfil] = useState(null)
+  const [toastPerfil, setToastPerfil] = useState(false)
+
+  useEffect(() => { setDados(dadosIniciais) }, [dadosIniciais])
 
   useEffect(() => {
     if (!dados?.id) return
@@ -120,6 +128,57 @@ function EspecialistaDashboard({ dados }) {
       .order('created_at', { ascending: false })
       .then(({ data }) => setPropostas(data || []))
   }, [dados])
+
+  function abrirEdicao() {
+    setForm({
+      nome: dados?.nome ?? '',
+      telefone: dados?.telefone ?? '',
+      pais: dados?.pais ?? '',
+      anos_experiencia: dados?.anos_experiencia ?? '',
+      preco_hora: dados?.preco_hora ?? '',
+      bio: dados?.bio ?? '',
+      linkedin: dados?.linkedin ?? '',
+      portfolio: dados?.portfolio ?? '',
+      skills: dados?.skills?.join(', ') ?? '',
+      disponivel_agora: dados?.disponivel_agora ?? true,
+    })
+    setErroPerfil(null)
+    setEditandoPerfil(true)
+  }
+
+  async function guardarPerfil(e) {
+    e.preventDefault()
+    setSavingPerfil(true)
+    setErroPerfil(null)
+    const skillsArray = form.skills
+      .split(',')
+      .map(s => s.trim())
+      .filter(Boolean)
+    const { error } = await supabase
+      .from('especialistas')
+      .update({
+        nome: form.nome,
+        telefone: form.telefone || null,
+        pais: form.pais,
+        anos_experiencia: form.anos_experiencia || null,
+        preco_hora: form.preco_hora ? Number(form.preco_hora) : null,
+        bio: form.bio || null,
+        linkedin: form.linkedin || null,
+        portfolio: form.portfolio || null,
+        skills: skillsArray,
+        disponivel_agora: form.disponivel_agora,
+      })
+      .eq('id', dados.id)
+    setSavingPerfil(false)
+    if (error) {
+      setErroPerfil('Erro ao guardar. Tenta novamente.')
+    } else {
+      setDados(prev => ({ ...prev, ...form, skills: skillsArray, preco_hora: form.preco_hora ? Number(form.preco_hora) : null }))
+      setEditandoPerfil(false)
+      setToastPerfil(true)
+      setTimeout(() => setToastPerfil(false), 3000)
+    }
+  }
 
   return (
     <div className="space-y-8">
@@ -143,23 +202,119 @@ function EspecialistaDashboard({ dados }) {
         </p>
       </div>
 
+      {/* Perfil — modo leitura ou edição */}
       <div className="card p-6">
-        <h3 className="font-heading text-lg mb-4" style={{ color: 'var(--text)' }}>O teu perfil</h3>
-        <div className="space-y-3">
-          {[
-            { label: 'Nome', value: dados?.nome },
-            { label: 'Email', value: dados?.email },
-            { label: 'País', value: dados?.pais },
-            { label: 'Experiência', value: dados?.anos_experiencia },
-            { label: 'Skills', value: dados?.skills?.join(', ') },
-          ].map(({ label, value }) => value ? (
-            <div key={label} className="flex gap-3 text-sm">
-              <span style={{ color: 'var(--text-3)', minWidth: '100px' }}>{label}</span>
-              <span style={{ color: 'var(--text)' }}>{value}</span>
-            </div>
-          ) : null)}
+        <div className="flex items-center justify-between mb-4">
+          <h3 className="font-heading text-lg" style={{ color: 'var(--text)' }}>O teu perfil</h3>
+          {!editandoPerfil && (
+            <button onClick={abrirEdicao} className="btn-ghost" style={{ fontSize: '13px', padding: '6px 14px' }}>
+              ✏️ Editar perfil
+            </button>
+          )}
         </div>
+
+        {editandoPerfil ? (
+          <form onSubmit={guardarPerfil} className="space-y-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-xs mb-1" style={{ color: 'var(--text-3)' }}>Nome *</label>
+                <input required className="form-input" value={form.nome} onChange={e => setForm(f => ({ ...f, nome: e.target.value }))} />
+              </div>
+              <div>
+                <label className="block text-xs mb-1" style={{ color: 'var(--text-3)' }}>Telefone</label>
+                <input className="form-input" value={form.telefone} onChange={e => setForm(f => ({ ...f, telefone: e.target.value }))} />
+              </div>
+              <div>
+                <label className="block text-xs mb-1" style={{ color: 'var(--text-3)' }}>País</label>
+                <input className="form-input" value={form.pais} onChange={e => setForm(f => ({ ...f, pais: e.target.value }))} />
+              </div>
+              <div>
+                <label className="block text-xs mb-1" style={{ color: 'var(--text-3)' }}>Anos de experiência</label>
+                <input className="form-input" value={form.anos_experiencia} onChange={e => setForm(f => ({ ...f, anos_experiencia: e.target.value }))} />
+              </div>
+              <div>
+                <label className="block text-xs mb-1" style={{ color: 'var(--text-3)' }}>Preço/hora (€)</label>
+                <input type="number" min={0} className="form-input" value={form.preco_hora} onChange={e => setForm(f => ({ ...f, preco_hora: e.target.value }))} />
+              </div>
+              <div>
+                <label className="block text-xs mb-1" style={{ color: 'var(--text-3)' }}>LinkedIn</label>
+                <input className="form-input" placeholder="https://linkedin.com/in/..." value={form.linkedin} onChange={e => setForm(f => ({ ...f, linkedin: e.target.value }))} />
+              </div>
+              <div>
+                <label className="block text-xs mb-1" style={{ color: 'var(--text-3)' }}>Portfolio / Website</label>
+                <input className="form-input" placeholder="https://..." value={form.portfolio} onChange={e => setForm(f => ({ ...f, portfolio: e.target.value }))} />
+              </div>
+              <div className="flex items-center gap-3 pt-4">
+                <input
+                  type="checkbox"
+                  id="disponivel"
+                  checked={form.disponivel_agora}
+                  onChange={e => setForm(f => ({ ...f, disponivel_agora: e.target.checked }))}
+                  style={{ width: '16px', height: '16px', accentColor: 'var(--brand)', cursor: 'pointer' }}
+                />
+                <label htmlFor="disponivel" className="text-sm" style={{ color: 'var(--text-2)', cursor: 'pointer' }}>
+                  Disponível para projetos agora
+                </label>
+              </div>
+            </div>
+            <div>
+              <label className="block text-xs mb-1" style={{ color: 'var(--text-3)' }}>Skills <span style={{ color: 'var(--text-3)' }}>(separadas por vírgula)</span></label>
+              <input className="form-input" placeholder="RPA (UiPath), Python, IA / LLMs" value={form.skills} onChange={e => setForm(f => ({ ...f, skills: e.target.value }))} />
+            </div>
+            <div>
+              <label className="block text-xs mb-1" style={{ color: 'var(--text-3)' }}>Bio</label>
+              <textarea rows={3} className="form-input" style={{ resize: 'vertical' }} placeholder="Apresenta-te brevemente..." value={form.bio} onChange={e => setForm(f => ({ ...f, bio: e.target.value }))} />
+            </div>
+            {erroPerfil && (
+              <p className="text-sm px-4 py-3 rounded-lg" style={{ color: '#f87171', background: 'rgba(248,113,113,0.08)', border: '1px solid rgba(248,113,113,0.2)' }}>
+                {erroPerfil}
+              </p>
+            )}
+            <div className="flex gap-3 pt-1">
+              <button type="submit" disabled={savingPerfil} className="btn-primary" style={{ opacity: savingPerfil ? 0.7 : 1 }}>
+                {savingPerfil ? 'A guardar…' : 'Guardar alterações →'}
+              </button>
+              <button type="button" onClick={() => setEditandoPerfil(false)} className="btn-ghost" style={{ fontSize: '14px' }}>
+                Cancelar
+              </button>
+            </div>
+          </form>
+        ) : (
+          <div className="space-y-3">
+            {[
+              { label: 'Nome', value: dados?.nome },
+              { label: 'Email', value: dados?.email },
+              { label: 'País', value: dados?.pais },
+              { label: 'Telefone', value: dados?.telefone },
+              { label: 'Experiência', value: dados?.anos_experiencia ? `${dados.anos_experiencia} anos` : null },
+              { label: 'Preço/hora', value: dados?.preco_hora ? `€${dados.preco_hora}` : null },
+              { label: 'LinkedIn', value: dados?.linkedin },
+              { label: 'Portfolio', value: dados?.portfolio },
+              { label: 'Skills', value: dados?.skills?.join(', ') },
+              { label: 'Bio', value: dados?.bio },
+            ].map(({ label, value }) => value ? (
+              <div key={label} className="flex gap-3 text-sm">
+                <span style={{ color: 'var(--text-3)', minWidth: '100px', flexShrink: 0 }}>{label}</span>
+                <span style={{ color: 'var(--text)' }}>{value}</span>
+              </div>
+            ) : null)}
+            <div className="flex gap-3 text-sm">
+              <span style={{ color: 'var(--text-3)', minWidth: '100px' }}>Disponível</span>
+              <span style={{ color: dados?.disponivel_agora ? '#10b981' : 'var(--text-3)' }}>
+                {dados?.disponivel_agora ? '✅ Sim' : '❌ Não'}
+              </span>
+            </div>
+          </div>
+        )}
       </div>
+
+      {/* Toast */}
+      {toastPerfil && (
+        <div className="fixed bottom-6 right-6 px-5 py-3 rounded-xl text-sm font-medium shadow-xl z-50"
+          style={{ background: 'rgba(16,185,129,0.15)', border: '1px solid rgba(16,185,129,0.3)', color: '#10b981' }}>
+          ✅ Perfil atualizado!
+        </div>
+      )}
 
       {/* Candidaturas enviadas */}
       <div>
