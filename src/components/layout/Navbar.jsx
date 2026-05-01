@@ -16,7 +16,7 @@ export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false)
   const location = useLocation()
   const navigate = useNavigate()
-  const { user, logout } = useAuth()
+  const { user, perfil, logout } = useAuth()
 
   async function handleLogout() {
     await logout()
@@ -97,9 +97,16 @@ export default function Navbar() {
                 <Link to="/dashboard" className="btn-ghost" style={{ fontSize: '13.5px', padding: '8px 16px' }}>
                   Dashboard
                 </Link>
-                <Link to="/publicar-projeto" className="btn-primary" style={{ fontSize: '13.5px', padding: '9px 20px' }}>
-                  Publicar Projeto
-                </Link>
+                {perfil === 'empresa' && (
+                  <Link to="/publicar-projeto" className="btn-primary" style={{ fontSize: '13.5px', padding: '9px 20px' }}>
+                    Publicar Projeto
+                  </Link>
+                )}
+                {perfil === 'especialista' && (
+                  <Link to="/marketplace" className="btn-primary" style={{ fontSize: '13.5px', padding: '9px 20px' }}>
+                    Ver Projetos
+                  </Link>
+                )}
                 <button onClick={handleLogout} className="btn-ghost" style={{ fontSize: '13.5px', padding: '8px 16px' }}>
                   Sair
                 </button>
@@ -164,7 +171,13 @@ export default function Navbar() {
             {user ? (
               <>
                 <Link to="/dashboard" className="btn-primary flex-1 justify-center" style={{ fontSize: '13px' }}>Dashboard</Link>
-                <button onClick={handleLogout} className="btn-ghost flex-1 justify-center" style={{ fontSize: '13px' }}>Sair</button>
+                {perfil === 'empresa' && (
+                  <Link to="/publicar-projeto" className="btn-ghost flex-1 justify-center" style={{ fontSize: '13px' }}>Publicar</Link>
+                )}
+                {perfil === 'especialista' && (
+                  <Link to="/marketplace" className="btn-ghost flex-1 justify-center" style={{ fontSize: '13px' }}>Projetos</Link>
+                )}
+                <button onClick={handleLogout} className="btn-ghost justify-center" style={{ fontSize: '13px', padding: '8px 16px' }}>Sair</button>
               </>
             ) : (
               <>

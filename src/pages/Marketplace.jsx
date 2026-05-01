@@ -489,9 +489,7 @@ export default function Marketplace() {
           .from('propostas')
           .select('projeto_id')
           .eq('especialista_id', esp.id)
-        if (data?.length) {
-          setProjetosComCandidatura(new Set(data.map(p => p.projeto_id)))
-        }
+        setProjetosComCandidatura(new Set((data ?? []).map(p => p.projeto_id)))
       })
       .catch(() => {})
   }, [user])
