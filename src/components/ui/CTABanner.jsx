@@ -5,14 +5,16 @@ import useSmartCTA from '@/hooks/useSmartCTA'
 export default function CTABanner({
   heading = 'Pronto para automatizar o teu negócio?',
   sub = 'Junta-te a centenas de empresas que já estão a poupar tempo e dinheiro com a Synk.',
-  primaryLabel = 'Publicar o Meu Projeto',
+  primaryLabel = null,
   primaryTo = null,
-  secondaryLabel = 'Sou especialista, quero registar-me',
+  secondaryLabel = null,
   secondaryTo = null,
 }) {
-  const { empresaTo, especialistaTo } = useSmartCTA()
+  const { empresaTo, especialistaTo, primaryLabel: smartPrimary, secondaryLabel: smartSecondary } = useSmartCTA()
   const resolvedPrimaryTo = primaryTo ?? empresaTo
   const resolvedSecondaryTo = secondaryTo ?? especialistaTo
+  const resolvedPrimaryLabel = primaryLabel ?? smartPrimary
+  const resolvedSecondaryLabel = secondaryLabel ?? smartSecondary
   return (
     <section
       className="py-24 relative overflow-hidden"
@@ -57,13 +59,13 @@ export default function CTABanner({
           </p>
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
             <Link to={resolvedPrimaryTo} className="btn-primary btn-primary-lg">
-              {primaryLabel}
+              {resolvedPrimaryLabel}
               <svg width="15" height="15" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
                 <path d="M5 12h14M12 5l7 7-7 7" />
               </svg>
             </Link>
             <Link to={resolvedSecondaryTo} className="btn-ghost" style={{ fontSize: '14px', padding: '13px 24px' }}>
-              {secondaryLabel}
+              {resolvedSecondaryLabel}
             </Link>
           </div>
         </Reveal>

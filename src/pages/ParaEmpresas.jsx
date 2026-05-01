@@ -254,7 +254,7 @@ function ROICalculator() {
 }
 
 export default function ParaEmpresas() {
-  const { empresaTo } = useSmartCTA()
+  const { empresaTo, primaryLabel } = useSmartCTA()
   useMeta({
     title: 'Para Empresas',
     description: 'Encontra especialistas em automação verificados para o teu negócio. Rápido, seguro e sem risco.',
@@ -464,7 +464,7 @@ export default function ParaEmpresas() {
           </div>
           <Reveal delay={300}>
             <Link to={empresaTo} className="btn-primary btn-primary-lg">
-              Publicar o Meu Primeiro Projeto — É Grátis
+              {primaryLabel}
               <svg width="15" height="15" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7" /></svg>
             </Link>
           </Reveal>
@@ -474,8 +474,6 @@ export default function ParaEmpresas() {
       <CTABanner
         heading="Pronto para automatizar o teu negócio?"
         sub="Publica o teu projeto gratuitamente e recebe propostas de especialistas verificados em menos de 48 horas."
-        primaryLabel="Publicar Projeto Grátis"
-        primaryTo="/registar"
         secondaryLabel="Saber mais sobre como funciona"
         secondaryTo="/como-funciona"
       />

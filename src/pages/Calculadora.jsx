@@ -120,7 +120,7 @@ function ComparisonBar({ label, value, maxValue, color, animated }) {
 
 /* ══════════════════════════════ */
 export default function Calculadora() {
-  const { empresaTo } = useSmartCTA()
+  const { empresaTo, genericTo, genericLabel } = useSmartCTA()
   useMeta({
     title: 'Calculadora de ROI',
     description: 'Calcula quanto tempo e dinheiro podes poupar com automação. Descobre o ROI real do teu projeto de automação.',
@@ -514,8 +514,8 @@ export default function Calculadora() {
               <p className="text-sm mb-6" style={{ color: 'var(--text-2)' }}>
                 Publica o teu projeto na Synk e recebe propostas de especialistas verificados em 48h.
               </p>
-              <Link to={empresaTo} className="btn-primary btn-primary-lg" style={{ background: 'linear-gradient(135deg, #10b981, #06b6d4)' }}>
-                Publicar Projeto na Synk →
+              <Link to={genericTo} className="btn-primary btn-primary-lg" style={{ background: 'linear-gradient(135deg, #10b981, #06b6d4)' }}>
+                {genericLabel} →
               </Link>
             </div>
           </div>

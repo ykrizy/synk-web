@@ -581,8 +581,6 @@ export default function Matching() {
       <CTABanner
         heading="Encontra o especialista certo para o teu projeto"
         sub="Publica o teu projeto gratuitamente e recebe propostas de especialistas verificados em menos de 48 horas."
-        primaryLabel="Publicar Projeto Grátis"
-        primaryTo="/registar"
         secondaryLabel="Ver como funciona"
         secondaryTo="/como-funciona"
       />

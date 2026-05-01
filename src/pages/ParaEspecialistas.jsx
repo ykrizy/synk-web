@@ -248,8 +248,6 @@ export default function ParaEspecialistas() {
       <CTABanner
         heading="Junta-te a centenas de especialistas"
         sub="Verificação em 24h · Projetos qualificados · Pagamento garantido."
-        primaryLabel="Criar Perfil Gratuito"
-        primaryTo="/registar"
         secondaryLabel="Ver como funciona"
         secondaryTo="/como-funciona"
       />
