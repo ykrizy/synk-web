@@ -300,6 +300,8 @@ function EspecialistaDashboard({ dados: dadosIniciais }) {
   const [dados, setDados] = useState(dadosIniciais)
   const [propostas, setPropostas] = useState([])
   const [editarProposta, setEditarProposta] = useState(null)
+  const [cancelarProposta, setCancelarProposta] = useState(null)
+  const [cancelando, setCancelando] = useState(false)
   const [editandoPerfil, setEditandoPerfil] = useState(false)
   const [form, setForm] = useState({})
   const [savingPerfil, setSavingPerfil] = useState(false)
@@ -333,6 +335,20 @@ function EspecialistaDashboard({ dados: dadosIniciais }) {
     })
     setErroPerfil(null)
     setEditandoPerfil(true)
+  }
+
+  async function confirmarCancelamento() {
+    if (!cancelarProposta) return
+    setCancelando(true)
+    const { error } = await supabase
+      .from('propostas')
+      .delete()
+      .eq('id', cancelarProposta.id)
+    setCancelando(false)
+    if (!error) {
+      setPropostas(prev => prev.filter(p => p.id !== cancelarProposta.id))
+      setCancelarProposta(null)
+    }
   }
 
   async function guardarPerfil(e) {
@@ -531,18 +547,63 @@ function EspecialistaDashboard({ dados: dadosIniciais }) {
                       {prop.estado === 'aceite' ? '✅ Aceite' : prop.estado === 'rejeitado' ? '❌ Rejeitado' : '⏳ Pendente'}
                     </span>
                     {prop.estado === 'pendente' && (
-                      <button
-                        onClick={() => setEditarProposta(prop)}
-                        className="btn-ghost"
-                        style={{ fontSize: '12px', padding: '5px 12px' }}
-                      >
-                        ✏️ Editar
-                      </button>
+                      <>
+                        <button
+                          onClick={() => setEditarProposta(prop)}
+                          className="btn-ghost"
+                          style={{ fontSize: '12px', padding: '5px 12px' }}
+                        >
+                          ✏️ Editar
+                        </button>
+                        <button
+                          onClick={() => setCancelarProposta(prop)}
+                          className="btn-ghost"
+                          style={{ fontSize: '12px', padding: '5px 12px', color: '#f87171', borderColor: 'rgba(248,113,113,0.3)' }}
+                        >
+                          🗑️ Cancelar
+                        </button>
+                      </>
                     )}
                   </div>
                 </div>
               ))}
             </div>
+
+            {cancelarProposta && (
+              <div
+                className="fixed inset-0 z-50 flex items-center justify-center px-4"
+                style={{ background: 'rgba(0,0,0,0.75)', backdropFilter: 'blur(4px)' }}
+                onClick={() => setCancelarProposta(null)}
+              >
+                <div
+                  className="rounded-2xl p-8 w-full max-w-md text-center"
+                  style={{ background: 'var(--surface)', border: '1px solid var(--border)' }}
+                  onClick={e => e.stopPropagation()}
+                >
+                  <p className="text-4xl mb-4">🗑️</p>
+                  <h3 className="font-heading text-xl mb-2" style={{ color: 'var(--text)' }}>Cancelar candidatura?</h3>
+                  <p className="text-sm mb-6" style={{ color: 'var(--text-2)' }}>
+                    Vais retirar a candidatura ao projeto <strong style={{ color: 'var(--text)' }}>"{cancelarProposta.projetos?.titulo}"</strong>. Esta ação não pode ser desfeita.
+                  </p>
+                  <div className="flex gap-3 justify-center">
+                    <button
+                      onClick={confirmarCancelamento}
+                      disabled={cancelando}
+                      className="btn-primary"
+                      style={{ background: '#ef4444', opacity: cancelando ? 0.7 : 1 }}
+                    >
+                      {cancelando ? 'A cancelar…' : 'Sim, cancelar'}
+                    </button>
+                    <button
+                      onClick={() => setCancelarProposta(null)}
+                      className="btn-ghost"
+                    >
+                      Manter candidatura
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
 
             {editarProposta && (
               <CandidatarModal
