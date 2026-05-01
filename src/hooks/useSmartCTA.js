@@ -19,9 +19,9 @@ export default function useSmartCTA() {
 
   if (perfil === 'especialista') {
     return {
-      empresaTo: '/marketplace',
-      especialistaTo: '/marketplace',
-      genericTo: '/marketplace',
+      empresaTo: '/marketplace?tab=projetos',
+      especialistaTo: '/marketplace?tab=projetos',
+      genericTo: '/marketplace?tab=projetos',
       primaryLabel: 'Ver Projetos Disponíveis',
       secondaryLabel: 'Ir para o Dashboard',
       genericLabel: 'Ver Projetos',

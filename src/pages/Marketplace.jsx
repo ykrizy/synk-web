@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useLocation, useSearchParams } from 'react-router-dom'
 import useMeta from '@/hooks/useMeta'
 import useSmartCTA from '@/hooks/useSmartCTA'
 import PageHero from '@/components/ui/PageHero'
@@ -402,12 +402,14 @@ function ProjectCard({ p, ctaTo = '/registar', onCandidatar = null, jaCandidatou
 export default function Marketplace() {
   const { empresaTo, especialistaTo } = useSmartCTA()
   const { user, perfil } = useAuth()
+  const location = useLocation()
+  const [searchParams] = useSearchParams()
   useMeta({
     title: 'Marketplace — Synk',
     description: 'Encontra especialistas verificados ou publica o teu projecto. O marketplace da Synk liga empresas e talentos independentes em Portugal.',
   })
 
-  const [activeTab, setActiveTab] = useState('especialistas')
+  const [activeTab, setActiveTab] = useState(() => searchParams.get('tab') === 'projetos' ? 'projectos' : 'especialistas')
   const [activeCategory, setActiveCategory] = useState('Todos')
   const [search, setSearch] = useState('')
   const [availableOnly, setAvailableOnly] = useState(false)
@@ -474,17 +476,16 @@ export default function Marketplace() {
       .catch(() => {})
   }, [])
 
-  // Carregar candidaturas já feitas pelo especialista
+  // Carregar candidaturas já feitas pelo especialista — re-executa sempre que navegar para esta página
   useEffect(() => {
     if (!user) return
-    // Tenta sempre — se não houver registo de especialista, volta vazio
     supabase
       .from('especialistas')
       .select('id')
       .eq('user_id', user.id)
       .maybeSingle()
       .then(async ({ data: esp }) => {
-        if (!esp) return
+        if (!esp) { setProjetosComCandidatura(new Set()); return }
         const { data } = await supabase
           .from('propostas')
           .select('projeto_id')
@@ -492,7 +493,7 @@ export default function Marketplace() {
         setProjetosComCandidatura(new Set((data ?? []).map(p => p.projeto_id)))
       })
       .catch(() => {})
-  }, [user])
+  }, [user, location.key])
 
   const categories = activeTab === 'especialistas' ? CATEGORIES_SPECIALISTS : CATEGORIES_PROJECTS
 

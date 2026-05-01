@@ -103,7 +103,7 @@ export default function Navbar() {
                   </Link>
                 )}
                 {perfil === 'especialista' && (
-                  <Link to="/marketplace" className="btn-primary" style={{ fontSize: '13.5px', padding: '9px 20px' }}>
+                  <Link to="/marketplace?tab=projetos" className="btn-primary" style={{ fontSize: '13.5px', padding: '9px 20px' }}>
                     Ver Projetos
                   </Link>
                 )}
@@ -175,7 +175,7 @@ export default function Navbar() {
                   <Link to="/publicar-projeto" className="btn-ghost flex-1 justify-center" style={{ fontSize: '13px' }}>Publicar</Link>
                 )}
                 {perfil === 'especialista' && (
-                  <Link to="/marketplace" className="btn-ghost flex-1 justify-center" style={{ fontSize: '13px' }}>Projetos</Link>
+                  <Link to="/marketplace?tab=projetos" className="btn-ghost flex-1 justify-center" style={{ fontSize: '13px' }}>Projetos</Link>
                 )}
                 <button onClick={handleLogout} className="btn-ghost justify-center" style={{ fontSize: '13px', padding: '8px 16px' }}>Sair</button>
               </>
