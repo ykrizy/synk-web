@@ -339,9 +339,13 @@ export default function Mensagens() {
     <div
       className="flex"
       style={{
-        height: '100vh',
-        paddingTop: '60px',
+        position: 'fixed',
+        top: '60px',
+        left: 0,
+        right: 0,
+        bottom: 0,
         background: 'var(--bg)',
+        zIndex: 10,
       }}
     >
       {/* ── Sidebar ── */}
