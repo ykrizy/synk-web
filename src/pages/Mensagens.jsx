@@ -45,15 +45,27 @@ function Chat({ projetoId, empresaId, especialistaId, userId }) {
   async function enviar(e) {
     e.preventDefault()
     if (!texto.trim() || enviando) return
-    setEnviando(true)
-    await supabase.from('mensagens').insert({
-      projeto_id: projetoId,
-      empresa_id: empresaId,
-      especialista_id: especialistaId,
-      remetente_id: userId,
-      conteudo: texto.trim(),
-    })
+    const conteudo = texto.trim()
     setTexto('')
+    setEnviando(true)
+
+    const { data, error } = await supabase
+      .from('mensagens')
+      .insert({
+        projeto_id: projetoId,
+        empresa_id: empresaId,
+        especialista_id: especialistaId,
+        remetente_id: userId,
+        conteudo,
+      })
+      .select()
+      .single()
+
+    if (!error && data) {
+      // Adiciona imediatamente ao state (sem esperar pelo Realtime)
+      setMensagens(prev => prev.find(x => x.id === data.id) ? prev : [...prev, data])
+    }
+
     setEnviando(false)
     inputRef.current?.focus()
   }
