@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react'
 import Reveal from '@/components/ui/Reveal'
 
 const FEATURES = [
@@ -71,95 +72,208 @@ const FEATURES = [
   },
 ]
 
-const PROJECTS = [
-  { name: 'Automação ERP', status: 'Em Progresso', progress: 75, color: 'var(--brand)', statusColor: 'var(--brand-light)', statusBorder: 'rgba(124,92,246,0.25)', statusBg: 'rgba(124,92,246,0.1)' },
-  { name: 'CRM Integration', status: 'Em Revisão', progress: 95, color: '#F59E0B', statusColor: '#FCD34D', statusBorder: 'rgba(245,158,11,0.25)', statusBg: 'rgba(245,158,11,0.1)' },
-  { name: 'BI Dashboard', status: 'Concluído', progress: 100, color: 'var(--success)', statusColor: 'var(--success-light)', statusBorder: 'rgba(16,185,129,0.25)', statusBg: 'rgba(16,185,129,0.1)' },
+const TIMELINE_STEPS = [
+  {
+    icon: (
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" /><polyline points="14 2 14 8 20 8" />
+      </svg>
+    ),
+    label: 'Projeto publicado',
+    detail: 'Automação ERP · TechCorp SA',
+    time: '2 min',
+    done: true,
+    accent: 'rgba(124,92,246,0.8)',
+    accentBg: 'rgba(124,92,246,0.12)',
+    accentBorder: 'rgba(124,92,246,0.25)',
+  },
+  {
+    icon: (
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" /><circle cx="9" cy="7" r="4" />
+        <path d="M23 21v-2a4 4 0 0 0-3-3.87" /><path d="M16 3.13a4 4 0 0 1 0 7.75" />
+      </svg>
+    ),
+    label: '4 propostas recebidas',
+    detail: 'Especialistas verificados',
+    time: '18h',
+    done: true,
+    accent: 'rgba(129,140,248,0.8)',
+    accentBg: 'rgba(129,140,248,0.1)',
+    accentBorder: 'rgba(129,140,248,0.2)',
+  },
+  {
+    icon: (
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" /><polyline points="22 4 12 14.01 9 11.01" />
+      </svg>
+    ),
+    label: 'Especialista selecionado',
+    detail: 'Ana Costa · Rating 4.9★',
+    time: '38h',
+    done: true,
+    accent: 'rgba(52,211,153,0.8)',
+    accentBg: 'rgba(52,211,153,0.1)',
+    accentBorder: 'rgba(52,211,153,0.2)',
+  },
+  {
+    icon: (
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+        <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
+      </svg>
+    ),
+    label: 'Entrega em progresso',
+    detail: '75% concluído · 3 dias restantes',
+    time: 'Agora',
+    done: false,
+    accent: 'rgba(251,146,60,0.8)',
+    accentBg: 'rgba(251,146,60,0.1)',
+    accentBorder: 'rgba(251,146,60,0.2)',
+  },
 ]
 
-function DashboardMockup() {
+function ProjectTimeline() {
+  const [activeStep, setActiveStep] = useState(3)
+
+  useEffect(() => {
+    const t = setInterval(() => {
+      setActiveStep(prev => (prev + 1) % TIMELINE_STEPS.length)
+    }, 3000)
+    return () => clearInterval(t)
+  }, [])
+
+  const step = TIMELINE_STEPS[activeStep]
+
   return (
     <div
       className="w-full max-w-sm rounded-2xl overflow-hidden"
       style={{
         background: 'var(--surface)',
         border: '1px solid var(--border-2)',
-        boxShadow: '0 32px 64px rgba(0,0,0,0.5)',
+        boxShadow: '0 32px 64px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.03)',
       }}
     >
-      {/* Chrome bar */}
-      <div className="flex items-center gap-2 px-4 py-3" style={{ borderBottom: '1px solid var(--border)' }}>
-        <div className="w-3 h-3 rounded-full" style={{ background: '#ff5f57' }} />
-        <div className="w-3 h-3 rounded-full" style={{ background: '#febc2e' }} />
-        <div className="w-3 h-3 rounded-full" style={{ background: '#28c840' }} />
-        <span className="ml-2 text-xs font-medium" style={{ color: 'var(--text-3)' }}>synk.pt/dashboard</span>
+      {/* Header */}
+      <div
+        className="px-5 py-4 flex items-center justify-between"
+        style={{ borderBottom: '1px solid rgba(255,255,255,0.06)', background: 'rgba(255,255,255,0.02)' }}
+      >
+        <div className="flex items-center gap-2.5">
+          <div
+            className="w-6 h-6 rounded-lg flex items-center justify-center"
+            style={{ background: 'var(--brand)', boxShadow: '0 0 10px rgba(124,92,246,0.4)' }}
+          >
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" />
+            </svg>
+          </div>
+          <span className="text-sm font-semibold" style={{ color: 'var(--text)', letterSpacing: '-0.02em' }}>
+            Automação ERP
+          </span>
+        </div>
+        <span
+          className="text-xs font-semibold px-2.5 py-1 rounded-full"
+          style={{ background: 'rgba(251,146,60,0.12)', color: 'rgba(251,146,60,0.9)', border: '1px solid rgba(251,146,60,0.2)' }}
+        >
+          Em progresso
+        </span>
       </div>
 
-      <div className="p-5">
-        <div className="flex items-center justify-between mb-5">
-          <div>
-            <div className="text-sm font-bold" style={{ color: 'var(--text)', letterSpacing: '-0.02em' }}>Os meus projetos</div>
-            <div className="text-xs" style={{ color: 'var(--text-3)' }}>3 projetos ativos</div>
-          </div>
-          <button className="btn-primary" style={{ padding: '6px 14px', fontSize: '12px' }}>+ Novo</button>
-        </div>
-
-        <div className="space-y-3">
-          {PROJECTS.map((p, i) => (
-            <div
-              key={i}
-              className="rounded-xl p-4"
-              style={{ background: 'var(--surface-2)', border: '1px solid var(--border)' }}
-            >
-              <div className="flex items-center justify-between mb-2.5">
-                <span className="text-sm font-medium" style={{ color: 'var(--text)', letterSpacing: '-0.01em' }}>{p.name}</span>
-                <span
-                  className="badge"
+      {/* Timeline steps */}
+      <div className="px-5 py-4">
+        <div className="space-y-1">
+          {TIMELINE_STEPS.map((s, i) => {
+            const isActive = i === activeStep
+            const isPast = s.done && !isActive
+            return (
+              <div key={i} className="relative">
+                <div
+                  className="flex items-start gap-3 rounded-xl px-3 py-3"
                   style={{
-                    background: p.statusBg,
-                    color: p.statusColor,
-                    border: `1px solid ${p.statusBorder}`,
-                    padding: '2px 8px',
-                    borderRadius: '999px',
-                    fontSize: '10px',
-                    fontWeight: '600',
+                    background: isActive ? s.accentBg : 'transparent',
+                    border: `1px solid ${isActive ? s.accentBorder : 'transparent'}`,
+                    transition: 'all 0.5s ease',
                   }}
                 >
-                  {p.status}
-                </span>
-              </div>
-              <div className="h-1 rounded-full" style={{ background: 'var(--surface-3)' }}>
-                <div className="h-1 rounded-full" style={{ background: p.color, width: `${p.progress}%` }} />
-              </div>
-              <div className="text-right mt-1">
-                <span className="text-xs" style={{ color: 'var(--text-3)' }}>{p.progress}%</span>
-              </div>
-            </div>
-          ))}
-        </div>
+                  {/* Icon */}
+                  <div
+                    className="w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5"
+                    style={{
+                      background: isActive ? s.accentBg : isPast ? 'rgba(52,211,153,0.1)' : 'rgba(255,255,255,0.04)',
+                      color: isActive ? s.accent : isPast ? 'rgba(52,211,153,0.7)' : 'var(--text-3)',
+                      border: `1px solid ${isActive ? s.accentBorder : isPast ? 'rgba(52,211,153,0.15)' : 'rgba(255,255,255,0.07)'}`,
+                      transition: 'all 0.5s ease',
+                    }}
+                  >
+                    {isPast ? (
+                      <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                        <polyline points="20 6 9 17 4 12" />
+                      </svg>
+                    ) : s.icon}
+                  </div>
 
-        <div
-          className="mt-4 rounded-xl p-4"
-          style={{ background: 'rgba(16,185,129,0.05)', border: '1px solid rgba(16,185,129,0.15)' }}
-        >
-          <div className="flex items-center justify-between">
-            <div>
-              <div
-                className="text-xs font-semibold uppercase tracking-widest mb-1 flex items-center gap-1.5"
-                style={{ color: 'var(--success-light)' }}
-              >
-                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
-                </svg>
-                Escrow Total
+                  {/* Content */}
+                  <div className="flex-1 min-w-0">
+                    <p
+                      className="text-xs font-semibold"
+                      style={{
+                        color: isActive ? 'var(--text)' : isPast ? 'var(--text-2)' : 'var(--text-3)',
+                        letterSpacing: '-0.01em',
+                        transition: 'color 0.5s ease',
+                      }}
+                    >
+                      {s.label}
+                    </p>
+                    <p className="text-xs mt-0.5" style={{ color: 'var(--text-3)' }}>{s.detail}</p>
+                  </div>
+
+                  {/* Time */}
+                  <div className="flex items-center gap-1.5 flex-shrink-0">
+                    {isActive && <span className="w-1.5 h-1.5 rounded-full animate-pulse" style={{ background: s.accent }} />}
+                    <span className="text-xs" style={{ color: isActive ? s.accent : 'var(--text-3)', transition: 'color 0.5s ease' }}>
+                      {s.time}
+                    </span>
+                  </div>
+                </div>
+
+                {/* Connector line */}
+                {i < TIMELINE_STEPS.length - 1 && (
+                  <div
+                    className="absolute left-[22px] ml-0.5"
+                    style={{
+                      top: '44px',
+                      width: '1px',
+                      height: '8px',
+                      background: i < activeStep ? 'rgba(52,211,153,0.3)' : 'rgba(255,255,255,0.07)',
+                      transition: 'background 0.5s ease',
+                    }}
+                  />
+                )}
               </div>
-              <div className="font-display" style={{ fontSize: '1.5rem', color: 'var(--text)' }}>€7.200</div>
-            </div>
-            <div className="text-right">
-              <div className="text-xs" style={{ color: 'var(--text-3)' }}>Protegido</div>
-              <div className="text-xs font-medium" style={{ color: 'var(--success-light)' }}>Garantido</div>
-            </div>
+            )
+          })}
+        </div>
+      </div>
+
+      {/* Footer */}
+      <div
+        className="px-5 py-4 flex items-center justify-between"
+        style={{ borderTop: '1px solid rgba(255,255,255,0.05)', background: 'rgba(255,255,255,0.01)' }}
+      >
+        <div className="flex items-center gap-2">
+          <div className="w-6 h-6 rounded-lg flex items-center justify-center" style={{ background: 'rgba(52,211,153,0.1)' }}>
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#34d399" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+            </svg>
           </div>
+          <div>
+            <p className="text-xs font-semibold" style={{ color: '#34d399' }}>€2.800 em Escrow</p>
+            <p className="text-xs" style={{ color: 'var(--text-3)' }}>Libertado na aprovação</p>
+          </div>
+        </div>
+        <div className="text-right">
+          <p className="text-xs font-bold" style={{ color: 'var(--text)' }}>TechCorp SA</p>
+          <p className="text-xs" style={{ color: 'var(--text-3)' }}>Ana Costa · 38h match</p>
         </div>
       </div>
     </div>
@@ -206,10 +320,10 @@ export default function WhySynk() {
             </div>
           </div>
 
-          {/* Mockup */}
+          {/* Timeline mockup */}
           <Reveal delay={200}>
             <div className="flex justify-center">
-              <DashboardMockup />
+              <ProjectTimeline />
             </div>
           </Reveal>
         </div>

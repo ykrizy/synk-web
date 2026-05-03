@@ -48,24 +48,32 @@ const ACTIVITY = [
     label: 'Nova proposta recebida',
     sub: 'Automação RPA · Ana Costa · €2.800',
     time: '2 min',
+    to: '/dashboard',
+    tooltip: 'Ver proposta no Dashboard',
   },
   {
     dot: 'rgba(129,140,248,0.8)',
     label: 'Match encontrado em 38h',
     sub: 'Integração Zapier · Miguel Santos',
     time: '1h',
+    to: '/marketplace?tab=projetos',
+    tooltip: 'Ver projetos disponíveis',
   },
   {
     dot: 'rgba(52,211,153,0.8)',
     label: 'Projeto concluído com sucesso',
     sub: 'Power Automate · Avaliação 5★',
     time: '3h',
+    to: '/marketplace?tab=especialistas',
+    tooltip: 'Ver especialistas verificados',
   },
   {
     dot: 'rgba(167,139,250,0.8)',
     label: 'Pagamento libertado via Escrow',
     sub: 'GreenRetail SA · €4.500',
     time: '5h',
+    to: '/dashboard',
+    tooltip: 'Gerir pagamentos no Dashboard',
   },
 ]
 
@@ -76,6 +84,7 @@ function fmt(n) {
 
 function HeroMockup() {
   const [stats, setStats] = useState({ especialistas: '—', projetos: '—' })
+  const [activeIdx, setActiveIdx] = useState(0)
 
   useEffect(() => {
     Promise.all([
@@ -87,6 +96,13 @@ function HeroMockup() {
         projetos: fmt(proj.count ?? 0),
       })
     }).catch(() => {})
+  }, [])
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setActiveIdx(prev => (prev + 1) % ACTIVITY.length)
+    }, 2400)
+    return () => clearInterval(timer)
   }, [])
 
   const METRICS = [
@@ -152,27 +168,69 @@ function HeroMockup() {
             <span className="text-xs font-semibold uppercase tracking-widest" style={{ color: 'var(--text-3)', letterSpacing: '0.06em' }}>
               Atividade recente
             </span>
-            <span className="text-xs" style={{ color: 'var(--brand-light)' }}>Ver tudo</span>
+            <Link
+              to="/marketplace"
+              style={{ textDecoration: 'none', color: 'var(--brand-light)', fontSize: '12px', display: 'flex', alignItems: 'center', gap: '3px' }}
+            >
+              Ver tudo
+              <svg width="10" height="10" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
+                <path d="M5 12h14M12 5l7 7-7 7" />
+              </svg>
+            </Link>
           </div>
           <div className="space-y-1.5">
-            {ACTIVITY.map((a, i) => (
-              <div
-                key={i}
-                className="flex items-center gap-3 rounded-lg px-3 py-2"
-                style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.05)' }}
-              >
-                <span className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ background: a.dot }} />
-                <div className="flex-1 min-w-0">
-                  <p className="text-xs font-medium truncate" style={{ color: 'var(--text-2)', letterSpacing: '-0.01em' }}>
-                    {a.label}
-                  </p>
-                  <p className="text-xs truncate mt-0.5" style={{ color: 'var(--text-3)' }}>
-                    {a.sub}
-                  </p>
-                </div>
-                <span className="text-xs flex-shrink-0" style={{ color: 'var(--text-3)' }}>{a.time}</span>
-              </div>
-            ))}
+            {ACTIVITY.map((a, i) => {
+              const isActive = i === activeIdx
+              return (
+                <Link
+                  key={i}
+                  to={a.to}
+                  title={a.tooltip}
+                  style={{ textDecoration: 'none', display: 'block' }}
+                  onMouseEnter={e => { if (!isActive) e.currentTarget.style.background = 'rgba(255,255,255,0.05)' }}
+                  onMouseLeave={e => { if (!isActive) e.currentTarget.style.background = isActive ? 'rgba(124,92,246,0.07)' : 'rgba(255,255,255,0.03)' }}
+                >
+                  <div
+                    className="flex items-center gap-3 rounded-lg px-3 py-2 group"
+                    style={{
+                      background: isActive ? 'rgba(124,92,246,0.07)' : 'rgba(255,255,255,0.03)',
+                      border: `1px solid ${isActive ? 'rgba(124,92,246,0.2)' : 'rgba(255,255,255,0.05)'}`,
+                      transition: 'all 0.4s ease',
+                      cursor: 'pointer',
+                    }}
+                  >
+                    <span
+                      className="w-1.5 h-1.5 rounded-full flex-shrink-0"
+                      style={{
+                        background: a.dot,
+                        boxShadow: isActive ? `0 0 6px ${a.dot}` : 'none',
+                        transition: 'box-shadow 0.4s ease',
+                      }}
+                    />
+                    <div className="flex-1 min-w-0">
+                      <p className="text-xs font-medium truncate" style={{ color: isActive ? 'var(--text)' : 'var(--text-2)', letterSpacing: '-0.01em', transition: 'color 0.4s ease' }}>
+                        {a.label}
+                      </p>
+                      <p className="text-xs truncate mt-0.5" style={{ color: 'var(--text-3)' }}>
+                        {a.sub}
+                      </p>
+                    </div>
+                    <div className="flex items-center gap-1.5 flex-shrink-0">
+                      {isActive && (
+                        <span className="w-1.5 h-1.5 rounded-full animate-pulse" style={{ background: a.dot }} />
+                      )}
+                      <span className="text-xs" style={{ color: isActive ? 'var(--text-3)' : 'var(--text-3)' }}>{a.time}</span>
+                      <svg
+                        width="10" height="10" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24"
+                        style={{ color: 'var(--text-3)', opacity: 0.5, flexShrink: 0 }}
+                      >
+                        <path d="M9 18l6-6-6-6" />
+                      </svg>
+                    </div>
+                  </div>
+                </Link>
+              )
+            })}
           </div>
         </div>
 
@@ -199,6 +257,7 @@ function HeroMockup() {
           border: '1px solid rgba(124,92,246,0.35)',
           boxShadow: '0 8px 24px rgba(0,0,0,0.4), 0 0 16px rgba(124,92,246,0.15)',
           backdropFilter: 'blur(12px)',
+          whiteSpace: 'nowrap',
         }}
       >
         <div className="flex items-center gap-2">
@@ -215,28 +274,6 @@ function HeroMockup() {
         </div>
       </div>
 
-      {/* Floating badge — bottom left */}
-      <div
-        className="absolute -bottom-3 -left-3 rounded-xl px-3 py-2"
-        style={{
-          background: 'rgba(9,9,13,0.95)',
-          border: '1px solid rgba(52,211,153,0.3)',
-          boxShadow: '0 8px 24px rgba(0,0,0,0.4), 0 0 16px rgba(52,211,153,0.1)',
-          backdropFilter: 'blur(12px)',
-        }}
-      >
-        <div className="flex items-center gap-2">
-          <div className="w-6 h-6 rounded-lg flex items-center justify-center flex-shrink-0" style={{ background: 'rgba(52,211,153,0.15)' }}>
-            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#34d399" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-              <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />
-            </svg>
-          </div>
-          <div>
-            <p className="text-xs font-bold" style={{ color: '#34d399', lineHeight: 1 }}>98% satisfação</p>
-            <p className="text-xs" style={{ color: 'var(--text-3)' }}>nos últimos 30 dias</p>
-          </div>
-        </div>
-      </div>
     </div>
   )
 }
