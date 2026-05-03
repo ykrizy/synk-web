@@ -35,7 +35,7 @@ function EmpresaDashboard({ dados: dadosIniciais }) {
     if (!dados?.id) return
     supabase
       .from('projetos')
-      .select('*')
+      .select('*, propostas(id)')
       .eq('empresa_id', dados.id)
       .order('created_at', { ascending: false })
       .then(({ data }) => setProjetos(data || []))
@@ -281,6 +281,11 @@ function EmpresaDashboard({ dados: dadosIniciais }) {
                     </p>
                   </div>
                   <div className="flex items-center gap-3 flex-shrink-0">
+                    {p.propostas?.length > 0 && (
+                      <span className="badge badge-violet" style={{ fontSize: '11px' }}>
+                        {p.propostas.length} proposta{p.propostas.length !== 1 ? 's' : ''}
+                      </span>
+                    )}
                     <span className={`badge ${p.estado === 'aberto' ? 'badge-emerald' : p.estado === 'em_andamento' ? 'badge-amber' : 'badge-indigo'}`}>
                       {p.estado === 'aberto' ? 'Aberto' : p.estado === 'em_andamento' ? 'Em andamento' : 'Concluído'}
                     </span>
@@ -542,10 +547,17 @@ function EspecialistaDashboard({ dados: dadosIniciais }) {
                       {prop.preco_proposto && ` · €${Number(prop.preco_proposto).toLocaleString('pt-PT')}`}
                     </p>
                   </div>
-                  <div className="flex items-center gap-2 flex-shrink-0">
+                  <div className="flex items-center gap-2 flex-shrink-0 flex-wrap justify-end">
                     <span className={`badge ${prop.estado === 'aceite' ? 'badge-emerald' : prop.estado === 'rejeitado' ? 'badge-red' : 'badge-amber'}`}>
                       {prop.estado === 'aceite' ? '✅ Aceite' : prop.estado === 'rejeitado' ? '❌ Rejeitado' : '⏳ Pendente'}
                     </span>
+                    <Link
+                      to={`/projeto/${prop.projeto_id}`}
+                      className="btn-ghost"
+                      style={{ fontSize: '12px', padding: '5px 12px', textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '4px' }}
+                    >
+                      {prop.estado === 'aceite' ? '💬 Chat' : '📋 Ver projeto'}
+                    </Link>
                     {prop.estado === 'pendente' && (
                       <>
                         <button
