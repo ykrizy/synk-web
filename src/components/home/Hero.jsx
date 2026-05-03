@@ -40,134 +40,191 @@ const SOCIAL_PROOF = [
   },
 ]
 
+const ACTIVITY = [
+  {
+    icon: '🟢',
+    color: '#34d399',
+    bg: 'rgba(52,211,153,0.08)',
+    border: 'rgba(52,211,153,0.15)',
+    label: 'Nova proposta recebida',
+    sub: 'Automação RPA · Ana Costa · €2.800',
+    time: '2 min',
+  },
+  {
+    icon: '⚡',
+    color: '#818cf8',
+    bg: 'rgba(129,140,248,0.08)',
+    border: 'rgba(129,140,248,0.15)',
+    label: 'Match encontrado em 38h',
+    sub: 'Integração Zapier · Miguel Santos',
+    time: '1h',
+  },
+  {
+    icon: '✅',
+    color: '#34d399',
+    bg: 'rgba(52,211,153,0.08)',
+    border: 'rgba(52,211,153,0.15)',
+    label: 'Projeto concluído',
+    sub: 'Power Automate · Avaliação 5★',
+    time: '3h',
+  },
+  {
+    icon: '💳',
+    color: '#a78bfa',
+    bg: 'rgba(167,139,250,0.08)',
+    border: 'rgba(167,139,250,0.15)',
+    label: 'Pagamento libertado via Escrow',
+    sub: 'GreenRetail SA · €4.500',
+    time: '5h',
+  },
+]
+
+const METRICS = [
+  { value: '247', label: 'Especialistas', color: '#818cf8' },
+  { value: '1.2K', label: 'Projetos', color: '#34d399' },
+  { value: '4.9★', label: 'Rating médio', color: '#f59e0b' },
+  { value: '38h', label: 'Tempo de match', color: '#22d3ee' },
+]
+
 function HeroMockup() {
   return (
-    <div className="relative" style={{ width: '360px', maxWidth: '100%' }}>
+    <div className="relative" style={{ width: '380px', maxWidth: '100%' }}>
       <div
-        className="rounded-2xl p-5"
+        className="rounded-2xl overflow-hidden"
         style={{
           background: 'var(--surface)',
           border: '1px solid var(--border-2)',
           boxShadow: '0 32px 64px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.04), 0 0 60px rgba(124,92,246,0.1)',
         }}
       >
-        <div className="flex items-center justify-between mb-4">
-          <div className="flex items-center gap-2">
-            <span className="font-display text-sm text-gradient" style={{ letterSpacing: '-0.02em' }}>Synk</span>
-            <span className="badge badge-emerald" style={{ fontSize: '10px' }}>Ao vivo</span>
-          </div>
-          <span className="text-xs" style={{ color: 'var(--text-3)' }}>há 2 min</span>
-        </div>
-
-        <div className="rounded-xl p-4 mb-4" style={{ background: 'var(--surface-2)', border: '1px solid var(--border)' }}>
-          <div className="flex items-start justify-between mb-3">
-            <div>
-              <div className="text-xs font-semibold uppercase tracking-wide mb-1" style={{ color: 'var(--text-3)' }}>Novo Projeto</div>
-              <div className="font-semibold text-sm" style={{ color: 'var(--text)' }}>Automação de Faturação ERP</div>
-            </div>
-            <span className="badge badge-amber">Em Progresso</span>
-          </div>
-          <div className="flex items-center gap-2 flex-wrap">
-            <span className="badge badge-indigo">RPA</span>
-            <span className="badge badge-cyan">SAP</span>
-            <span className="badge badge-violet">Zapier</span>
-          </div>
-        </div>
-
-        <div className="text-xs font-semibold uppercase tracking-widest mb-3 flex items-center gap-1.5" style={{ color: 'var(--text-3)' }}>
-          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="var(--brand)" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
-            <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
-          </svg>
-          Match Encontrado
-        </div>
-        <div className="flex items-center gap-3 mb-4">
-          <div
-            className="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 font-bold text-sm"
-            style={{ background: 'linear-gradient(135deg, var(--brand), var(--brand-dark))', color: '#fff' }}
-          >
-            MS
-          </div>
-          <div className="flex-1 min-w-0">
-            <div className="font-semibold text-sm" style={{ color: 'var(--text)' }}>Miguel Santos</div>
-            <div className="text-xs" style={{ color: 'var(--text-2)' }}>RPA & Workflow Specialist</div>
-          </div>
-          <div className="flex items-center gap-1">
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="var(--warning)" stroke="none">
-              <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
-            </svg>
-            <span className="text-sm font-semibold" style={{ color: 'var(--text)' }}>4.9</span>
-          </div>
-        </div>
-
-        <div className="mb-4">
-          <div className="flex justify-between text-xs mb-1.5" style={{ color: 'var(--text-3)' }}>
-            <span>Progresso do projeto</span>
-            <span style={{ color: 'var(--success-light)' }}>75%</span>
-          </div>
-          <div className="h-1 rounded-full" style={{ background: 'var(--surface-3)' }}>
-            <div className="h-1 rounded-full" style={{ background: 'linear-gradient(90deg, var(--brand), var(--success))', width: '75%' }} />
-          </div>
-        </div>
-
+        {/* Header */}
         <div
-          className="flex items-center justify-between rounded-xl p-3"
-          style={{ background: 'rgba(16,185,129,0.07)', border: '1px solid rgba(16,185,129,0.18)' }}
+          className="flex items-center justify-between px-5 py-4"
+          style={{ borderBottom: '1px solid rgba(255,255,255,0.06)', background: 'rgba(255,255,255,0.02)' }}
         >
-          <div className="flex items-center gap-2">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--success-light)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+          <div className="flex items-center gap-2.5">
+            <div
+              className="w-6 h-6 rounded-lg flex items-center justify-center"
+              style={{ background: 'var(--brand)', boxShadow: '0 0 10px rgba(124,92,246,0.5)' }}
+            >
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" />
+              </svg>
+            </div>
+            <span className="font-display text-sm" style={{ color: 'var(--text)', letterSpacing: '-0.02em' }}>Synk Platform</span>
+          </div>
+          <div className="flex items-center gap-1.5">
+            <span className="w-1.5 h-1.5 rounded-full animate-pulse" style={{ background: '#34d399' }} />
+            <span className="text-xs font-semibold" style={{ color: '#34d399' }}>Ao vivo</span>
+          </div>
+        </div>
+
+        {/* Metrics grid */}
+        <div className="grid grid-cols-4 gap-px" style={{ background: 'rgba(255,255,255,0.04)' }}>
+          {METRICS.map((m) => (
+            <div
+              key={m.label}
+              className="flex flex-col items-center justify-center py-4"
+              style={{ background: 'var(--surface)' }}
+            >
+              <span className="font-extrabold text-lg leading-none mb-1" style={{ color: m.color, letterSpacing: '-0.03em' }}>
+                {m.value}
+              </span>
+              <span className="text-center leading-tight" style={{ color: 'var(--text-3)', fontSize: '10px', letterSpacing: '-0.01em' }}>
+                {m.label}
+              </span>
+            </div>
+          ))}
+        </div>
+
+        {/* Activity feed */}
+        <div className="px-5 pt-4 pb-2">
+          <div className="flex items-center justify-between mb-3">
+            <span className="text-xs font-semibold uppercase tracking-widest" style={{ color: 'var(--text-3)', letterSpacing: '0.06em' }}>
+              Atividade recente
+            </span>
+            <span className="text-xs" style={{ color: 'var(--brand-light)' }}>Ver tudo</span>
+          </div>
+          <div className="space-y-2">
+            {ACTIVITY.map((a, i) => (
+              <div
+                key={i}
+                className="flex items-center gap-3 rounded-xl px-3 py-2.5"
+                style={{ background: a.bg, border: `1px solid ${a.border}` }}
+              >
+                <span style={{ fontSize: '14px', flexShrink: 0 }}>{a.icon}</span>
+                <div className="flex-1 min-w-0">
+                  <p className="text-xs font-semibold truncate" style={{ color: 'var(--text)', letterSpacing: '-0.01em' }}>
+                    {a.label}
+                  </p>
+                  <p className="text-xs truncate mt-0.5" style={{ color: 'var(--text-3)' }}>
+                    {a.sub}
+                  </p>
+                </div>
+                <span className="text-xs flex-shrink-0" style={{ color: 'var(--text-3)' }}>{a.time}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Footer bar */}
+        <div
+          className="flex items-center justify-between px-5 py-3 mt-2"
+          style={{ borderTop: '1px solid rgba(255,255,255,0.05)', background: 'rgba(255,255,255,0.01)' }}
+        >
+          <div className="flex items-center gap-1.5">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#34d399" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
               <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
             </svg>
-            <span className="text-xs font-medium" style={{ color: 'var(--success-light)' }}>Escrow Protegido</span>
+            <span className="text-xs font-medium" style={{ color: '#34d399' }}>Pagamentos protegidos por Escrow</span>
           </div>
-          <span className="text-sm font-bold" style={{ color: 'var(--text)' }}>€2.400</span>
+          <span className="text-xs font-bold" style={{ color: 'var(--text-2)' }}>€1.2M+</span>
         </div>
       </div>
 
-      {/* Floating notification */}
+      {/* Floating badge — top right */}
       <div
-        className="absolute -top-4 -right-4 rounded-xl px-4 py-3"
+        className="absolute -top-3 -right-3 rounded-xl px-3 py-2"
         style={{
           background: 'rgba(9,9,13,0.95)',
-          border: '1px solid rgba(124,92,246,0.3)',
-          minWidth: '180px',
-          boxShadow: '0 8px 32px rgba(0,0,0,0.4), 0 0 20px rgba(124,92,246,0.12)',
+          border: '1px solid rgba(124,92,246,0.35)',
+          boxShadow: '0 8px 24px rgba(0,0,0,0.4), 0 0 16px rgba(124,92,246,0.15)',
           backdropFilter: 'blur(12px)',
         }}
       >
         <div className="flex items-center gap-2">
-          <div className="w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0" style={{ background: 'rgba(124,92,246,0.2)' }}>
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--brand-light)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" />
-              <path d="M13.73 21a2 2 0 0 1-3.46 0" />
+          <div className="w-6 h-6 rounded-lg flex items-center justify-center flex-shrink-0" style={{ background: 'rgba(124,92,246,0.2)' }}>
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="var(--brand-light)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" /><circle cx="9" cy="7" r="4" />
+              <path d="M23 21v-2a4 4 0 0 0-3-3.87" /><path d="M16 3.13a4 4 0 0 1 0 7.75" />
             </svg>
           </div>
           <div>
-            <div className="text-xs font-semibold" style={{ color: 'var(--text)' }}>Nova proposta</div>
-            <div className="text-xs" style={{ color: 'var(--text-2)' }}>Ana C. · €1.800</div>
+            <p className="text-xs font-bold" style={{ color: 'var(--text)', lineHeight: 1 }}>+12 hoje</p>
+            <p className="text-xs" style={{ color: 'var(--text-3)' }}>novos especialistas</p>
           </div>
         </div>
       </div>
 
-      {/* Floating success */}
+      {/* Floating badge — bottom left */}
       <div
-        className="absolute -bottom-4 -left-4 rounded-xl px-4 py-3"
+        className="absolute -bottom-3 -left-3 rounded-xl px-3 py-2"
         style={{
           background: 'rgba(9,9,13,0.95)',
-          border: '1px solid rgba(16,185,129,0.25)',
-          boxShadow: '0 8px 32px rgba(0,0,0,0.4), 0 0 20px rgba(16,185,129,0.08)',
+          border: '1px solid rgba(52,211,153,0.3)',
+          boxShadow: '0 8px 24px rgba(0,0,0,0.4), 0 0 16px rgba(52,211,153,0.1)',
           backdropFilter: 'blur(12px)',
         }}
       >
         <div className="flex items-center gap-2">
-          <div className="w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0" style={{ background: 'rgba(16,185,129,0.15)' }}>
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--success-light)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
-              <polyline points="22 4 12 14.01 9 11.01" />
+          <div className="w-6 h-6 rounded-lg flex items-center justify-center flex-shrink-0" style={{ background: 'rgba(52,211,153,0.15)' }}>
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#34d399" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+              <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />
             </svg>
           </div>
           <div>
-            <div className="text-xs font-semibold" style={{ color: 'var(--success-light)' }}>Projeto entregue</div>
-            <div className="text-xs" style={{ color: 'var(--text-2)' }}>Pagamento libertado</div>
+            <p className="text-xs font-bold" style={{ color: '#34d399', lineHeight: 1 }}>98% satisfação</p>
+            <p className="text-xs" style={{ color: 'var(--text-3)' }}>nos últimos 30 dias</p>
           </div>
         </div>
       </div>
