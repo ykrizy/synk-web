@@ -1,5 +1,6 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect } from 'react'
 import { useParams, useNavigate, Link } from 'react-router-dom'
+// Chat movido para /mensagens
 import useMeta from '@/hooks/useMeta'
 import Reveal from '@/components/ui/Reveal'
 import { useAuth } from '@/contexts/AuthContext'
@@ -152,7 +153,6 @@ export default function Projeto() {
   const [especialistaId, setEspecialistaId] = useState(null)
   const [minhaProposta, setMinhaProposta] = useState(null)
   const [propostas, setPropostas] = useState([])
-  const [chatAberto, setChatAberto] = useState(null) // especialista_id cujo chat está aberto
 
   // edit/delete state
   const [editMode, setEditMode] = useState(false)
@@ -349,26 +349,25 @@ export default function Projeto() {
                 </div>
               </div>
 
-              {/* Chat — só se aceite */}
-              {propStatus === 'aceite' && (
-                <div style={{ borderTop: '1px solid var(--border)', paddingTop: '1.5rem' }}>
-                  <Chat
-                    projetoId={id}
-                    empresaId={empresaId}
-                    especialistaId={especialistaId}
-                    userId={user.id}
-                    nomeOutro={projeto.empresas?.nome || 'Empresa'}
-                  />
-                </div>
-              )}
-
-              {propStatus === 'pendente' && (
-                <div style={{ borderTop: '1px solid var(--border)', paddingTop: '1rem' }}>
+              {/* Chat */}
+              <div style={{ borderTop: '1px solid var(--border)', paddingTop: '1.5rem' }}>
+                {propStatus === 'aceite' ? (
+                  <Link
+                    to={`/mensagens?projeto=${id}`}
+                    className="btn-primary"
+                    style={{ textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '8px', fontSize: '14px', padding: '10px 20px' }}
+                  >
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+                    </svg>
+                    Abrir chat com {projeto.empresas?.nome}
+                  </Link>
+                ) : (
                   <p className="text-sm" style={{ color: 'var(--text-3)' }}>
                     💡 O chat fica disponível depois de a empresa aceitar a tua candidatura.
                   </p>
-                </div>
-              )}
+                )}
+              </div>
             </div>
           </Reveal>
         </div>
@@ -571,28 +570,18 @@ export default function Projeto() {
                               </>
                             )}
                             {prop.estado === 'aceite' && (
-                              <button
-                                onClick={() => setChatAberto(chatAberto === prop.especialistas?.id ? null : prop.especialistas?.id)}
+                              <Link
+                                to={`/mensagens?projeto=${id}&esp=${prop.especialistas?.id}`}
                                 className="btn-ghost"
-                                style={{ fontSize: '12px', padding: '6px 14px', color: chatAberto === prop.especialistas?.id ? 'var(--brand-light)' : undefined }}
+                                style={{ fontSize: '12px', padding: '6px 14px', textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '6px' }}
                               >
-                                💬 {chatAberto === prop.especialistas?.id ? 'Fechar chat' : 'Abrir chat'}
-                              </button>
+                                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                  <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+                                </svg>
+                                Chat com {prop.especialistas?.nome?.split(' ')[0]}
+                              </Link>
                             )}
                           </div>
-
-                          {/* Chat inline */}
-                          {prop.estado === 'aceite' && chatAberto === prop.especialistas?.id && (
-                            <div className="mt-4">
-                              <Chat
-                                projetoId={id}
-                                empresaId={empresaId}
-                                especialistaId={prop.especialistas.id}
-                                userId={user.id}
-                                nomeOutro={prop.especialistas?.nome}
-                              />
-                            </div>
-                          )}
                         </div>
                       ))}
                     </div>

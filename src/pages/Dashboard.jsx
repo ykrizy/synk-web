@@ -552,7 +552,7 @@ function EspecialistaDashboard({ dados: dadosIniciais }) {
                       {prop.estado === 'aceite' ? '✅ Aceite' : prop.estado === 'rejeitado' ? '❌ Rejeitado' : '⏳ Pendente'}
                     </span>
                     <Link
-                      to={`/projeto/${prop.projeto_id}`}
+                      to={prop.estado === 'aceite' ? `/mensagens?projeto=${prop.projeto_id}` : `/projeto/${prop.projeto_id}`}
                       className="btn-ghost"
                       style={{ fontSize: '12px', padding: '5px 12px', textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '4px' }}
                     >

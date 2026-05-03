@@ -97,6 +97,30 @@ export default function Navbar() {
                 <Link to="/dashboard" className="btn-ghost" style={{ fontSize: '13.5px', padding: '8px 16px' }}>
                   Dashboard
                 </Link>
+                <Link
+                  to="/mensagens"
+                  title="Mensagens"
+                  style={{
+                    display: 'flex', alignItems: 'center', justifyContent: 'center',
+                    width: '36px', height: '36px', borderRadius: '10px',
+                    color: location.pathname === '/mensagens' ? 'var(--brand-light)' : 'var(--text-3)',
+                    background: location.pathname === '/mensagens' ? 'rgba(124,92,246,0.12)' : 'transparent',
+                    border: `1px solid ${location.pathname === '/mensagens' ? 'rgba(124,92,246,0.25)' : 'transparent'}`,
+                    transition: 'all 0.15s ease',
+                    textDecoration: 'none',
+                  }}
+                  onMouseEnter={e => { e.currentTarget.style.color = 'var(--brand-light)'; e.currentTarget.style.background = 'rgba(124,92,246,0.08)' }}
+                  onMouseLeave={e => {
+                    if (location.pathname !== '/mensagens') {
+                      e.currentTarget.style.color = 'var(--text-3)'
+                      e.currentTarget.style.background = 'transparent'
+                    }
+                  }}
+                >
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+                  </svg>
+                </Link>
                 {perfil === 'empresa' && (
                   <Link to="/publicar-projeto" className="btn-primary" style={{ fontSize: '13.5px', padding: '9px 20px' }}>
                     Publicar Projeto
