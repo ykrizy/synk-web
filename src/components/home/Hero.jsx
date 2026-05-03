@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
 import useSmartCTA from '@/hooks/useSmartCTA'
+import { useAuth } from '@/contexts/AuthContext'
 
 const SOCIAL_PROOF = [
   {
@@ -176,6 +177,24 @@ function HeroMockup() {
 
 export default function Hero() {
   const { empresaTo, especialistaTo } = useSmartCTA()
+  const { perfil } = useAuth()
+
+  const isEspecialista = perfil === 'especialista'
+  const isEmpresa = perfil === 'empresa'
+
+  // Role-aware content
+  const heroHeadingPart1 = isEspecialista ? 'Encontra os melhores' : 'Automatiza o teu'
+  const heroHighlight = isEspecialista ? 'projetos de automação' : 'negócio com os'
+  const heroHeadingPart2 = isEspecialista ? null : 'melhores especialistas'
+  const heroSub = isEspecialista
+    ? 'A Synk conecta-te a empresas que precisam das tuas competências. Projetos qualificados, pagamento garantido, sem intermediários desnecessários.'
+    : 'A Synk conecta a tua empresa a especialistas em automação verificados. Encontra o profissional certo, lança o projeto e paga só quando estiveres satisfeito.'
+
+  const primaryTo = isEspecialista ? especialistaTo : empresaTo
+  const primaryLabel = isEspecialista ? 'Ver Projetos →' : isEmpresa ? 'Publicar Projeto →' : 'Publicar Projeto Grátis'
+  const secondaryTo = isEspecialista || isEmpresa ? '/dashboard' : especialistaTo
+  const secondaryLabel = isEspecialista || isEmpresa ? 'Ir para o Dashboard' : 'Sou Especialista'
+
   return (
     <section
       className="relative min-h-screen flex items-center pt-16 overflow-hidden"
@@ -218,25 +237,25 @@ export default function Hero() {
               className="font-display mb-6"
               style={{ fontSize: 'clamp(2.4rem, 5.5vw, 4rem)', color: 'var(--text)' }}
             >
-              Automatiza o teu{' '}
-              <span className="text-gradient">negócio com os</span>{' '}
-              melhores especialistas
+              {heroHeadingPart1}{' '}
+              <span className="text-gradient">{heroHighlight}</span>
+              {heroHeadingPart2 && <>{' '}{heroHeadingPart2}</>}
             </h1>
 
             <p className="mb-10 leading-relaxed max-w-lg" style={{ color: 'var(--text-2)', fontSize: '1.125rem', letterSpacing: '-0.01em' }}>
-              A Synk conecta a tua empresa a especialistas em automação verificados. Encontra o profissional certo, lança o projeto e paga só quando estiveres satisfeito.
+              {heroSub}
             </p>
 
             <div className="flex flex-wrap gap-3 mb-12">
-              <Link to={empresaTo} className="btn-primary btn-primary-lg">
-                {empresaTo === '/publicar-projeto' ? 'Publicar Projeto →' : 'Publicar Projeto Grátis'}
-                {empresaTo !== '/publicar-projeto' && (
+              <Link to={primaryTo} className="btn-primary btn-primary-lg">
+                {primaryLabel}
+                {!isEspecialista && !isEmpresa && (
                   <svg width="15" height="15" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
                     <path d="M5 12h14M12 5l7 7-7 7" />
                   </svg>
                 )}
               </Link>
-              <Link to={especialistaTo} className="btn-outline">Sou Especialista</Link>
+              <Link to={secondaryTo} className="btn-outline">{secondaryLabel}</Link>
             </div>
 
             <div className="flex flex-wrap gap-x-5 gap-y-3">

@@ -533,8 +533,18 @@ export default function Marketplace() {
         heading="O talento certo para"
         highlight="cada projecto"
         sub="Explora centenas de especialistas verificados ou descobre projectos que precisam das tuas competências. Tudo num só lugar."
-        primaryCTA={{ label: 'Publicar Projecto', to: '/registar' }}
-        secondaryCTA={{ label: 'Criar Perfil', to: '/registar' }}
+        primaryCTA={
+          perfil === 'especialista'
+            ? { label: 'Explorar Projetos', to: '/marketplace?tab=projetos' }
+            : perfil === 'empresa'
+            ? { label: 'Publicar Projecto', to: empresaTo }
+            : { label: 'Publicar Projecto', to: '/registar' }
+        }
+        secondaryCTA={
+          perfil === 'especialista' || perfil === 'empresa'
+            ? { label: 'Ir para o Dashboard', to: '/dashboard' }
+            : { label: 'Criar Perfil', to: '/registar' }
+        }
       />
 
       {/* ── Tab switcher + filters ── */}
@@ -835,12 +845,11 @@ export default function Marketplace() {
       </section>
 
       <CTABanner
-        heading="Pronto para começar?"
-        sub="Publica o teu projecto ou cria o teu perfil hoje. É gratuito para começar."
-        primaryLabel="Publicar Projecto"
-        primaryTo="/registar"
-        secondaryLabel="Criar Perfil de Especialista"
-        secondaryTo="/registar"
+        heading={perfil === 'especialista' ? 'Encontra o teu próximo projeto' : 'Pronto para começar?'}
+        sub={perfil === 'especialista'
+          ? 'Candidata-te a projetos de automação publicados por empresas verificadas.'
+          : 'Publica o teu projecto ou cria o teu perfil hoje. É gratuito para começar.'
+        }
       />
 
       {/* Modal de candidatura */}
