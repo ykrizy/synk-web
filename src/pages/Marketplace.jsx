@@ -535,7 +535,7 @@ export default function Marketplace() {
         sub="Explora centenas de especialistas verificados ou descobre projectos que precisam das tuas competências. Tudo num só lugar."
         primaryCTA={
           perfil === 'especialista'
-            ? { label: 'Explorar Projetos', to: '/marketplace?tab=projetos' }
+            ? { label: 'Explorar Projetos', onClick: () => document.getElementById('projetos-section')?.scrollIntoView({ behavior: 'smooth' }) }
             : perfil === 'empresa'
             ? { label: 'Publicar Projecto', to: empresaTo }
             : { label: 'Publicar Projecto', to: '/registar' }
@@ -548,7 +548,7 @@ export default function Marketplace() {
       />
 
       {/* ── Tab switcher + filters ── */}
-      <section className="py-8 sticky top-16 z-30" style={{
+      <section id="projetos-section" className="py-8 sticky top-16 z-30" style={{
         background: 'rgba(8,11,18,0.95)',
         borderBottom: '1px solid rgba(255,255,255,0.06)',
         backdropFilter: 'blur(16px)',
