@@ -1,6 +1,8 @@
 import { Link } from 'react-router-dom'
+import { useState, useEffect } from 'react'
 import useSmartCTA from '@/hooks/useSmartCTA'
 import { useAuth } from '@/contexts/AuthContext'
+import { supabase } from '@/lib/supabase'
 
 const SOCIAL_PROOF = [
   {
@@ -42,51 +44,58 @@ const SOCIAL_PROOF = [
 
 const ACTIVITY = [
   {
-    icon: '🟢',
-    color: '#34d399',
-    bg: 'rgba(52,211,153,0.08)',
-    border: 'rgba(52,211,153,0.15)',
+    dot: 'rgba(52,211,153,0.8)',
     label: 'Nova proposta recebida',
     sub: 'Automação RPA · Ana Costa · €2.800',
     time: '2 min',
   },
   {
-    icon: '⚡',
-    color: '#818cf8',
-    bg: 'rgba(129,140,248,0.08)',
-    border: 'rgba(129,140,248,0.15)',
+    dot: 'rgba(129,140,248,0.8)',
     label: 'Match encontrado em 38h',
     sub: 'Integração Zapier · Miguel Santos',
     time: '1h',
   },
   {
-    icon: '✅',
-    color: '#34d399',
-    bg: 'rgba(52,211,153,0.08)',
-    border: 'rgba(52,211,153,0.15)',
-    label: 'Projeto concluído',
+    dot: 'rgba(52,211,153,0.8)',
+    label: 'Projeto concluído com sucesso',
     sub: 'Power Automate · Avaliação 5★',
     time: '3h',
   },
   {
-    icon: '💳',
-    color: '#a78bfa',
-    bg: 'rgba(167,139,250,0.08)',
-    border: 'rgba(167,139,250,0.15)',
+    dot: 'rgba(167,139,250,0.8)',
     label: 'Pagamento libertado via Escrow',
     sub: 'GreenRetail SA · €4.500',
     time: '5h',
   },
 ]
 
-const METRICS = [
-  { value: '247', label: 'Especialistas', color: '#818cf8' },
-  { value: '1.2K', label: 'Projetos', color: '#34d399' },
-  { value: '4.9★', label: 'Rating médio', color: '#f59e0b' },
-  { value: '38h', label: 'Tempo de match', color: '#22d3ee' },
-]
+function fmt(n) {
+  if (n >= 1000) return (n / 1000).toFixed(1).replace('.0', '') + 'K'
+  return String(n)
+}
 
 function HeroMockup() {
+  const [stats, setStats] = useState({ especialistas: '—', projetos: '—' })
+
+  useEffect(() => {
+    Promise.all([
+      supabase.from('especialistas').select('*', { count: 'exact', head: true }),
+      supabase.from('projetos').select('*', { count: 'exact', head: true }).neq('estado', 'pendente_pagamento'),
+    ]).then(([esp, proj]) => {
+      setStats({
+        especialistas: fmt(esp.count ?? 0),
+        projetos: fmt(proj.count ?? 0),
+      })
+    }).catch(() => {})
+  }, [])
+
+  const METRICS = [
+    { value: stats.especialistas, label: 'Especialistas' },
+    { value: stats.projetos, label: 'Projetos' },
+    { value: '4.9★', label: 'Rating médio' },
+    { value: '38h', label: 'Tempo de match' },
+  ]
+
   return (
     <div className="relative" style={{ width: '380px', maxWidth: '100%' }}>
       <div
@@ -127,7 +136,7 @@ function HeroMockup() {
               className="flex flex-col items-center justify-center py-4"
               style={{ background: 'var(--surface)' }}
             >
-              <span className="font-extrabold text-lg leading-none mb-1" style={{ color: m.color, letterSpacing: '-0.03em' }}>
+              <span className="font-extrabold text-lg leading-none mb-1" style={{ color: 'var(--text)', letterSpacing: '-0.03em' }}>
                 {m.value}
               </span>
               <span className="text-center leading-tight" style={{ color: 'var(--text-3)', fontSize: '10px', letterSpacing: '-0.01em' }}>
@@ -145,16 +154,16 @@ function HeroMockup() {
             </span>
             <span className="text-xs" style={{ color: 'var(--brand-light)' }}>Ver tudo</span>
           </div>
-          <div className="space-y-2">
+          <div className="space-y-1.5">
             {ACTIVITY.map((a, i) => (
               <div
                 key={i}
-                className="flex items-center gap-3 rounded-xl px-3 py-2.5"
-                style={{ background: a.bg, border: `1px solid ${a.border}` }}
+                className="flex items-center gap-3 rounded-lg px-3 py-2"
+                style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.05)' }}
               >
-                <span style={{ fontSize: '14px', flexShrink: 0 }}>{a.icon}</span>
+                <span className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ background: a.dot }} />
                 <div className="flex-1 min-w-0">
-                  <p className="text-xs font-semibold truncate" style={{ color: 'var(--text)', letterSpacing: '-0.01em' }}>
+                  <p className="text-xs font-medium truncate" style={{ color: 'var(--text-2)', letterSpacing: '-0.01em' }}>
                     {a.label}
                   </p>
                   <p className="text-xs truncate mt-0.5" style={{ color: 'var(--text-3)' }}>
