@@ -104,6 +104,39 @@ function EmpresaDashboard({ dados: dadosIniciais }) {
 
   return (
     <div className="space-y-8">
+      {/* Onboarding — primeiro uso */}
+      {projetosAtivos.length === 0 && projetosPendentes.length === 0 && (
+        <div className="rounded-2xl p-6 mb-2" style={{ background: 'linear-gradient(135deg, rgba(124,92,246,0.1), rgba(99,102,241,0.06))', border: '1px solid rgba(124,92,246,0.25)' }}>
+          <div className="flex items-center gap-3 mb-5">
+            <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ background: 'rgba(124,92,246,0.2)', border: '1px solid rgba(124,92,246,0.3)' }}>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--brand-light)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+            </div>
+            <div>
+              <p className="font-semibold" style={{ color: 'var(--text)' }}>Bem-vindo à Synk! 🎉</p>
+              <p className="text-xs" style={{ color: 'var(--text-3)' }}>Segue estes passos para contratar o teu primeiro especialista</p>
+            </div>
+          </div>
+          <div className="grid sm:grid-cols-4 gap-3 mb-5">
+            {[
+              { n: '1', label: 'Conta criada', done: true },
+              { n: '2', label: 'Publica um projeto', done: false },
+              { n: '3', label: 'Recebe propostas', done: false },
+              { n: '4', label: 'Contrata e paga', done: false },
+            ].map(step => (
+              <div key={step.n} className="rounded-xl p-3 flex items-center gap-3" style={{ background: step.done ? 'rgba(16,185,129,0.08)' : 'rgba(255,255,255,0.04)', border: `1px solid ${step.done ? 'rgba(16,185,129,0.2)' : 'rgba(255,255,255,0.07)'}` }}>
+                <div className="w-7 h-7 rounded-full flex items-center justify-center flex-shrink-0 font-bold text-xs" style={{ background: step.done ? 'rgba(16,185,129,0.2)' : 'rgba(124,92,246,0.15)', color: step.done ? '#10b981' : 'var(--brand-light)', border: `1px solid ${step.done ? 'rgba(16,185,129,0.3)' : 'rgba(124,92,246,0.2)'}` }}>
+                  {step.done ? '✓' : step.n}
+                </div>
+                <p className="text-xs font-medium" style={{ color: step.done ? '#10b981' : 'var(--text-2)' }}>{step.label}</p>
+              </div>
+            ))}
+          </div>
+          <Link to="/publicar-projeto" className="btn-primary" style={{ textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '8px', fontSize: '14px' }}>
+            Publicar primeiro projeto →
+          </Link>
+        </div>
+      )}
+
       {/* Aviso projetos com pagamento pendente */}
       {projetosPendentes.length > 0 && (
         <div className="px-4 py-3 rounded-xl text-sm flex items-center justify-between gap-4" style={{ color: '#f59e0b', background: 'rgba(245,158,11,0.08)', border: '1px solid rgba(245,158,11,0.2)' }}>
@@ -397,6 +430,39 @@ function EspecialistaDashboard({ dados: dadosIniciais }) {
         <StatCard label="Candidaturas" value={propostas.length} />
         <StatCard label="Estado" value={dados?.verificado ? 'Verificado' : 'Pendente'} color={dados?.verificado ? '#10b981' : '#f59e0b'} />
       </div>
+
+      {/* Onboarding — primeiro uso */}
+      {propostas.length === 0 && (
+        <div className="rounded-2xl p-6" style={{ background: 'linear-gradient(135deg, rgba(124,92,246,0.1), rgba(99,102,241,0.06))', border: '1px solid rgba(124,92,246,0.25)' }}>
+          <div className="flex items-center gap-3 mb-5">
+            <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ background: 'rgba(124,92,246,0.2)', border: '1px solid rgba(124,92,246,0.3)' }}>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--brand-light)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+            </div>
+            <div>
+              <p className="font-semibold" style={{ color: 'var(--text)' }}>Pronto para começar! 🚀</p>
+              <p className="text-xs" style={{ color: 'var(--text-3)' }}>Segue estes passos para receber o teu primeiro projeto</p>
+            </div>
+          </div>
+          <div className="grid sm:grid-cols-4 gap-3 mb-5">
+            {[
+              { n: '1', label: 'Perfil criado', done: true },
+              { n: '2', label: dados?.verificado ? 'Perfil verificado' : 'Aguarda verificação', done: dados?.verificado },
+              { n: '3', label: 'Candidata-te a projetos', done: false },
+              { n: '4', label: 'Recebe e completa', done: false },
+            ].map(step => (
+              <div key={step.n} className="rounded-xl p-3 flex items-center gap-3" style={{ background: step.done ? 'rgba(16,185,129,0.08)' : 'rgba(255,255,255,0.04)', border: `1px solid ${step.done ? 'rgba(16,185,129,0.2)' : 'rgba(255,255,255,0.07)'}` }}>
+                <div className="w-7 h-7 rounded-full flex items-center justify-center flex-shrink-0 font-bold text-xs" style={{ background: step.done ? 'rgba(16,185,129,0.2)' : 'rgba(124,92,246,0.15)', color: step.done ? '#10b981' : 'var(--brand-light)', border: `1px solid ${step.done ? 'rgba(16,185,129,0.3)' : 'rgba(124,92,246,0.2)'}` }}>
+                  {step.done ? '✓' : step.n}
+                </div>
+                <p className="text-xs font-medium" style={{ color: step.done ? '#10b981' : 'var(--text-2)' }}>{step.label}</p>
+              </div>
+            ))}
+          </div>
+          <Link to="/marketplace?tab=projetos" className="btn-primary" style={{ textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '8px', fontSize: '14px' }}>
+            Explorar projetos →
+          </Link>
+        </div>
+      )}
 
       <div
         className="rounded-2xl p-8"
