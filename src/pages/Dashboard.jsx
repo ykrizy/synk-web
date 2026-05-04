@@ -314,7 +314,7 @@ function EmpresaDashboard({ dados: dadosIniciais }) {
                     </p>
                   </div>
                   <div className="flex items-center gap-3 flex-shrink-0">
-                    {p.propostas?.length > 0 && (
+                    {p.propostas?.length > 0 && p.estado !== 'concluido' && (
                       <span className="badge badge-violet" style={{ fontSize: '11px' }}>
                         {p.propostas.length} proposta{p.propostas.length !== 1 ? 's' : ''}
                       </span>
