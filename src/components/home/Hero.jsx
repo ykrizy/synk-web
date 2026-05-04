@@ -249,31 +249,6 @@ function HeroMockup() {
         </div>
       </div>
 
-      {/* Floating badge — top right */}
-      <div
-        className="absolute -top-3 -right-3 rounded-xl px-3 py-2"
-        style={{
-          background: 'rgba(9,9,13,0.95)',
-          border: '1px solid rgba(124,92,246,0.35)',
-          boxShadow: '0 8px 24px rgba(0,0,0,0.4), 0 0 16px rgba(124,92,246,0.15)',
-          backdropFilter: 'blur(12px)',
-          whiteSpace: 'nowrap',
-        }}
-      >
-        <div className="flex items-center gap-2">
-          <div className="w-6 h-6 rounded-lg flex items-center justify-center flex-shrink-0" style={{ background: 'rgba(124,92,246,0.2)' }}>
-            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="var(--brand-light)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" /><circle cx="9" cy="7" r="4" />
-              <path d="M23 21v-2a4 4 0 0 0-3-3.87" /><path d="M16 3.13a4 4 0 0 1 0 7.75" />
-            </svg>
-          </div>
-          <div>
-            <p className="text-xs font-bold" style={{ color: 'var(--text)', lineHeight: 1 }}>+12 hoje</p>
-            <p className="text-xs" style={{ color: 'var(--text-3)' }}>novos especialistas</p>
-          </div>
-        </div>
-      </div>
-
     </div>
   )
 }
