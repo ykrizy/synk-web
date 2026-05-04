@@ -380,8 +380,8 @@ export default function Projeto() {
           </div>
         </Reveal>
 
-        {/* Banner: Marcar como Concluído */}
-        {projeto.estado === 'em_andamento' && propostaAceite && !editMode && (
+        {/* Banner: Marcar como Concluído — aparece sempre que há proposta aceite e projeto não concluído */}
+        {propostaAceite && projeto.estado !== 'concluido' && !editMode && (
           <Reveal>
             <div
               className="rounded-2xl p-5 mb-4 flex items-center justify-between gap-4"
