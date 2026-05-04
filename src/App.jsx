@@ -17,6 +17,7 @@ import Calculadora from '@/pages/Calculadora'
 import Marketplace from '@/pages/Marketplace'
 import Projeto from '@/pages/Projeto'
 import Mensagens from '@/pages/Mensagens'
+import EspecialistaPublico from '@/pages/EspecialistaPublico'
 import Admin from '@/pages/Admin'
 import NotFound from '@/pages/NotFound'
 
@@ -40,6 +41,7 @@ export default function App() {
           <Route path="publicar-projeto" element={<ProtectedRoute><PublicarProjeto /></ProtectedRoute>} />
           <Route path="projeto/:id" element={<ProtectedRoute><Projeto /></ProtectedRoute>} />
           <Route path="mensagens" element={<ProtectedRoute><Mensagens /></ProtectedRoute>} />
+          <Route path="especialista/:id" element={<EspecialistaPublico />} />
           <Route path="admin" element={<ProtectedRoute><Admin /></ProtectedRoute>} />
           <Route path="*" element={<NotFound />} />
         </Route>

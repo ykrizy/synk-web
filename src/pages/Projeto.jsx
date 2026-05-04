@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react'
 import { useParams, useNavigate, Link } from 'react-router-dom'
-// Chat movido para /mensagens
 import useMeta from '@/hooks/useMeta'
 import Reveal from '@/components/ui/Reveal'
 import { useAuth } from '@/contexts/AuthContext'
@@ -25,120 +24,34 @@ const ESTADO_STYLE = {
   concluido: { badge: 'badge-indigo', label: 'Concluído' },
 }
 
-// ─── Chat component (real-time) ───────────────────────────────────────────────
-function Chat({ projetoId, empresaId, especialistaId, userId, nomeOutro }) {
-  const [mensagens, setMensagens] = useState([])
-  const [texto, setTexto] = useState('')
-  const [enviando, setEnviando] = useState(false)
-  const bottomRef = useRef(null)
-
-  useEffect(() => {
-    if (!projetoId || !empresaId || !especialistaId) return
-
-    supabase
-      .from('mensagens')
-      .select('*')
-      .eq('projeto_id', projetoId)
-      .eq('empresa_id', empresaId)
-      .eq('especialista_id', especialistaId)
-      .order('created_at', { ascending: true })
-      .then(({ data }) => setMensagens(data || []))
-
-    const channel = supabase
-      .channel(`chat-${projetoId}-${especialistaId}`)
-      .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'mensagens' }, (payload) => {
-        const m = payload.new
-        if (
-          m.projeto_id === projetoId &&
-          m.empresa_id === empresaId &&
-          m.especialista_id === especialistaId
-        ) {
-          setMensagens(prev => prev.find(x => x.id === m.id) ? prev : [...prev, m])
-        }
-      })
-      .subscribe()
-
-    return () => { supabase.removeChannel(channel) }
-  }, [projetoId, empresaId, especialistaId])
-
-  useEffect(() => {
-    bottomRef.current?.scrollIntoView({ behavior: 'smooth' })
-  }, [mensagens])
-
-  async function enviar(e) {
-    e.preventDefault()
-    if (!texto.trim() || enviando) return
-    setEnviando(true)
-    await supabase.from('mensagens').insert({
-      projeto_id: projetoId,
-      empresa_id: empresaId,
-      especialista_id: especialistaId,
-      remetente_id: userId,
-      conteudo: texto.trim(),
-    })
-    setTexto('')
-    setEnviando(false)
-  }
-
+// ── Stars ─────────────────────────────────────────────────────────────────────
+function Stars({ rating, size = 20, interactive = false, onSelect }) {
+  const [hover, setHover] = useState(0)
   return (
-    <div className="rounded-xl overflow-hidden" style={{ border: '1px solid rgba(124,92,246,0.25)', background: 'var(--bg)' }}>
-      <div className="px-4 py-3 flex items-center gap-2" style={{ background: 'rgba(124,92,246,0.06)', borderBottom: '1px solid rgba(124,92,246,0.15)' }}>
-        <span>💬</span>
-        <span className="text-sm font-semibold" style={{ color: 'var(--text)' }}>Chat com {nomeOutro}</span>
-        <span className="ml-auto w-2 h-2 rounded-full animate-pulse" style={{ background: '#34d399' }} title="Online" />
-      </div>
-
-      <div className="p-4 space-y-3 overflow-y-auto" style={{ maxHeight: 300, minHeight: 120 }}>
-        {mensagens.length === 0 ? (
-          <p className="text-xs text-center py-8" style={{ color: 'var(--text-3)' }}>
-            Ainda não há mensagens. Envia a primeira! 👋
-          </p>
-        ) : mensagens.map(msg => {
-          const isMe = msg.remetente_id === userId
-          return (
-            <div key={msg.id} className={`flex ${isMe ? 'justify-end' : 'justify-start'}`}>
-              <div
-                className="rounded-xl px-3 py-2"
-                style={{
-                  maxWidth: '75%',
-                  background: isMe ? 'rgba(124,92,246,0.15)' : 'var(--surface)',
-                  border: `1px solid ${isMe ? 'rgba(124,92,246,0.3)' : 'var(--border)'}`,
-                }}
-              >
-                <p className="text-sm" style={{ color: 'var(--text)', wordBreak: 'break-word' }}>{msg.conteudo}</p>
-                <p className="text-xs mt-1" style={{ color: 'var(--text-3)' }}>
-                  {new Date(msg.created_at).toLocaleTimeString('pt-PT', { hour: '2-digit', minute: '2-digit' })}
-                </p>
-              </div>
-            </div>
-          )
-        })}
-        <div ref={bottomRef} />
-      </div>
-
-      <form onSubmit={enviar} className="flex gap-2 p-3" style={{ borderTop: '1px solid var(--border)' }}>
-        <input
-          type="text"
-          placeholder="Escreve uma mensagem..."
-          value={texto}
-          onChange={e => setTexto(e.target.value)}
-          className="form-input flex-1"
-          style={{ padding: '8px 12px', fontSize: '13px' }}
-        />
-        <button
-          type="submit"
-          disabled={enviando || !texto.trim()}
-          className="btn-primary"
-          style={{ padding: '8px 16px', fontSize: '13px', flexShrink: 0, opacity: (enviando || !texto.trim()) ? 0.6 : 1 }}
+    <div className="flex items-center gap-1">
+      {[1, 2, 3, 4, 5].map(i => (
+        <svg
+          key={i}
+          width={size} height={size}
+          viewBox="0 0 24 24"
+          fill={(hover || rating) >= i ? '#f59e0b' : 'none'}
+          stroke="#f59e0b"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          style={{ cursor: interactive ? 'pointer' : 'default', transition: 'fill 0.1s' }}
+          onMouseEnter={() => interactive && setHover(i)}
+          onMouseLeave={() => interactive && setHover(0)}
+          onClick={() => interactive && onSelect?.(i)}
         >
-          {enviando ? '…' : 'Enviar →'}
-        </button>
-      </form>
+          <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+        </svg>
+      ))}
     </div>
   )
 }
 
-// ─── Main page ────────────────────────────────────────────────────────────────
+// ── Main page ─────────────────────────────────────────────────────────────────
 export default function Projeto() {
   useMeta({ title: 'Projeto', description: 'Ver detalhes do projeto.' })
 
@@ -153,6 +66,7 @@ export default function Projeto() {
   const [especialistaId, setEspecialistaId] = useState(null)
   const [minhaProposta, setMinhaProposta] = useState(null)
   const [propostas, setPropostas] = useState([])
+  const [avaliacoes, setAvaliacoes] = useState([])
 
   // edit/delete state
   const [editMode, setEditMode] = useState(false)
@@ -162,6 +76,14 @@ export default function Projeto() {
   const [sucesso, setSucesso] = useState(false)
   const [confirmDelete, setConfirmDelete] = useState(false)
   const [deleting, setDeleting] = useState(false)
+
+  // concluir + avaliação
+  const [concluindo, setConcluindo] = useState(false)
+  const [avaliacaoModal, setAvaliacaoModal] = useState(null) // { id, nome } do especialista a avaliar
+  const [ratingTemp, setRatingTemp] = useState(0)
+  const [comentarioTemp, setComentarioTemp] = useState('')
+  const [enviandoAvaliacao, setEnviandoAvaliacao] = useState(false)
+  const [avaliacaoEnviada, setAvaliacaoEnviada] = useState(false)
 
   useEffect(() => {
     if (!id || !user || !perfil) return
@@ -194,12 +116,20 @@ export default function Projeto() {
         setIsOwner(true)
         setEmpresaId(emp.id)
 
-        const { data: props } = await supabase
-          .from('propostas')
-          .select('*, especialistas(id, nome, email, pais, anos_experiencia, skills, preco_hora, bio)')
-          .eq('projeto_id', id)
-          .order('created_at', { ascending: false })
+        const [{ data: props }, { data: avs }] = await Promise.all([
+          supabase
+            .from('propostas')
+            .select('*, especialistas(id, nome, email, pais, anos_experiencia, skills, preco_hora, bio)')
+            .eq('projeto_id', id)
+            .order('created_at', { ascending: false }),
+          supabase
+            .from('avaliacoes')
+            .select('*')
+            .eq('projeto_id', id)
+            .eq('empresa_id', emp.id),
+        ])
         setPropostas(props || [])
+        setAvaliacoes(avs || [])
 
       } else if (perfil === 'especialista') {
         const { data: esp } = await supabase
@@ -227,6 +157,46 @@ export default function Projeto() {
   async function handleProposta(propostaId, estado) {
     await supabase.from('propostas').update({ estado }).eq('id', propostaId)
     setPropostas(prev => prev.map(p => p.id === propostaId ? { ...p, estado } : p))
+
+    // Aceitar proposta → projeto passa a "em andamento"
+    if (estado === 'aceite' && projeto.estado === 'aberto') {
+      await supabase.from('projetos').update({ estado: 'em_andamento' }).eq('id', id)
+      setProjeto(prev => ({ ...prev, estado: 'em_andamento' }))
+    }
+  }
+
+  async function handleConcluir() {
+    setConcluindo(true)
+    await supabase.from('projetos').update({ estado: 'concluido' }).eq('id', id)
+    setProjeto(prev => ({ ...prev, estado: 'concluido' }))
+    setConcluindo(false)
+    // Abrir modal de avaliação para o especialista aceite
+    const aceite = propostas.find(p => p.estado === 'aceite')
+    if (aceite) {
+      setRatingTemp(0)
+      setComentarioTemp('')
+      setAvaliacaoEnviada(false)
+      setAvaliacaoModal({ id: aceite.especialistas?.id, nome: aceite.especialistas?.nome })
+    }
+  }
+
+  async function handleAvaliar(e) {
+    e.preventDefault()
+    if (!ratingTemp) return
+    setEnviandoAvaliacao(true)
+    const { error } = await supabase.from('avaliacoes').insert({
+      projeto_id: id,
+      empresa_id: empresaId,
+      especialista_id: avaliacaoModal.id,
+      rating: ratingTemp,
+      comentario: comentarioTemp.trim() || null,
+    })
+    setEnviandoAvaliacao(false)
+    if (!error) {
+      setAvaliacaoEnviada(true)
+      setAvaliacoes(prev => [...prev, { especialista_id: avaliacaoModal.id, rating: ratingTemp }])
+      setTimeout(() => setAvaliacaoModal(null), 2000)
+    }
   }
 
   const setField = (k) => (e) => setFields(f => ({ ...f, [k]: e.target.value }))
@@ -269,6 +239,8 @@ export default function Projeto() {
 
   const estadoInfo = ESTADO_STYLE[projeto.estado] ?? { badge: 'badge-indigo', label: projeto.estado }
   const prazoLabel = PRAZOS.find(p => p.value === projeto.prazo)?.label ?? projeto.prazo
+  const propostaAceite = propostas.find(p => p.estado === 'aceite')
+  const jaAvaliou = avaliacoes.some(a => a.especialista_id === propostaAceite?.especialistas?.id)
 
   // ── Vista do especialista ─────────────────────────────────────────────────
   if (!isOwner && minhaProposta) {
@@ -349,7 +321,6 @@ export default function Projeto() {
                 </div>
               </div>
 
-              {/* Chat */}
               <div style={{ borderTop: '1px solid var(--border)', paddingTop: '1.5rem' }}>
                 {propStatus === 'aceite' ? (
                   <Link
@@ -401,13 +372,62 @@ export default function Projeto() {
                 Criado em {new Date(projeto.created_at).toLocaleDateString('pt-PT', { day: '2-digit', month: 'long', year: 'numeric' })}
               </p>
             </div>
-            {!editMode && (
+            {!editMode && projeto.estado !== 'concluido' && (
               <button onClick={() => setEditMode(true)} className="btn-ghost flex-shrink-0" style={{ fontSize: '13.5px', padding: '8px 16px' }}>
                 ✏️ Editar
               </button>
             )}
           </div>
         </Reveal>
+
+        {/* Banner: Marcar como Concluído */}
+        {projeto.estado === 'em_andamento' && propostaAceite && !editMode && (
+          <Reveal>
+            <div
+              className="rounded-2xl p-5 mb-4 flex items-center justify-between gap-4"
+              style={{ background: 'rgba(16,185,129,0.06)', border: '1px solid rgba(16,185,129,0.2)' }}
+            >
+              <div>
+                <p className="font-semibold text-sm" style={{ color: '#10b981' }}>Projeto em andamento</p>
+                <p className="text-xs mt-0.5" style={{ color: 'var(--text-3)' }}>
+                  A trabalhar com {propostaAceite.especialistas?.nome}. Quando o trabalho estiver completo, marca como concluído.
+                </p>
+              </div>
+              <button
+                onClick={handleConcluir}
+                disabled={concluindo}
+                className="flex-shrink-0"
+                style={{
+                  padding: '9px 18px', borderRadius: '10px', fontSize: '13px', fontWeight: 600,
+                  background: 'rgba(16,185,129,0.15)', border: '1px solid rgba(16,185,129,0.3)',
+                  color: '#10b981', cursor: concluindo ? 'not-allowed' : 'pointer',
+                  opacity: concluindo ? 0.7 : 1, whiteSpace: 'nowrap',
+                }}
+              >
+                {concluindo ? 'A concluir…' : '✅ Marcar como Concluído'}
+              </button>
+            </div>
+          </Reveal>
+        )}
+
+        {/* Banner: projeto concluído — avaliar */}
+        {projeto.estado === 'concluido' && propostaAceite && !jaAvaliou && (
+          <Reveal>
+            <button
+              onClick={() => { setRatingTemp(0); setComentarioTemp(''); setAvaliacaoEnviada(false); setAvaliacaoModal({ id: propostaAceite.especialistas?.id, nome: propostaAceite.especialistas?.nome }) }}
+              className="w-full rounded-2xl p-5 mb-4 flex items-center justify-between gap-4 text-left"
+              style={{ background: 'rgba(245,158,11,0.06)', border: '1px solid rgba(245,158,11,0.25)', cursor: 'pointer' }}
+            >
+              <div>
+                <p className="font-semibold text-sm" style={{ color: '#f59e0b' }}>⭐ Avalia o especialista</p>
+                <p className="text-xs mt-0.5" style={{ color: 'var(--text-3)' }}>
+                  Deixa uma avaliação para {propostaAceite.especialistas?.nome}. Ajuda outros clientes a escolher.
+                </p>
+              </div>
+              <span style={{ color: '#f59e0b', fontSize: '20px', flexShrink: 0 }}>→</span>
+            </button>
+          </Reveal>
+        )}
 
         {sucesso && (
           <Reveal>
@@ -519,7 +539,20 @@ export default function Projeto() {
                                 {prop.especialistas?.nome?.split(' ').map(w => w[0]).slice(0, 2).join('') || '?'}
                               </div>
                               <div>
-                                <p className="font-semibold text-sm" style={{ color: 'var(--text)' }}>{prop.especialistas?.nome}</p>
+                                <Link
+                                  to={`/especialista/${prop.especialistas?.id}`}
+                                  style={{ textDecoration: 'none' }}
+                                >
+                                  <p
+                                    className="font-semibold text-sm"
+                                    style={{ color: 'var(--text)' }}
+                                    onMouseEnter={e => e.currentTarget.style.color = 'var(--brand-light)'}
+                                    onMouseLeave={e => e.currentTarget.style.color = 'var(--text)'}
+                                  >
+                                    {prop.especialistas?.nome}
+                                    <span className="ml-1 text-xs" style={{ color: 'var(--text-3)' }}>↗</span>
+                                  </p>
+                                </Link>
                                 <p className="text-xs mt-0.5" style={{ color: 'var(--text-3)' }}>
                                   {prop.especialistas?.pais}
                                   {prop.especialistas?.anos_experiencia && ` · ${prop.especialistas.anos_experiencia} anos exp.`}
@@ -570,16 +603,25 @@ export default function Projeto() {
                               </>
                             )}
                             {prop.estado === 'aceite' && (
-                              <Link
-                                to={`/mensagens?projeto=${id}&esp=${prop.especialistas?.id}`}
-                                className="btn-ghost"
-                                style={{ fontSize: '12px', padding: '6px 14px', textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '6px' }}
-                              >
-                                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                                  <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
-                                </svg>
-                                Chat com {prop.especialistas?.nome?.split(' ')[0]}
-                              </Link>
+                              <>
+                                <Link
+                                  to={`/mensagens?projeto=${id}&esp=${prop.especialistas?.id}`}
+                                  className="btn-ghost"
+                                  style={{ fontSize: '12px', padding: '6px 14px', textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '6px' }}
+                                >
+                                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+                                  </svg>
+                                  Chat com {prop.especialistas?.nome?.split(' ')[0]}
+                                </Link>
+                                <Link
+                                  to={`/especialista/${prop.especialistas?.id}`}
+                                  className="btn-ghost"
+                                  style={{ fontSize: '12px', padding: '6px 14px', textDecoration: 'none' }}
+                                >
+                                  Ver perfil →
+                                </Link>
+                              </>
                             )}
                           </div>
                         </div>
@@ -589,25 +631,33 @@ export default function Projeto() {
                 </div>
 
                 {/* Ações do projeto */}
-                <div style={{ borderTop: '1px solid var(--border)', paddingTop: '1.5rem' }} className="flex gap-3 flex-wrap">
-                  <button onClick={() => setEditMode(true)} className="btn-primary" style={{ fontSize: '14px', padding: '10px 20px' }}>
-                    ✏️ Editar projeto
-                  </button>
-                  <button
-                    onClick={() => setConfirmDelete(true)}
-                    style={{ fontSize: '14px', padding: '10px 20px', borderRadius: '10px', background: 'rgba(248,113,113,0.08)', border: '1px solid rgba(248,113,113,0.25)', color: '#f87171', cursor: 'pointer', fontWeight: 500 }}
-                  >
-                    🗑️ Apagar projeto
-                  </button>
-                  <Link to="/dashboard" className="btn-ghost" style={{ fontSize: '14px', padding: '10px 20px' }}>← Voltar</Link>
-                </div>
+                {projeto.estado !== 'concluido' && (
+                  <div style={{ borderTop: '1px solid var(--border)', paddingTop: '1.5rem' }} className="flex gap-3 flex-wrap">
+                    <button onClick={() => setEditMode(true)} className="btn-primary" style={{ fontSize: '14px', padding: '10px 20px' }}>
+                      ✏️ Editar projeto
+                    </button>
+                    <button
+                      onClick={() => setConfirmDelete(true)}
+                      style={{ fontSize: '14px', padding: '10px 20px', borderRadius: '10px', background: 'rgba(248,113,113,0.08)', border: '1px solid rgba(248,113,113,0.25)', color: '#f87171', cursor: 'pointer', fontWeight: 500 }}
+                    >
+                      🗑️ Apagar projeto
+                    </button>
+                    <Link to="/dashboard" className="btn-ghost" style={{ fontSize: '14px', padding: '10px 20px' }}>← Voltar</Link>
+                  </div>
+                )}
+
+                {projeto.estado === 'concluido' && (
+                  <div style={{ borderTop: '1px solid var(--border)', paddingTop: '1.5rem' }}>
+                    <Link to="/dashboard" className="btn-ghost" style={{ fontSize: '14px', padding: '10px 20px' }}>← Voltar ao Dashboard</Link>
+                  </div>
+                )}
               </div>
             )}
           </div>
         </Reveal>
       </div>
 
-      {/* Modal de confirmação de eliminação */}
+      {/* Modal: confirmação de eliminação */}
       {confirmDelete && (
         <div
           className="fixed inset-0 z-50 flex items-center justify-center px-4"
@@ -641,6 +691,87 @@ export default function Projeto() {
                 Cancelar
               </button>
             </div>
+          </div>
+        </div>
+      )}
+
+      {/* Modal: Avaliação */}
+      {avaliacaoModal && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center px-4"
+          style={{ background: 'rgba(0,0,0,0.75)', backdropFilter: 'blur(8px)' }}
+          onClick={() => !avaliacaoEnviada && setAvaliacaoModal(null)}
+        >
+          <div
+            className="rounded-2xl p-8 w-full max-w-sm"
+            style={{ background: 'var(--surface)', border: '1px solid var(--border)', boxShadow: '0 32px 64px rgba(0,0,0,0.5)' }}
+            onClick={e => e.stopPropagation()}
+          >
+            {avaliacaoEnviada ? (
+              <div className="text-center py-4">
+                <div className="text-5xl mb-4">🎉</div>
+                <h2 className="font-heading text-xl mb-2" style={{ color: 'var(--text)' }}>Obrigado!</h2>
+                <p className="text-sm" style={{ color: 'var(--text-2)' }}>A tua avaliação foi registada com sucesso.</p>
+              </div>
+            ) : (
+              <>
+                <div className="text-center mb-6">
+                  <div
+                    className="w-14 h-14 rounded-2xl flex items-center justify-center font-bold text-lg mx-auto mb-3"
+                    style={{ background: 'rgba(124,92,246,0.15)', color: 'var(--brand-light)', border: '1px solid rgba(124,92,246,0.25)' }}
+                  >
+                    {avaliacaoModal.nome?.split(' ').map(w => w[0]).slice(0, 2).join('') || '?'}
+                  </div>
+                  <h2 className="font-heading text-xl" style={{ color: 'var(--text)' }}>Avaliar {avaliacaoModal.nome?.split(' ')[0]}</h2>
+                  <p className="text-sm mt-1" style={{ color: 'var(--text-3)' }}>Como correu o projeto?</p>
+                </div>
+
+                <form onSubmit={handleAvaliar} className="space-y-5">
+                  <div className="flex flex-col items-center gap-2">
+                    <p className="text-xs font-semibold uppercase tracking-wider" style={{ color: 'var(--text-3)' }}>Classificação *</p>
+                    <Stars rating={ratingTemp} size={32} interactive onSelect={setRatingTemp} />
+                    {ratingTemp > 0 && (
+                      <p className="text-xs" style={{ color: 'var(--text-3)' }}>
+                        {['', 'Mau', 'Razoável', 'Bom', 'Muito bom', 'Excelente'][ratingTemp]}
+                      </p>
+                    )}
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-semibold uppercase tracking-wider mb-2" style={{ color: 'var(--text-3)' }}>
+                      Comentário <span style={{ fontWeight: 400 }}>(opcional)</span>
+                    </label>
+                    <textarea
+                      rows={3}
+                      className="form-input"
+                      placeholder="Descreve a tua experiência com este especialista..."
+                      style={{ resize: 'none', fontSize: '13px' }}
+                      value={comentarioTemp}
+                      onChange={e => setComentarioTemp(e.target.value)}
+                    />
+                  </div>
+
+                  <div className="flex gap-3">
+                    <button
+                      type="submit"
+                      disabled={!ratingTemp || enviandoAvaliacao}
+                      className="btn-primary flex-1"
+                      style={{ opacity: (!ratingTemp || enviandoAvaliacao) ? 0.6 : 1 }}
+                    >
+                      {enviandoAvaliacao ? 'A enviar…' : 'Publicar avaliação →'}
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setAvaliacaoModal(null)}
+                      className="btn-ghost"
+                      style={{ fontSize: '13px', padding: '10px 16px' }}
+                    >
+                      Agora não
+                    </button>
+                  </div>
+                </form>
+              </>
+            )}
           </div>
         </div>
       )}
