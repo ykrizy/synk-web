@@ -154,14 +154,31 @@ export default function Projeto() {
     load()
   }, [id, user, perfil, navigate])
 
-  async function handleProposta(propostaId, estado) {
-    await supabase.from('propostas').update({ estado }).eq('id', propostaId)
-    setPropostas(prev => prev.map(p => p.id === propostaId ? { ...p, estado } : p))
+  async function handleProposta(propostaId, novoEstado) {
+    await supabase.from('propostas').update({ estado: novoEstado }).eq('id', propostaId)
 
-    // Aceitar proposta → projeto passa a "em andamento"
-    if (estado === 'aceite' && projeto.estado === 'aberto') {
-      await supabase.from('projetos').update({ estado: 'em_andamento' }).eq('id', id)
-      setProjeto(prev => ({ ...prev, estado: 'em_andamento' }))
+    if (novoEstado === 'aceite') {
+      // Rejeitar automaticamente todas as outras propostas pendentes
+      const pendentes = propostas.filter(p => p.id !== propostaId && p.estado === 'pendente')
+      if (pendentes.length > 0) {
+        await supabase
+          .from('propostas')
+          .update({ estado: 'rejeitado' })
+          .in('id', pendentes.map(p => p.id))
+      }
+      // Atualizar estado local: aceitar esta, rejeitar as restantes pendentes
+      setPropostas(prev => prev.map(p => {
+        if (p.id === propostaId) return { ...p, estado: 'aceite' }
+        if (p.estado === 'pendente') return { ...p, estado: 'rejeitado' }
+        return p
+      }))
+      // Projeto passa a "em andamento"
+      if (projeto.estado === 'aberto') {
+        await supabase.from('projetos').update({ estado: 'em_andamento' }).eq('id', id)
+        setProjeto(prev => ({ ...prev, estado: 'em_andamento' }))
+      }
+    } else {
+      setPropostas(prev => prev.map(p => p.id === propostaId ? { ...p, estado: novoEstado } : p))
     }
   }
 
@@ -476,12 +493,7 @@ export default function Projeto() {
                     </select>
                   </div>
                 </div>
-                <div>
-                  <label className="block text-sm font-medium mb-2" style={{ color: 'var(--text-2)' }}>Estado</label>
-                  <select className="form-input w-full" value={fields.estado} onChange={setField('estado')}>
-                    {ESTADOS.map(e => <option key={e.value} value={e.value}>{e.label}</option>)}
-                  </select>
-                </div>
+                {/* Estado gerido automaticamente pelo sistema — não exposto na edição */}
                 {erro && <p className="text-sm px-4 py-3 rounded-lg" style={{ color: '#f87171', background: 'rgba(248,113,113,0.08)', border: '1px solid rgba(248,113,113,0.2)' }}>{erro}</p>}
                 <div className="flex gap-3 pt-2">
                   <button type="submit" disabled={saving} className="btn-primary btn-primary-lg" style={{ opacity: saving ? 0.7 : 1 }}>
