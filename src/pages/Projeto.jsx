@@ -735,6 +735,20 @@ export default function Projeto() {
                 {/* Ações do projeto */}
                 {projeto.estado !== 'concluido' && (
                   <div style={{ borderTop: '1px solid var(--border)', paddingTop: '1.5rem' }} className="flex gap-3 flex-wrap">
+                    {propostaAceite && !escrowPago && (
+                      <button
+                        onClick={() => handleEscrow(propostaAceite)}
+                        disabled={iniciandoPagamento}
+                        style={{
+                          fontSize: '14px', padding: '10px 20px', borderRadius: '10px', fontWeight: 600,
+                          background: 'rgba(245,158,11,0.15)', border: '1px solid rgba(245,158,11,0.35)',
+                          color: '#f59e0b', cursor: iniciandoPagamento ? 'not-allowed' : 'pointer',
+                          opacity: iniciandoPagamento ? 0.7 : 1, whiteSpace: 'nowrap',
+                        }}
+                      >
+                        {iniciandoPagamento ? 'A redirecionar…' : `🔐 Pagar €${Number(projeto.orcamento).toLocaleString('pt-PT')} →`}
+                      </button>
+                    )}
                     <button onClick={() => setEditMode(true)} className="btn-primary" style={{ fontSize: '14px', padding: '10px 20px' }}>
                       ✏️ Editar projeto
                     </button>
