@@ -11,7 +11,7 @@ const supabase = createClient(
   Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!
 )
 
-// ── Email via Resend ──────────────────────────────────────────────────────────
+// ── Email via Brevo ───────────────────────────────────────────────────────────
 async function enviarFatura(opts: {
   para: string
   nomeEmpresa: string
@@ -23,8 +23,9 @@ async function enviarFatura(opts: {
   data: string
   numFatura: string
 }) {
-  const apiKey = Deno.env.get('RESEND_API_KEY')
-  if (!apiKey) { console.warn('RESEND_API_KEY não definida — email não enviado'); return }
+  const apiKey   = Deno.env.get('BREVO_API_KEY')
+  const fromEmail = Deno.env.get('FROM_EMAIL') ?? 'faturas@synk.pt'
+  if (!apiKey) { console.warn('BREVO_API_KEY não definida — email não enviado'); return }
 
   const isPub = opts.plano === 'publicar_projeto'
   const comissao = isPub ? 0 : Math.round(opts.valor * 0.10 * 100) / 100
@@ -131,23 +132,23 @@ async function enviarFatura(opts: {
 </body>
 </html>`
 
-  const res = await fetch('https://api.resend.com/emails', {
+  const res = await fetch('https://api.brevo.com/v3/smtp/email', {
     method: 'POST',
     headers: {
-      'Authorization': `Bearer ${apiKey}`,
+      'api-key': apiKey,
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
-      from: 'Synk Faturas <onboarding@resend.dev>',
-      to: [opts.para],
+      sender: { name: 'Synk Faturas', email: fromEmail },
+      to: [{ email: opts.para, name: opts.nomeEmpresa }],
       subject: `Fatura ${opts.numFatura} — Synk`,
-      html,
+      htmlContent: html,
     }),
   })
 
   if (!res.ok) {
     const err = await res.text()
-    console.error('Resend error:', err)
+    console.error('Brevo error:', err)
   } else {
     console.log(`📧 Fatura ${opts.numFatura} enviada para ${opts.para}`)
   }
