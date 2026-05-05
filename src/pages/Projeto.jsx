@@ -86,8 +86,9 @@ export default function Projeto() {
   const [avaliacaoEnviada, setAvaliacaoEnviada] = useState(false)
 
   // pagamento escrow
-  const [pagamento, setPagamento] = useState(null) // registo da tabela pagamentos
+  const [pagamento, setPagamento] = useState(null)
   const [iniciandoPagamento, setIniciandoPagamento] = useState(false)
+  const [toastErro, setToastErro] = useState(null)
 
   useEffect(() => {
     if (!id || !user || !perfil) return
@@ -192,8 +193,14 @@ export default function Projeto() {
     }
   }
 
-  async function handleEscrow() {
-    if (!propostaAceite) return
+  async function handleEscrow(propostaAceiteLocal) {
+    const proposta = propostaAceiteLocal
+    if (!proposta) return
+    const orcamento = Number(projeto?.orcamento)
+    if (!orcamento || orcamento <= 0) {
+      setToastErro('O projeto não tem orçamento definido. Edita o projeto e define um valor.')
+      return
+    }
     setIniciandoPagamento(true)
     try {
       const res = await fetch(
@@ -208,18 +215,19 @@ export default function Projeto() {
             plano: 'escrow_projeto',
             empresa_id: empresaId,
             projeto_id: id,
-            especialista_id: propostaAceite.especialistas?.id,
-            valor: projeto.orcamento,
+            especialista_id: proposta.especialistas?.id,
+            valor: orcamento,
             success_url: `${window.location.origin}/synk-web/projeto/${id}?escrow=ok`,
-            cancel_url: `${window.location.origin}/synk-web/projeto/${id}?escrow=cancelado`,
+            cancel_url:  `${window.location.origin}/synk-web/projeto/${id}?escrow=cancelado`,
           }),
         }
       )
-      const { url, error } = await res.json()
-      if (error) throw new Error(error)
-      window.location.href = url
+      const json = await res.json()
+      if (json.error) throw new Error(json.error)
+      if (!json.url) throw new Error('Resposta inválida do servidor de pagamento.')
+      window.location.href = json.url
     } catch (err) {
-      setErro('Erro ao iniciar pagamento: ' + err.message)
+      setToastErro('Erro ao iniciar pagamento: ' + err.message)
       setIniciandoPagamento(false)
     }
   }
@@ -462,13 +470,13 @@ export default function Projeto() {
               <div>
                 <p className="font-semibold text-sm" style={{ color: '#f59e0b' }}>🔐 Depositar valor em escrow</p>
                 <p className="text-xs mt-0.5" style={{ color: 'var(--text-3)' }}>
-                  Aceitas{' '}
+                  Especialista aceite:{' '}
                   <strong style={{ color: 'var(--text-2)' }}>{propostaAceite.especialistas?.nome}</strong>.
-                  {' '}O valor (€{Number(projeto.orcamento).toLocaleString('pt-PT')}) fica em custódia e é libertado na conclusão.
+                  {' '}Orçamento de <strong style={{ color: 'var(--text-2)' }}>€{Number(projeto.orcamento).toLocaleString('pt-PT')}</strong> fica em custódia e é libertado na conclusão.
                 </p>
               </div>
               <button
-                onClick={handleEscrow}
+                onClick={() => handleEscrow(propostaAceite)}
                 disabled={iniciandoPagamento}
                 className="btn-primary flex-shrink-0"
                 style={{ fontSize: '13px', padding: '9px 18px', whiteSpace: 'nowrap', opacity: iniciandoPagamento ? 0.7 : 1 }}
@@ -750,6 +758,28 @@ export default function Projeto() {
           </div>
         </Reveal>
       </div>
+
+      {/* Toast de erro de pagamento */}
+      {toastErro && (
+        <div
+          className="fixed bottom-6 left-1/2 z-50 px-5 py-4 rounded-2xl shadow-2xl flex items-start gap-3"
+          style={{
+            transform: 'translateX(-50%)',
+            background: 'rgba(248,113,113,0.12)',
+            border: '1px solid rgba(248,113,113,0.35)',
+            backdropFilter: 'blur(12px)',
+            maxWidth: '420px',
+            width: 'calc(100vw - 32px)',
+          }}
+        >
+          <span style={{ fontSize: '18px', flexShrink: 0 }}>❌</span>
+          <div className="flex-1">
+            <p className="font-semibold text-sm mb-0.5" style={{ color: '#f87171' }}>Erro no pagamento</p>
+            <p className="text-xs leading-relaxed" style={{ color: 'var(--text-2)' }}>{toastErro}</p>
+          </div>
+          <button onClick={() => setToastErro(null)} style={{ color: 'var(--text-3)', background: 'none', border: 'none', cursor: 'pointer', flexShrink: 0, fontSize: '16px' }}>✕</button>
+        </div>
+      )}
 
       {/* Modal: confirmação de eliminação */}
       {confirmDelete && (
