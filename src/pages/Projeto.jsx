@@ -124,7 +124,7 @@ export default function Projeto() {
         const [{ data: props }, { data: avs }, { data: pg }] = await Promise.all([
           supabase
             .from('propostas')
-            .select('*, especialistas(id, nome, email, pais, anos_experiencia, skills, preco_hora, bio)')
+            .select('*, especialistas(id, nome, email, pais, anos_experiencia, skills, preco_hora, bio, user_id)')
             .eq('projeto_id', id)
             .order('created_at', { ascending: false }),
           supabase
@@ -169,27 +169,61 @@ export default function Projeto() {
     await supabase.from('propostas').update({ estado: novoEstado }).eq('id', propostaId)
 
     if (novoEstado === 'aceite') {
-      // Rejeitar automaticamente todas as outras propostas pendentes
+      const proposta = propostas.find(p => p.id === propostaId)
       const pendentes = propostas.filter(p => p.id !== propostaId && p.estado === 'pendente')
+
+      // Rejeitar automaticamente pendentes
       if (pendentes.length > 0) {
-        await supabase
-          .from('propostas')
-          .update({ estado: 'rejeitado' })
-          .in('id', pendentes.map(p => p.id))
+        await supabase.from('propostas').update({ estado: 'rejeitado' }).in('id', pendentes.map(p => p.id))
+        // Notificar rejeitados
+        for (const p of pendentes) {
+          if (p.especialistas?.user_id) {
+            supabase.from('notificacoes').insert({
+              user_id: p.especialistas.user_id,
+              tipo: 'proposta_rejeitada',
+              titulo: 'Candidatura não selecionada',
+              mensagem: `Outra proposta foi escolhida para "${projeto.titulo}".`,
+              link: `/projeto/${id}`,
+            })
+          }
+        }
       }
-      // Atualizar estado local: aceitar esta, rejeitar as restantes pendentes
+
       setPropostas(prev => prev.map(p => {
         if (p.id === propostaId) return { ...p, estado: 'aceite' }
         if (p.estado === 'pendente') return { ...p, estado: 'rejeitado' }
         return p
       }))
-      // Projeto passa a "em andamento"
+
+      // Projeto → em andamento
       if (projeto.estado === 'aberto') {
         await supabase.from('projetos').update({ estado: 'em_andamento' }).eq('id', id)
         setProjeto(prev => ({ ...prev, estado: 'em_andamento' }))
       }
+
+      // Notificar especialista aceite
+      if (proposta?.especialistas?.user_id) {
+        supabase.from('notificacoes').insert({
+          user_id: proposta.especialistas.user_id,
+          tipo: 'proposta_aceite',
+          titulo: '✅ Candidatura aceite!',
+          mensagem: `A empresa aceitou a tua candidatura para "${projeto.titulo}".`,
+          link: `/projeto/${id}`,
+        })
+      }
     } else {
+      // Rejeição manual
+      const proposta = propostas.find(p => p.id === propostaId)
       setPropostas(prev => prev.map(p => p.id === propostaId ? { ...p, estado: novoEstado } : p))
+      if (proposta?.especialistas?.user_id) {
+        supabase.from('notificacoes').insert({
+          user_id: proposta.especialistas.user_id,
+          tipo: 'proposta_rejeitada',
+          titulo: 'Candidatura não selecionada',
+          mensagem: `A empresa não selecionou a tua candidatura para "${projeto.titulo}".`,
+          link: `/projeto/${id}`,
+        })
+      }
     }
   }
 
@@ -237,13 +271,22 @@ export default function Projeto() {
     await supabase.from('projetos').update({ estado: 'concluido' }).eq('id', id)
     setProjeto(prev => ({ ...prev, estado: 'concluido' }))
     setConcluindo(false)
-    // Abrir modal de avaliação para o especialista aceite
     const aceite = propostas.find(p => p.estado === 'aceite')
     if (aceite) {
       setRatingTemp(0)
       setComentarioTemp('')
       setAvaliacaoEnviada(false)
       setAvaliacaoModal({ id: aceite.especialistas?.id, nome: aceite.especialistas?.nome })
+      // Notificar especialista
+      if (aceite.especialistas?.user_id) {
+        supabase.from('notificacoes').insert({
+          user_id: aceite.especialistas.user_id,
+          tipo: 'projeto_concluido',
+          titulo: '🎉 Projeto concluído!',
+          mensagem: `O projeto "${projeto.titulo}" foi marcado como concluído. O teu pagamento será processado.`,
+          link: `/projeto/${id}`,
+        })
+      }
     }
   }
 

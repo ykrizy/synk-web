@@ -5,7 +5,7 @@ import { useAuth } from '@/contexts/AuthContext'
 import { supabase } from '@/lib/supabase'
 
 // ─── Chat ────────────────────────────────────────────────────────────────────
-function Chat({ projetoId, empresaId, especialistaId, userId }) {
+function Chat({ projetoId, empresaId, especialistaId, userId, otherUserId, tituloProjeto }) {
   const [mensagens, setMensagens] = useState([])
   const [texto, setTexto] = useState('')
   const [enviando, setEnviando] = useState(false)
@@ -62,8 +62,17 @@ function Chat({ projetoId, empresaId, especialistaId, userId }) {
       .single()
 
     if (!error && data) {
-      // Adiciona imediatamente ao state (sem esperar pelo Realtime)
       setMensagens(prev => prev.find(x => x.id === data.id) ? prev : [...prev, data])
+      // Notificar o outro utilizador
+      if (otherUserId) {
+        supabase.from('notificacoes').insert({
+          user_id: otherUserId,
+          tipo: 'nova_mensagem',
+          titulo: '💬 Nova mensagem',
+          mensagem: conteudo.length > 60 ? conteudo.slice(0, 57) + '…' : conteudo,
+          link: `/mensagens?projeto=${projetoId}`,
+        })
+      }
     }
 
     setEnviando(false)
@@ -269,7 +278,7 @@ export default function Mensagens() {
 
       const { data: props } = await supabase
         .from('propostas')
-        .select('*, projetos(id, titulo, empresa_id), especialistas(id, nome)')
+        .select('*, projetos(id, titulo, empresa_id), especialistas(id, nome, user_id)')
         .eq('estado', 'aceite')
 
       const minhasProps = (props || []).filter(p => p.projetos?.empresa_id === emp.id)
@@ -293,6 +302,7 @@ export default function Mensagens() {
           nomeOutro: prop.especialistas?.nome,
           tituloProjeto: prop.projetos?.titulo,
           ultimaMensagem: ultima,
+          otherUserId: prop.especialistas?.user_id,
         }
       }))
 
@@ -303,7 +313,7 @@ export default function Mensagens() {
 
       const { data: props } = await supabase
         .from('propostas')
-        .select('*, projetos(id, titulo, empresa_id, empresas(id, nome))')
+        .select('*, projetos(id, titulo, empresa_id, empresas(id, nome, user_id))')
         .eq('especialista_id', esp.id)
         .eq('estado', 'aceite')
 
@@ -327,6 +337,7 @@ export default function Mensagens() {
           nomeOutro: prop.projetos?.empresas?.nome,
           tituloProjeto: prop.projetos?.titulo,
           ultimaMensagem: ultima,
+          otherUserId: prop.projetos?.empresas?.user_id,
         }
       }))
     }
@@ -478,6 +489,8 @@ export default function Mensagens() {
                 empresaId={conversaSelecionada.empresaId}
                 especialistaId={conversaSelecionada.especialistaId}
                 userId={user.id}
+                otherUserId={conversaSelecionada.otherUserId}
+                tituloProjeto={conversaSelecionada.tituloProjeto}
               />
             </div>
           </>
