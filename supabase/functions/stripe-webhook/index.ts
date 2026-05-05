@@ -23,34 +23,57 @@ Deno.serve(async (req) => {
       Deno.env.get('STRIPE_WEBHOOK_SECRET')!
     )
   } catch (err) {
-    console.error('Webhook signature verification failed:', (err as Error).message)
+    console.error('Webhook signature failed:', (err as Error).message)
     return new Response(`Webhook Error: ${(err as Error).message}`, { status: 400 })
   }
 
   if (event.type === 'checkout.session.completed') {
     const session = event.data.object as Stripe.Checkout.Session
-    const projetoId = session.metadata?.projeto_id
+    const { plano, projeto_id, empresa_id, especialista_id, valor } = session.metadata ?? {}
 
-    if (!projetoId) {
-      console.warn('checkout.session.completed sem projeto_id no metadata')
-      return new Response(JSON.stringify({ received: true }), { status: 200 })
+    // ── Publicar projeto ──────────────────────────────────────────────────────
+    if (!plano || plano === 'publicar_projeto') {
+      if (!projeto_id) return ok()
+      const { error } = await supabase
+        .from('projetos')
+        .update({ estado: 'aberto' })
+        .eq('id', projeto_id)
+        .eq('estado', 'pendente_pagamento')
+      if (error) { console.error(error); return new Response('Erro', { status: 500 }) }
+      console.log(`✅ Projeto ${projeto_id} publicado`)
     }
 
-    const { error } = await supabase
-      .from('projetos')
-      .update({ estado: 'aberto' })
-      .eq('id', projetoId)
-      .eq('estado', 'pendente_pagamento')
+    // ── Escrow de projeto ─────────────────────────────────────────────────────
+    if (plano === 'escrow_projeto') {
+      if (!projeto_id || !empresa_id || !especialista_id) return ok()
 
-    if (error) {
-      console.error('Erro ao ativar projeto:', error)
-      return new Response('Erro ao ativar projeto', { status: 500 })
+      // 1. Registar pagamento em escrow
+      const { error: pgErr } = await supabase.from('pagamentos').insert({
+        projeto_id,
+        empresa_id,
+        especialista_id,
+        valor: Number(valor ?? 0),
+        estado: 'escrow',
+        stripe_session_id: session.id,
+      })
+      if (pgErr) { console.error(pgErr); return new Response('Erro pagamentos', { status: 500 }) }
+
+      // 2. Projeto → em_andamento
+      const { error: projErr } = await supabase
+        .from('projetos')
+        .update({ estado: 'em_andamento' })
+        .eq('id', projeto_id)
+      if (projErr) { console.error(projErr); return new Response('Erro projeto', { status: 500 }) }
+
+      console.log(`✅ Escrow confirmado — projeto ${projeto_id} em andamento`)
     }
-
-    console.log(`✅ Projeto ${projetoId} ativado após pagamento`)
   }
 
+  return ok()
+})
+
+function ok() {
   return new Response(JSON.stringify({ received: true }), {
     headers: { 'Content-Type': 'application/json' },
   })
-})
+}

@@ -79,11 +79,15 @@ export default function Projeto() {
 
   // concluir + avaliação
   const [concluindo, setConcluindo] = useState(false)
-  const [avaliacaoModal, setAvaliacaoModal] = useState(null) // { id, nome } do especialista a avaliar
+  const [avaliacaoModal, setAvaliacaoModal] = useState(null)
   const [ratingTemp, setRatingTemp] = useState(0)
   const [comentarioTemp, setComentarioTemp] = useState('')
   const [enviandoAvaliacao, setEnviandoAvaliacao] = useState(false)
   const [avaliacaoEnviada, setAvaliacaoEnviada] = useState(false)
+
+  // pagamento escrow
+  const [pagamento, setPagamento] = useState(null) // registo da tabela pagamentos
+  const [iniciandoPagamento, setIniciandoPagamento] = useState(false)
 
   useEffect(() => {
     if (!id || !user || !perfil) return
@@ -116,7 +120,7 @@ export default function Projeto() {
         setIsOwner(true)
         setEmpresaId(emp.id)
 
-        const [{ data: props }, { data: avs }] = await Promise.all([
+        const [{ data: props }, { data: avs }, { data: pg }] = await Promise.all([
           supabase
             .from('propostas')
             .select('*, especialistas(id, nome, email, pais, anos_experiencia, skills, preco_hora, bio)')
@@ -127,9 +131,15 @@ export default function Projeto() {
             .select('*')
             .eq('projeto_id', id)
             .eq('empresa_id', emp.id),
+          supabase
+            .from('pagamentos')
+            .select('*')
+            .eq('projeto_id', id)
+            .maybeSingle(),
         ])
         setPropostas(props || [])
         setAvaliacoes(avs || [])
+        setPagamento(pg || null)
 
       } else if (perfil === 'especialista') {
         const { data: esp } = await supabase
@@ -179,6 +189,38 @@ export default function Projeto() {
       }
     } else {
       setPropostas(prev => prev.map(p => p.id === propostaId ? { ...p, estado: novoEstado } : p))
+    }
+  }
+
+  async function handleEscrow() {
+    if (!propostaAceite) return
+    setIniciandoPagamento(true)
+    try {
+      const res = await fetch(
+        `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/create-checkout-session`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`,
+          },
+          body: JSON.stringify({
+            plano: 'escrow_projeto',
+            empresa_id: empresaId,
+            projeto_id: id,
+            especialista_id: propostaAceite.especialistas?.id,
+            valor: projeto.orcamento,
+            success_url: `${window.location.origin}/synk-web/projeto/${id}?escrow=ok`,
+            cancel_url: `${window.location.origin}/synk-web/projeto/${id}?escrow=cancelado`,
+          }),
+        }
+      )
+      const { url, error } = await res.json()
+      if (error) throw new Error(error)
+      window.location.href = url
+    } catch (err) {
+      setErro('Erro ao iniciar pagamento: ' + err.message)
+      setIniciandoPagamento(false)
     }
   }
 
@@ -258,6 +300,9 @@ export default function Projeto() {
   const prazoLabel = PRAZOS.find(p => p.value === projeto.prazo)?.label ?? projeto.prazo
   const propostaAceite = propostas.find(p => p.estado === 'aceite')
   const jaAvaliou = avaliacoes.some(a => a.especialista_id === propostaAceite?.especialistas?.id)
+  const escrowPago = pagamento?.estado === 'escrow' || pagamento?.estado === 'libertado'
+  // URL param de retorno do Stripe
+  const escrowParam = new URLSearchParams(typeof window !== 'undefined' ? window.location.search : '').get('escrow')
 
   // ── Vista do especialista ─────────────────────────────────────────────────
   if (!isOwner && minhaProposta) {
@@ -397,17 +442,54 @@ export default function Projeto() {
           </div>
         </Reveal>
 
-        {/* Banner: Marcar como Concluído — aparece sempre que há proposta aceite e projeto não concluído */}
-        {propostaAceite && projeto.estado !== 'concluido' && !editMode && (
+        {/* Banner: escrow de regresso do Stripe */}
+        {escrowParam === 'ok' && escrowPago && !editMode && (
+          <Reveal>
+            <div className="rounded-2xl p-4 mb-4 flex items-center gap-3" style={{ background: 'rgba(16,185,129,0.08)', border: '1px solid rgba(16,185,129,0.25)' }}>
+              <span style={{ fontSize: '20px' }}>🔐</span>
+              <p className="text-sm font-medium" style={{ color: '#10b981' }}>Pagamento em escrow confirmado! O especialista será pago na conclusão do projeto.</p>
+            </div>
+          </Reveal>
+        )}
+
+        {/* Banner: Pagar escrow — aparece quando proposta aceite mas escrow ainda não pago */}
+        {propostaAceite && !escrowPago && projeto.estado !== 'concluido' && !editMode && (
+          <Reveal>
+            <div
+              className="rounded-2xl p-5 mb-4 flex items-center justify-between gap-4"
+              style={{ background: 'rgba(245,158,11,0.06)', border: '1px solid rgba(245,158,11,0.25)' }}
+            >
+              <div>
+                <p className="font-semibold text-sm" style={{ color: '#f59e0b' }}>🔐 Depositar valor em escrow</p>
+                <p className="text-xs mt-0.5" style={{ color: 'var(--text-3)' }}>
+                  Aceitas{' '}
+                  <strong style={{ color: 'var(--text-2)' }}>{propostaAceite.especialistas?.nome}</strong>.
+                  {' '}O valor (€{Number(projeto.orcamento).toLocaleString('pt-PT')}) fica em custódia e é libertado na conclusão.
+                </p>
+              </div>
+              <button
+                onClick={handleEscrow}
+                disabled={iniciandoPagamento}
+                className="btn-primary flex-shrink-0"
+                style={{ fontSize: '13px', padding: '9px 18px', whiteSpace: 'nowrap', opacity: iniciandoPagamento ? 0.7 : 1 }}
+              >
+                {iniciandoPagamento ? 'A redirecionar…' : `Pagar €${Number(projeto.orcamento).toLocaleString('pt-PT')} →`}
+              </button>
+            </div>
+          </Reveal>
+        )}
+
+        {/* Banner: Marcar como Concluído — só depois do escrow estar pago */}
+        {propostaAceite && escrowPago && projeto.estado !== 'concluido' && !editMode && (
           <Reveal>
             <div
               className="rounded-2xl p-5 mb-4 flex items-center justify-between gap-4"
               style={{ background: 'rgba(16,185,129,0.06)', border: '1px solid rgba(16,185,129,0.2)' }}
             >
               <div>
-                <p className="font-semibold text-sm" style={{ color: '#10b981' }}>Projeto em andamento</p>
+                <p className="font-semibold text-sm" style={{ color: '#10b981' }}>🔐 Projeto em andamento · Escrow ativo</p>
                 <p className="text-xs mt-0.5" style={{ color: 'var(--text-3)' }}>
-                  A trabalhar com {propostaAceite.especialistas?.nome}. Quando o trabalho estiver completo, marca como concluído.
+                  A trabalhar com {propostaAceite.especialistas?.nome}. Quando o trabalho estiver completo, marca como concluído para libertar o pagamento.
                 </p>
               </div>
               <button

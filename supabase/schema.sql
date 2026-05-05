@@ -153,3 +153,39 @@ create policy "Qualquer um pode submeter um lead"
 -- create policy "Especialista edita próprias propostas" on propostas for update using (auth.uid() = (select user_id from especialistas where id = especialista_id));
 
 -- Tabelas criadas. Regista utilizadores pelo formulário do site para adicionar dados.
+
+-- ============================================================
+-- ATUALIZAÇÃO — Pagamentos / Escrow + RLS fix projetos
+-- Corre este bloco no SQL Editor do Supabase
+-- ============================================================
+
+-- 8. PAGAMENTOS (escrow de projetos)
+create table if not exists pagamentos (
+  id               uuid primary key default gen_random_uuid(),
+  projeto_id       uuid references projetos(id) on delete cascade,
+  empresa_id       uuid references empresas(id),
+  especialista_id  uuid references especialistas(id),
+  valor            numeric not null,
+  estado           text default 'pendente' check (estado in ('pendente', 'escrow', 'libertado', 'reembolsado')),
+  stripe_session_id text,
+  created_at       timestamptz default now()
+);
+alter table pagamentos enable row level security;
+create policy "Empresa vê os seus pagamentos"
+  on pagamentos for select using (auth.uid() = (select user_id from empresas where id = empresa_id));
+create policy "Empresa insere pagamentos"
+  on pagamentos for insert with check (auth.uid() = (select user_id from empresas where id = empresa_id));
+create policy "Admin pode ver todos os pagamentos"
+  on pagamentos for all
+  using ((select email from auth.users where id = auth.uid()) = 'khalidshah1328@gmail.com');
+
+-- RLS FIX: especialistas com proposta aceite podem ver o projeto mesmo em em_andamento
+create policy "Especialista com proposta vê o projeto"
+  on projetos for select using (
+    exists (
+      select 1 from propostas p
+      join especialistas e on e.id = p.especialista_id
+      where p.projeto_id = projetos.id
+        and e.user_id = auth.uid()
+    )
+  );
