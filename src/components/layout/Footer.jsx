@@ -156,51 +156,6 @@ export default function Footer() {
           ))}
         </div>
 
-        {/* Social media strip */}
-        <div
-          className="flex flex-col items-center gap-6 py-10 mb-2"
-          style={{ borderTop: '1px solid var(--border)' }}
-        >
-          <p className="text-xs font-semibold uppercase tracking-widest" style={{ color: 'var(--text-2)', letterSpacing: '0.1em' }}>
-            Segue-nos
-          </p>
-          <div className="flex items-center gap-4">
-            {SOCIALS.map((s, i) => (
-              <a
-                key={i}
-                href={s.href}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label={s.label}
-                className="flex items-center gap-2.5 px-5 py-2.5 rounded-xl transition-all duration-200"
-                style={{
-                  background: 'rgba(255,255,255,0.05)',
-                  border: '1px solid rgba(255,255,255,0.12)',
-                  color: 'rgba(255,255,255,0.7)',
-                  textDecoration: 'none',
-                  fontSize: '13px',
-                  fontWeight: 500,
-                }}
-                onMouseEnter={e => {
-                  e.currentTarget.style.borderColor = 'rgba(124,92,246,0.6)'
-                  e.currentTarget.style.background = 'rgba(124,92,246,0.12)'
-                  e.currentTarget.style.color = '#a78bfa'
-                }}
-                onMouseLeave={e => {
-                  e.currentTarget.style.borderColor = 'rgba(255,255,255,0.12)'
-                  e.currentTarget.style.background = 'rgba(255,255,255,0.05)'
-                  e.currentTarget.style.color = 'rgba(255,255,255,0.7)'
-                }}
-              >
-                <span style={{ display: 'flex', alignItems: 'center' }}>
-                  {s.iconLg}
-                </span>
-                {s.label}
-              </a>
-            ))}
-          </div>
-        </div>
-
         {/* Bottom bar */}
         <div
           className="flex flex-col sm:flex-row items-center justify-between gap-3 pt-6"
