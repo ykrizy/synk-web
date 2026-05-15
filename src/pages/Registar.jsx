@@ -241,7 +241,7 @@ function SuccessMessage({ type, onReset }) {
       </h2>
       <p className="text-lg mb-8" style={{ color: 'var(--text-2)' }}>
         {isEmpresa
-          ? 'Bem-vindo à Synk. Podes já publicar o teu primeiro projeto.'
+          ? 'Bem-vindo à Twonect. Podes já publicar o teu primeiro projeto.'
           : 'Analisamos o teu perfil em 24 horas úteis e entramos em contacto.'}
       </p>
       <div className="flex flex-wrap gap-4 justify-center">
@@ -264,7 +264,7 @@ function SuccessMessage({ type, onReset }) {
 export default function Registar() {
   useMeta({
     title: 'Começa hoje',
-    description: 'Regista-te na Synk como empresa ou especialista. Rápido, grátis e sem compromisso.',
+    description: 'Regista-te na Twonect como empresa ou especialista. Rápido, grátis e sem compromisso.',
   })
 
   const [selected, setSelected] = useState(null)

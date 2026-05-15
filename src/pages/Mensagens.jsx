@@ -238,7 +238,7 @@ function ConversaItem({ conversa, isSelected, onClick }) {
 
 // ─── Página principal ─────────────────────────────────────────────────────────
 export default function Mensagens() {
-  useMeta({ title: 'Mensagens — Synk', description: 'As tuas conversas na Synk.' })
+  useMeta({ title: 'Mensagens — Twonect', description: 'As tuas conversas na Twonect.' })
 
   const { user, perfil } = useAuth()
   const [searchParams] = useSearchParams()

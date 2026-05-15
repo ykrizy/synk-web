@@ -11,7 +11,7 @@ const ITEMS = [
     color: '#6366f1',
   },
   {
-    quote: 'Como especialista em RPA, a Synk deu-me acesso a projetos que nunca conseguiria sozinho. O sistema de escrow dá-me total confiança.',
+    quote: 'Como especialista em RPA, a Twonect deu-me acesso a projetos que nunca conseguiria sozinho. O sistema de escrow dá-me total confiança.',
     name: 'Miguel Santos',
     role: 'RPA Developer · Freelancer',
     initials: 'MS',

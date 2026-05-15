@@ -85,7 +85,7 @@ const SOCIALS = [
 
 export default function Footer() {
   return (
-    <footer style={{ background: 'var(--bg-subtle)', borderTop: '1px solid var(--border)' }}>
+    <footer style={{ background: 'var(--bg-subtle)', borderTop: '1px solid transparent', backgroundImage: 'linear-gradient(var(--bg-subtle), var(--bg-subtle)), linear-gradient(90deg, transparent, rgba(124,92,246,0.3), transparent)', backgroundOrigin: 'border-box', backgroundClip: 'padding-box, border-box' }}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
 
         {/* Top grid */}
@@ -99,10 +99,14 @@ export default function Footer() {
                 style={{ background: 'var(--brand)' }}
               >
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" />
+                  <circle cx="12" cy="5" r="2"/>
+                  <circle cx="5" cy="19" r="2"/>
+                  <circle cx="19" cy="19" r="2"/>
+                  <line x1="12" y1="7" x2="6.5" y2="17"/>
+                  <line x1="12" y1="7" x2="17.5" y2="17"/>
                 </svg>
               </div>
-              <span className="font-display text-lg" style={{ color: 'var(--text)', letterSpacing: '-0.04em' }}>Synk</span>
+              <span className="font-display text-lg" style={{ color: 'var(--text)', letterSpacing: '-0.04em' }}>Twonect</span>
             </Link>
 
             <p className="text-sm leading-relaxed mb-6" style={{ color: 'var(--text-3)', maxWidth: 220 }}>
@@ -162,7 +166,7 @@ export default function Footer() {
           style={{ borderTop: '1px solid var(--border)' }}
         >
           <p className="text-xs" style={{ color: 'var(--text-4)' }}>
-            © 2026 Synk Technologies, Lda. Todos os direitos reservados.
+            © 2026 Twonect, Lda. Todos os direitos reservados.
           </p>
           <p className="text-xs flex items-center gap-1.5" style={{ color: 'var(--text-4)' }}>
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">

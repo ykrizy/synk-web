@@ -3,7 +3,7 @@ import { useEffect } from 'react'
 export default function useMeta({ title, description } = {}) {
   useEffect(() => {
     if (title) {
-      document.title = `${title} — Synk`
+      document.title = `${title} — Twonect`
     }
     if (description) {
       let meta = document.querySelector('meta[name="description"]')

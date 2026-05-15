@@ -25,7 +25,7 @@ const ESPECIALISTAS_STEPS = [
 const FAQS = [
   {
     q: 'Posso cancelar um projeto a meio?',
-    a: 'Sim, com acordo entre ambas as partes. A Synk medeia a devolução proporcional do valor em Escrow, tendo em conta o trabalho já realizado.',
+    a: 'Sim, com acordo entre ambas as partes. A Twonect medeia a devolução proporcional do valor em Escrow, tendo em conta o trabalho já realizado.',
   },
   {
     q: 'O que acontece se o especialista não entregar?',
@@ -129,7 +129,7 @@ export default function ComoFunciona() {
                   },
                   { arrow: true },
                   {
-                    label: 'Synk retém',
+                    label: 'Twonect retém',
                     color: '#a78bfa',
                     icon: (
                       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -173,7 +173,7 @@ export default function ComoFunciona() {
               </div>
 
               <p className="text-sm leading-relaxed mb-6" style={{ color: 'var(--text-2)', letterSpacing: '-0.01em' }}>
-                O Escrow é um sistema de pagamento onde os fundos ficam retidos por um intermediário (a Synk) até que ambas as partes cumpram os termos acordados. É o padrão de segurança em marketplaces profissionais globais.
+                O Escrow é um sistema de pagamento onde os fundos ficam retidos por um intermediário (a Twonect) até que ambas as partes cumpram os termos acordados. É o padrão de segurança em marketplaces profissionais globais.
               </p>
 
               <div

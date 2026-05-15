@@ -112,7 +112,7 @@ function EmpresaDashboard({ dados: dadosIniciais }) {
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--brand-light)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
             </div>
             <div>
-              <p className="font-semibold" style={{ color: 'var(--text)' }}>Bem-vindo à Synk! 🎉</p>
+              <p className="font-semibold" style={{ color: 'var(--text)' }}>Bem-vindo à Twonect! 🎉</p>
               <p className="text-xs" style={{ color: 'var(--text-3)' }}>Segue estes passos para contratar o teu primeiro especialista</p>
             </div>
           </div>
@@ -474,7 +474,7 @@ function EspecialistaDashboard({ dados: dadosIniciais }) {
         <p style={{ color: 'var(--text-2)', fontSize: '14px' }}>
           {dados?.verificado
             ? 'O teu perfil está visível no Marketplace.'
-            : 'A equipa Synk irá verificar o teu perfil em 24h úteis.'}
+            : 'A equipa Twonect irá verificar o teu perfil em 24h úteis.'}
         </p>
       </div>
 
@@ -706,7 +706,7 @@ function EspecialistaDashboard({ dados: dadosIniciais }) {
 }
 
 export default function Dashboard() {
-  useMeta({ title: 'Dashboard', description: 'A tua área pessoal na Synk.' })
+  useMeta({ title: 'Dashboard', description: 'A tua área pessoal na Twonect.' })
 
   const { user, perfil } = useAuth()
   const [dados, setDados] = useState(null)

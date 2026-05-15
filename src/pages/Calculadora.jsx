@@ -206,7 +206,7 @@ export default function Calculadora() {
         badgeVariant="badge-emerald"
         heading="Quanto tempo e dinheiro podes"
         highlight="poupar com automação?"
-        sub="Insere os dados do teu processo atual e descobre o impacto real de o automatizar com a Synk."
+        sub="Insere os dados do teu processo atual e descobre o impacto real de o automatizar com a Twonect."
       />
 
       {/* Benchmarks */}

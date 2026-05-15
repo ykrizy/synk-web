@@ -8,7 +8,7 @@ import { useAuth } from '@/contexts/AuthContext'
 export default function Login() {
   useMeta({
     title: 'Entrar',
-    description: 'Acede à tua conta Synk.',
+    description: 'Acede à tua conta Twonect.',
   })
 
   const navigate = useNavigate()
@@ -71,7 +71,7 @@ export default function Login() {
               Bem-vindo de volta
             </h1>
             <p style={{ color: 'var(--text-2)' }}>
-              {resetMode ? 'Envia um link para recuperar a tua password.' : 'Entra na tua conta Synk.'}
+              {resetMode ? 'Envia um link para recuperar a tua password.' : 'Entra na tua conta Twonect.'}
             </p>
           </div>
         </Reveal>

@@ -22,7 +22,7 @@ const TABS = [
 ]
 
 export default function Admin() {
-  useMeta({ title: 'Admin · Synk', description: 'Painel de administração.' })
+  useMeta({ title: 'Admin · Twonect', description: 'Painel de administração.' })
 
   const { user, loading: authLoading } = useAuth()
   const [tab, setTab] = useState('especialistas')
@@ -133,7 +133,7 @@ export default function Admin() {
         <div className="mb-8 flex items-center justify-between gap-4 flex-wrap">
           <div>
             <p className="text-sm mb-1" style={{ color: 'var(--text-3)' }}>🔐 Painel de Administração</p>
-            <h1 className="font-display text-3xl" style={{ color: 'var(--text)', letterSpacing: '-0.03em' }}>Synk Admin</h1>
+            <h1 className="font-display text-3xl" style={{ color: 'var(--text)', letterSpacing: '-0.03em' }}>Twonect Admin</h1>
           </div>
           <button onClick={() => { fetchEspecialistas(); fetchProjetos(); fetchPagamentos() }} className="btn-ghost" style={{ fontSize: '13px' }}>
             🔄 Atualizar tudo

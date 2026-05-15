@@ -256,10 +256,14 @@ export default function Navbar() {
             <div className="w-7 h-7 rounded-lg flex items-center justify-center"
               style={{ background: 'var(--brand)', boxShadow: '0 0 14px rgba(124,92,246,0.4)' }}>
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" />
+                <circle cx="12" cy="5" r="2"/>
+                <circle cx="5" cy="19" r="2"/>
+                <circle cx="19" cy="19" r="2"/>
+                <line x1="12" y1="7" x2="6.5" y2="17"/>
+                <line x1="12" y1="7" x2="17.5" y2="17"/>
               </svg>
             </div>
-            <span className="font-display text-lg" style={{ color: 'var(--text)', letterSpacing: '-0.04em' }}>Synk</span>
+            <span className="font-display text-lg" style={{ color: 'var(--text)', letterSpacing: '-0.04em' }}>Twonect</span>
           </Link>
 
           {/* Desktop Nav */}
@@ -270,12 +274,13 @@ export default function Navbar() {
                 <Link key={link.to} to={link.to} style={{
                   textDecoration: 'none', fontSize: '13.5px', fontWeight: 500,
                   letterSpacing: '-0.01em', padding: '6px 12px', borderRadius: '100px',
-                  color: isActive ? 'var(--text)' : 'var(--text-3)',
+                  color: isActive ? 'var(--text)' : 'var(--text-2)',
                   background: isActive ? 'var(--surface-2)' : 'transparent',
+                  borderBottom: isActive ? '2px solid var(--brand-light)' : '2px solid transparent',
                   transition: 'all 0.15s ease', whiteSpace: 'nowrap',
                 }}
-                  onMouseEnter={e => { if (!isActive) e.currentTarget.style.color = 'var(--text-2)' }}
-                  onMouseLeave={e => { if (!isActive) e.currentTarget.style.color = 'var(--text-3)' }}
+                  onMouseEnter={e => { if (!isActive) e.currentTarget.style.color = 'var(--text)' }}
+                  onMouseLeave={e => { if (!isActive) e.currentTarget.style.color = 'var(--text-2)' }}
                 >
                   {link.label}
                 </Link>

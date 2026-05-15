@@ -53,10 +53,10 @@ const TABLE_FEATURES = [
 const FAQS_PRICING = [
   { q: 'Há algum custo de registo ou mensalidade?', a: 'Não. Tanto empresas como especialistas registam-se gratuitamente. Não há taxas de subscrição nem custos recorrentes.' },
   { q: 'Quando é que a comissão é cobrada?', a: 'A comissão de 15% é deduzida automaticamente do valor em Escrow quando o projeto é aprovado pela empresa. É processada de forma transparente e automática.' },
-  { q: 'Posso negociar a comissão para projetos grandes?', a: 'Para projetos acima de €20.000, contacta-nos em hello@synk.pt para condições personalizadas. Temos condições especiais para projetos de grande volume.' },
+  { q: 'Posso negociar a comissão para projetos grandes?', a: 'Para projetos acima de €20.000, contacta-nos em hello@twonect.pt para condições personalizadas. Temos condições especiais para projetos de grande volume.' },
   { q: 'Que métodos de pagamento aceitam?', a: 'Stripe: cartão de crédito/débito, Apple Pay, Google Pay e transferência bancária (SEPA). Todos os pagamentos são processados de forma segura.' },
   { q: 'O IVA está incluído?', a: 'Os valores apresentados são líquidos de IVA. O IVA aplicável será adicionado conforme a legislação em vigor no país do cliente.' },
-  { q: 'Como funciona o reembolso se o projeto não for entregue?', a: 'O valor em Escrow é devolvido integralmente à empresa mediante análise do caso pela equipa Synk. A nossa política de proteção garante que as empresas nunca perdem o investimento.' },
+  { q: 'Como funciona o reembolso se o projeto não for entregue?', a: 'O valor em Escrow é devolvido integralmente à empresa mediante análise do caso pela equipa Twonect. A nossa política de proteção garante que as empresas nunca perdem o investimento.' },
 ]
 
 function CheckItem({ children, color = '#6366f1' }) {
@@ -87,7 +87,7 @@ export default function Precos() {
       <PageHero
         heading="Simples. Transparente."
         highlight="Justo."
-        sub="Sem mensalidades, sem taxas escondidas. A Synk só ganha quando tu ganhas."
+        sub="Sem mensalidades, sem taxas escondidas. A Twonect só ganha quando tu ganhas."
       />
 
       {/* 3 pricing cards */}
@@ -166,7 +166,7 @@ export default function Precos() {
                 <ul className="space-y-3 mb-8 flex-1">
                   {ENTERPRISE_FEATURES.map((f, i) => <CheckItem key={i} color="#fbbf24">{f}</CheckItem>)}
                 </ul>
-                <a href="mailto:hello@synk.pt" className="btn-outline" style={{ textAlign: 'center', justifyContent: 'center', textDecoration: 'none' }}>
+                <a href="mailto:hello@twonect.pt" className="btn-outline" style={{ textAlign: 'center', justifyContent: 'center', textDecoration: 'none' }}>
                   Falar com a Equipa
                 </a>
                 <p className="text-xs mt-3 text-center" style={{ color: 'var(--text-3)' }}>Resposta em 24h úteis</p>
@@ -239,7 +239,7 @@ export default function Precos() {
                   },
                   { arrow: true },
                   {
-                    label: 'Synk retém',
+                    label: 'Twonect retém',
                     value: '€750 (15%)',
                     color: '#a78bfa',
                     icon: (
@@ -299,7 +299,7 @@ export default function Precos() {
 
       <CTABanner
         heading="Pronto para começar sem custos?"
-        sub="Regista-te gratuitamente e descobre como a Synk pode transformar o teu negócio."
+        sub="Regista-te gratuitamente e descobre como a Twonect pode transformar o teu negócio."
         primaryLabel="Começar Grátis"
         primaryTo={empresaTo}
         secondaryLabel="Ver como funciona"

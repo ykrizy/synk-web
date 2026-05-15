@@ -23,7 +23,7 @@ const BENEFITS = [
       </svg>
     ),
     title: 'Projetos qualificados',
-    desc: 'Chega de perder tempo com clientes sem orçamento ou pedidos vagos. Os projetos na Synk são estruturados e com budget definido.',
+    desc: 'Chega de perder tempo com clientes sem orçamento ou pedidos vagos. Os projetos na Twonect são estruturados e com budget definido.',
     color: 'var(--brand-light)',
   },
   {
@@ -86,7 +86,7 @@ export default function ParaEspecialistas() {
         badgeVariant="badge-violet"
         heading="O teu talento merece"
         highlight="projetos à sua altura"
-        sub="A Synk liga-te a empresas que precisam das tuas competências em automação. Projetos qualificados, pagamento garantido, sem intermediários desnecessários."
+        sub="A Twonect liga-te a empresas que precisam das tuas competências em automação. Projetos qualificados, pagamento garantido, sem intermediários desnecessários."
         primaryCTA={{ label: 'Criar Perfil Gratuito', to: '/registar' }}
         secondaryCTA={{ label: 'Ver projetos disponíveis', to: '/registar' }}
       />
@@ -94,7 +94,7 @@ export default function ParaEspecialistas() {
       {/* Benefits */}
       <section className="py-24" style={{ background: 'var(--bg)' }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <SectionHeader heading="O que ganhas como" highlight="especialista Synk" />
+          <SectionHeader heading="O que ganhas como" highlight="especialista Twonect" />
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
             {BENEFITS.map((b, i) => (
               <Reveal key={i} delay={i * 60}>
@@ -147,7 +147,7 @@ export default function ParaEspecialistas() {
           <Reveal delay={100}>
             <div className="rounded-2xl overflow-hidden" style={{ border: '1px solid rgba(255,255,255,0.07)' }}>
               <div className="grid grid-cols-4 gap-4 p-4" style={{ background: 'var(--surface)', borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
-                {['Valor do projeto', 'Comissão Synk (15%)', 'Tu recebes', ''].map((h, i) => (
+                {['Valor do projeto', 'Comissão Twonect (15%)', 'Tu recebes', ''].map((h, i) => (
                   <div key={i} className="text-xs font-semibold uppercase tracking-widest" style={{ color: 'var(--text-3)', letterSpacing: '0.06em' }}>{h}</div>
                 ))}
               </div>
@@ -226,7 +226,7 @@ export default function ParaEspecialistas() {
                 className="text-lg leading-relaxed italic mb-8"
                 style={{ color: 'var(--text)', letterSpacing: '-0.01em' }}
               >
-                "Em 6 meses na Synk fiz 12 projetos e construí uma base de clientes recorrentes. A plataforma poupou-me todo o trabalho de prospeção — posso focar-me no que sei fazer."
+                "Em 6 meses na Twonect fiz 12 projetos e construí uma base de clientes recorrentes. A plataforma poupou-me todo o trabalho de prospeção — posso focar-me no que sei fazer."
               </blockquote>
               <div className="flex items-center gap-4">
                 <div

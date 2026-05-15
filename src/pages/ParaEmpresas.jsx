@@ -297,7 +297,7 @@ export default function ParaEmpresas() {
       {/* Benefícios alternados */}
       <section className="py-24" style={{ background: 'var(--bg-subtle)', borderTop: '1px solid var(--border)' }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <SectionHeader heading="O que a Synk" highlight="faz por ti" />
+          <SectionHeader heading="O que a Twonect" highlight="faz por ti" />
 
           {[
             {
@@ -365,7 +365,7 @@ export default function ParaEmpresas() {
             },
             {
               title: 'Pagamento 100% protegido',
-              body: 'O dinheiro só sai quando tu approvas. O sistema Escrow da Synk garante que nunca perdes o investimento — mesmo que o projeto não corra como esperado.',
+              body: 'O dinheiro só sai quando tu approvas. O sistema Escrow da Twonect garante que nunca perdes o investimento — mesmo que o projeto não corra como esperado.',
               visual: (
                 <div
                   className="rounded-xl p-6"
@@ -373,7 +373,7 @@ export default function ParaEmpresas() {
                 >
                   <div className="flex flex-col gap-3">
                     {[
-                      { step: '1', label: 'Empresa deposita', desc: 'Pagamento retido pela Synk', color: 'var(--brand-light)' },
+                      { step: '1', label: 'Empresa deposita', desc: 'Pagamento retido pela Twonect', color: 'var(--brand-light)' },
                       { step: '2', label: 'Trabalho em progresso', desc: 'Especialista executa o projeto', color: '#a78bfa' },
                       { step: '3', label: 'Aprovação da empresa', desc: 'Empresa revê e aprova', color: '#22d3ee' },
                       { step: '4', label: 'Pagamento libertado', desc: 'Especialista recebe automaticamente', color: '#34d399' },

@@ -405,8 +405,8 @@ export default function Marketplace() {
   const location = useLocation()
   const [searchParams] = useSearchParams()
   useMeta({
-    title: 'Marketplace — Synk',
-    description: 'Encontra especialistas verificados ou publica o teu projecto. O marketplace da Synk liga empresas e talentos independentes em Portugal.',
+    title: 'Marketplace — Twonect',
+    description: 'Encontra especialistas verificados ou publica o teu projecto. O marketplace da Twonect liga empresas e talentos independentes em Portugal.',
   })
 
   const [activeTab, setActiveTab] = useState(() => searchParams.get('tab') === 'projetos' ? 'projectos' : 'especialistas')
@@ -734,7 +734,7 @@ export default function Marketplace() {
               eyebrow="COMO FUNCIONA"
               heading="Simples, rápido e"
               highlight="seguro"
-              sub="Do primeiro contacto ao pagamento, a Synk acompanha-te em cada passo."
+              sub="Do primeiro contacto ao pagamento, a Twonect acompanha-te em cada passo."
               center
             />
           </Reveal>
@@ -795,7 +795,7 @@ export default function Marketplace() {
                 <div className="flex flex-col gap-4">
                   {[
                     { step: '01', text: 'Cria o teu perfil com portefólio e experiência' },
-                    { step: '02', text: 'Passa pela verificação de competências Synk' },
+                    { step: '02', text: 'Passa pela verificação de competências Twonect' },
                     { step: '03', text: 'Recebe convites e candidata-te a projectos' },
                     { step: '04', text: 'Recebe pagamentos protegidos e avaliações' },
                   ].map(item => (

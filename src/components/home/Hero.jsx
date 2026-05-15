@@ -133,10 +133,14 @@ function HeroMockup() {
               style={{ background: 'var(--brand)', boxShadow: '0 0 10px rgba(124,92,246,0.5)' }}
             >
               <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" />
+                <circle cx="12" cy="5" r="2"/>
+                <circle cx="5" cy="19" r="2"/>
+                <circle cx="19" cy="19" r="2"/>
+                <line x1="12" y1="7" x2="6.5" y2="17"/>
+                <line x1="12" y1="7" x2="17.5" y2="17"/>
               </svg>
             </div>
-            <span className="font-display text-sm" style={{ color: 'var(--text)', letterSpacing: '-0.02em' }}>Synk Platform</span>
+            <span className="font-display text-sm" style={{ color: 'var(--text)', letterSpacing: '-0.02em' }}>Twonect Platform</span>
           </div>
           <div className="flex items-center gap-1.5">
             <span className="w-1.5 h-1.5 rounded-full animate-pulse" style={{ background: '#34d399' }} />
@@ -265,8 +269,8 @@ export default function Hero() {
   const heroHighlight = isEspecialista ? 'projetos de automação' : 'negócio com os'
   const heroHeadingPart2 = isEspecialista ? null : 'melhores especialistas'
   const heroSub = isEspecialista
-    ? 'A Synk conecta-te a empresas que precisam das tuas competências. Projetos qualificados, pagamento garantido, sem intermediários desnecessários.'
-    : 'A Synk conecta a tua empresa a especialistas em automação verificados. Encontra o profissional certo, lança o projeto e paga só quando estiveres satisfeito.'
+    ? 'A Twonect conecta-te a empresas que precisam das tuas competências. Projetos qualificados, pagamento garantido, sem intermediários desnecessários.'
+    : 'A Twonect conecta a tua empresa a especialistas em automação verificados. Encontra o profissional certo, lança o projeto e paga só quando estiveres satisfeito.'
 
   const primaryTo = isEspecialista ? especialistaTo : empresaTo
   const primaryLabel = isEspecialista ? 'Ver Projetos →' : isEmpresa ? 'Publicar Projeto →' : 'Publicar Projeto Grátis'
@@ -278,23 +282,40 @@ export default function Hero() {
       className="relative min-h-screen flex items-center pt-16 overflow-hidden"
       style={{ background: 'var(--bg)' }}
     >
-      {/* Radial glow */}
+      {/* Floating orb 1 */}
       <div
-        className="absolute inset-0 pointer-events-none"
+        className="absolute pointer-events-none orb-drift"
         style={{
-          background: 'radial-gradient(ellipse 80% 60% at 60% 30%, rgba(124,92,246,0.07) 0%, transparent 70%)',
+          top: '-10%', left: '35%',
+          width: '600px', height: '600px',
+          background: 'radial-gradient(circle, rgba(124,92,246,0.13) 0%, transparent 65%)',
+          filter: 'blur(40px)',
         }}
       />
-
+      {/* Floating orb 2 */}
+      <div
+        className="absolute pointer-events-none orb-drift-2"
+        style={{
+          bottom: '0%', right: '-5%',
+          width: '500px', height: '500px',
+          background: 'radial-gradient(circle, rgba(99,102,241,0.09) 0%, transparent 65%)',
+          filter: 'blur(50px)',
+        }}
+      />
       {/* Dot grid */}
       <div
         className="absolute inset-0 pointer-events-none"
         style={{
-          backgroundImage: 'radial-gradient(circle, rgba(255,255,255,0.04) 1px, transparent 1px)',
-          backgroundSize: '40px 40px',
-          maskImage: 'radial-gradient(ellipse 70% 60% at 50% 0%, black 30%, transparent 100%)',
-          WebkitMaskImage: 'radial-gradient(ellipse 70% 60% at 50% 0%, black 30%, transparent 100%)',
+          backgroundImage: 'radial-gradient(circle, rgba(255,255,255,0.035) 1px, transparent 1px)',
+          backgroundSize: '36px 36px',
+          maskImage: 'radial-gradient(ellipse 80% 65% at 50% 0%, black 20%, transparent 100%)',
+          WebkitMaskImage: 'radial-gradient(ellipse 80% 65% at 50% 0%, black 20%, transparent 100%)',
         }}
+      />
+      {/* Top gradient fade */}
+      <div
+        className="absolute top-0 left-0 right-0 pointer-events-none"
+        style={{ height: '1px', background: 'linear-gradient(90deg, transparent, rgba(124,92,246,0.4), transparent)' }}
       />
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 lg:py-32">
@@ -302,8 +323,8 @@ export default function Hero() {
           {/* Copy */}
           <div>
             <div
-              className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full mb-8"
-              style={{ background: 'rgba(124,92,246,0.08)', border: '1px solid rgba(124,92,246,0.2)' }}
+              className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full mb-6"
+              style={{ background: 'rgba(124,92,246,0.08)', border: '1px solid rgba(124,92,246,0.2)', boxShadow: '0 0 20px rgba(124,92,246,0.15)' }}
             >
               <span className="w-1.5 h-1.5 rounded-full animate-pulse" style={{ backgroundColor: 'var(--brand-light)' }} />
               <span className="text-xs font-semibold tracking-wide" style={{ color: 'var(--brand-light)', letterSpacing: '0.02em' }}>

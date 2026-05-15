@@ -25,7 +25,7 @@ export default function ChatBot() {
     {
       id: 1,
       role: 'bot',
-      text: 'Olá! 👋 Sou o assistente da Synk. Como posso ajudar-te hoje?',
+      text: 'Olá! 👋 Sou o assistente da Twonect. Como posso ajudar-te hoje?',
     },
   ])
   const [input, setInput] = useState('')
@@ -104,7 +104,7 @@ export default function ChatBot() {
               S
             </div>
             <div className="flex-1 min-w-0">
-              <p className="text-white font-semibold text-sm">Assistente Synk</p>
+              <p className="text-white font-semibold text-sm">Assistente Twonect</p>
               <p className="text-indigo-200 text-xs">Responde em segundos ⚡</p>
             </div>
             <button

@@ -22,7 +22,7 @@ export default function TrustedBy() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <Reveal>
           <p className="text-center text-sm font-medium uppercase tracking-widest mb-10" style={{ color: '#64748b' }}>
-            Empresas que já automatizaram com a Synk
+            Empresas que já automatizaram com a Twonect
           </p>
         </Reveal>
 

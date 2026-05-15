@@ -36,7 +36,7 @@ const TEAM = [
 const TIMELINE = [
   { year: '2025', title: 'A ideia', desc: 'Identificámos o problema: empresas sem acesso fácil a especialistas de automação. Começámos a pesquisa de mercado.' },
   { year: 'Jan 2026', title: 'O MVP', desc: 'Primeiros 30 especialistas verificados. Primeiros 10 projetos concluídos com sucesso.' },
-  { year: 'Mar 2026', title: 'Lançamento', desc: 'Synk abre ao público em Portugal.' },
+  { year: 'Mar 2026', title: 'Lançamento', desc: 'Twonect abre ao público em Portugal.' },
   { year: '2026 →', title: 'Próximo passo', desc: 'Expansão para Espanha e mercado ibérico.', future: true },
 ]
 
@@ -92,7 +92,7 @@ const CONTACTS = [
       </svg>
     ),
     label: 'Email geral',
-    email: 'hello@synk.pt',
+    email: 'hello@twonect.pt',
   },
   {
     icon: (
@@ -102,7 +102,7 @@ const CONTACTS = [
       </svg>
     ),
     label: 'Parcerias',
-    email: 'partnerships@synk.pt',
+    email: 'partnerships@twonect.pt',
   },
   {
     icon: (
@@ -111,7 +111,7 @@ const CONTACTS = [
       </svg>
     ),
     label: 'Imprensa',
-    email: 'press@synk.pt',
+    email: 'press@twonect.pt',
   },
 ]
 
@@ -126,7 +126,7 @@ export default function SobreNos() {
       <PageHero
         heading="Construídos por empreendedores,"
         highlight="para empreendedores"
-        sub="Vimos em primeira mão como as PMEs perdem tempo e dinheiro em processos manuais enquanto os especialistas certos estão a um clique de distância. A Synk existe para fechar essa distância."
+        sub="Vimos em primeira mão como as PMEs perdem tempo e dinheiro em processos manuais enquanto os especialistas certos estão a um clique de distância. A Twonect existe para fechar essa distância."
       />
 
       {/* Mission */}
@@ -179,7 +179,7 @@ export default function SobreNos() {
       {/* Team */}
       <section className="py-24" style={{ background: 'var(--bg-subtle)', borderTop: '1px solid var(--border)', borderBottom: '1px solid var(--border)' }}>
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-          <SectionHeader heading="Quem está por trás" highlight="da Synk" />
+          <SectionHeader heading="Quem está por trás" highlight="da Twonect" />
           <div className="grid md:grid-cols-3 gap-5">
             {TEAM.map((member, i) => (
               <Reveal key={i} delay={i * 80}>
@@ -279,7 +279,7 @@ export default function SobreNos() {
                 ))}
               </div>
               <a
-                href="mailto:hello@synk.pt?subject=Candidatura Synk"
+                href="mailto:hello@twonect.pt?subject=Candidatura Twonect"
                 className="btn-primary"
                 style={{ textDecoration: 'none' }}
               >
@@ -324,7 +324,7 @@ export default function SobreNos() {
       </section>
 
       <CTABanner
-        heading="Pronto para fazer parte da Synk?"
+        heading="Pronto para fazer parte da Twonect?"
         sub="Seja como empresa, especialista ou membro da equipa — há um lugar para ti."
         primaryLabel="Começar agora"
         primaryTo="/registar"

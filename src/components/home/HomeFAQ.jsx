@@ -24,7 +24,7 @@ const FAQS = [
   },
   {
     q: 'O que acontece se não ficar satisfeito com o trabalho?',
-    a: 'O pagamento em Escrow garante que tens sempre poder negocial. Se o trabalho não corresponder ao acordado, a equipa Synk medeia a resolução.',
+    a: 'O pagamento em Escrow garante que tens sempre poder negocial. Se o trabalho não corresponder ao acordado, a equipa Twonect medeia a resolução.',
   },
 ]
 

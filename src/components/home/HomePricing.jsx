@@ -43,7 +43,7 @@ export default function HomePricing() {
         <SectionHeader
           heading="Transparência total."
           highlight="Sem surpresas."
-          sub="Sem mensalidades, sem taxas escondidas. A Synk só ganha quando tu ganhas."
+          sub="Sem mensalidades, sem taxas escondidas. A Twonect só ganha quando tu ganhas."
         />
 
         <div className="grid md:grid-cols-2 gap-5 max-w-3xl mx-auto">

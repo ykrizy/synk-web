@@ -2,7 +2,7 @@ import Hero from '@/components/home/Hero'
 import TrustedBy from '@/components/home/TrustedBy'
 import HowItWorks from '@/components/home/HowItWorks'
 import AutomationTypes from '@/components/home/AutomationTypes'
-import WhySynk from '@/components/home/WhySynk'
+import WhyTwonect from '@/components/home/WhySynk'
 import Stats from '@/components/home/Stats'
 import Testimonials from '@/components/home/Testimonials'
 import HomePricing from '@/components/home/HomePricing'
@@ -16,7 +16,7 @@ export default function Home() {
       <TrustedBy />
       <HowItWorks />
       <AutomationTypes />
-      <WhySynk />
+      <WhyTwonect />
       <Stats />
       <Testimonials />
       <HomePricing />

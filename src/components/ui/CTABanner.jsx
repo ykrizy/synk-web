@@ -4,7 +4,7 @@ import useSmartCTA from '@/hooks/useSmartCTA'
 
 export default function CTABanner({
   heading = 'Pronto para automatizar o teu negócio?',
-  sub = 'Junta-te a centenas de empresas que já estão a poupar tempo e dinheiro com a Synk.',
+  sub = 'Junta-te a centenas de empresas que já estão a poupar tempo e dinheiro com a Twonect.',
   primaryLabel = null,
   primaryTo = null,
   secondaryLabel = null,
@@ -18,19 +18,34 @@ export default function CTABanner({
   return (
     <section
       className="py-24 relative overflow-hidden"
-      style={{ background: 'var(--bg)', borderTop: '1px solid var(--border)' }}
+      style={{ background: 'var(--bg-subtle)', borderTop: '1px solid var(--border)' }}
     >
       {/* Ambient glow */}
-      <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+      <div className="absolute inset-0 pointer-events-none overflow-hidden">
         <div
+          className="orb-drift"
           style={{
-            width: '700px',
-            height: '350px',
-            background: 'radial-gradient(ellipse, rgba(124,92,246,0.1) 0%, transparent 70%)',
+            position: 'absolute', top: '-30%', left: '20%',
+            width: '500px', height: '500px',
+            background: 'radial-gradient(circle, rgba(124,92,246,0.12) 0%, transparent 65%)',
+            filter: 'blur(50px)',
+          }}
+        />
+        <div
+          className="orb-drift-2"
+          style={{
+            position: 'absolute', bottom: '-20%', right: '15%',
+            width: '400px', height: '400px',
+            background: 'radial-gradient(circle, rgba(99,102,241,0.09) 0%, transparent 65%)',
             filter: 'blur(60px)',
           }}
         />
       </div>
+      {/* Top border glow */}
+      <div
+        className="absolute top-0 left-0 right-0 pointer-events-none"
+        style={{ height: '1px', background: 'linear-gradient(90deg, transparent, rgba(124,92,246,0.5), transparent)' }}
+      />
 
       <div className="relative max-w-3xl mx-auto px-4 sm:px-6 text-center">
         <Reveal>

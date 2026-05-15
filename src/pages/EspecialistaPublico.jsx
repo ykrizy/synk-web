@@ -24,8 +24,8 @@ export default function EspecialistaPublico() {
   const [notFound, setNotFound] = useState(false)
 
   useMeta({
-    title: esp ? `${esp.nome} — Especialista Synk` : 'Especialista — Synk',
-    description: esp?.bio ?? 'Perfil de especialista em automação na Synk.',
+    title: esp ? `${esp.nome} — Especialista Twonect` : 'Especialista — Twonect',
+    description: esp?.bio ?? 'Perfil de especialista em automação na Twonect.',
   })
 
   useEffect(() => {

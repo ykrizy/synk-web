@@ -372,7 +372,7 @@ const CRITERIA = [
 export default function Matching() {
   useMeta({
     title: 'Sistema de Matching',
-    description: 'Experimenta o simulador de matching da Synk e descobre como o algoritmo encontra o especialista certo para o teu projeto.',
+    description: 'Experimenta o simulador de matching da Twonect e descobre como o algoritmo encontra o especialista certo para o teu projeto.',
   })
 
   const [form, setForm] = useState({
@@ -410,7 +410,7 @@ export default function Matching() {
       <PageHero
         badge="Sistema de Matching"
         badgeVariant="badge-violet"
-        heading="Como a Synk encontra o"
+        heading="Como a Twonect encontra o"
         highlight="especialista certo para ti"
         sub="O nosso algoritmo multidimensional analisa 5 critérios em simultâneo para garantir que o especialista certo chega ao projeto certo."
       />

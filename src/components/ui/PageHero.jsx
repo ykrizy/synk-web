@@ -9,7 +9,7 @@ export default function PageHero({ badge, badgeVariant = 'badge-brand', heading,
         style={{
           top: '-15%', left: '50%', transform: 'translateX(-50%)',
           width: '75%', height: '65%',
-          background: 'radial-gradient(ellipse, rgba(124,92,246,0.12) 0%, transparent 70%)',
+          background: 'radial-gradient(ellipse, rgba(124,92,246,0.16) 0%, transparent 70%)',
           filter: 'blur(50px)',
         }}
       />
@@ -18,11 +18,17 @@ export default function PageHero({ badge, badgeVariant = 'badge-brand', heading,
       <div
         className="absolute inset-0 pointer-events-none"
         style={{
-          backgroundImage: 'radial-gradient(circle, rgba(255,255,255,0.055) 1px, transparent 1px)',
-          backgroundSize: '30px 30px',
+          backgroundImage: 'radial-gradient(circle, rgba(255,255,255,0.045) 1px, transparent 1px)',
+          backgroundSize: '32px 32px',
           maskImage: 'radial-gradient(ellipse 80% 70% at 50% 0%, black 30%, transparent 100%)',
           WebkitMaskImage: 'radial-gradient(ellipse 80% 70% at 50% 0%, black 30%, transparent 100%)',
         }}
+      />
+
+      {/* Top border glow */}
+      <div
+        className="absolute top-0 left-0 right-0 pointer-events-none"
+        style={{ height: '1px', background: 'linear-gradient(90deg, transparent, rgba(124,92,246,0.45), transparent)' }}
       />
 
       <div className="relative max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
